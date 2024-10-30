@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c991f3bd-2b19-4692-a349-1239d277be73" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b7c3fed3-db02-4a0d-9fce-3488798c68b0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/b7c3fed3-db02-4a0d-9fce-3488798c68b0.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Teretana.db" beforeDir="false" afterPath="$PROJECT_DIR$/Teretana.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restartDataBase.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Teretana.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Teretana.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

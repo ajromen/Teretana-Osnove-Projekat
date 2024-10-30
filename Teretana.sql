@@ -45,8 +45,9 @@ CREATE TABLE Vrste_treninga
 	  );
 
 DROP TABLE IF EXISTS Instruktor_program;
-CREATE TABLE Vrste_treninga 
-	( id_instruktora INTEGER PRIMARY KEY NOT NULL,
+CREATE TABLE Instruktor_program 
+	( id_instruktor_program INTEGER PRIMARY KEY,
+	  id_instruktora INTEGER,
 	  id_programa INTEGER
 	  );
 
