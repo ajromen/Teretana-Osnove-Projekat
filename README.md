@@ -1,2 +1,2 @@
 # Teretana-Osnove-Projekat
- Teretana aplikacija sa PYQT5-om i SQLite-om
+ Teretana aplikacija sa PYQT6-om i SQLite-om

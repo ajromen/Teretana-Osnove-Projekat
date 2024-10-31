@@ -1,11 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
+import PyQt6.QtWidgets as QtWidgets
+import sys
+
 
 import queries
 import helperFunctions
 
-queries.executeScriptsFromFile("Teretana.sql")
-queries.executeScriptsFromFile("TeretanaUnosPodataka.sql")
+queries.executeScriptsFromFile("src/sql/Teretana.sql")
+queries.executeScriptsFromFile("src/sql/TeretanaUnosPodataka.sql")
 
 win=tk.Tk()
 win.title("TopForm")
