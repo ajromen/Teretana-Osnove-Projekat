@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-import PyQt6.QtWidgets as QtWidgets
+# import PyQt6.QtWidgets as QtWidgets
 import sys
 
 

@@ -10,8 +10,8 @@ def executeScriptsFromFile(filename):
 
     sqlCommands = sqlFile.split(';')
 
-    for command in sqlCommands:
+    for i in range(0,len(sqlCommands)):
         try:
-            cursor.execute(command)
+            cursor.execute(sqlCommands[i])
         except sqlite3.OperationalError as msg:
-            print("Command skipped: ", msg)
+            print("Command skipped: ", msg," OVA KOMANDA:"+str(i))
