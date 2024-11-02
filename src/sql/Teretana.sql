@@ -1,8 +1,12 @@
+PRAGMA foreign_keys = ON;
+
+-- RESTARTOVANJE TABELA --
 DROP TABLE IF EXISTS Korisnici;
 CREATE TABLE Korisnici 
 	( username CHAR(25) PRIMARY KEY NOT NULL,
 	  password CHAR(64),
-	  ime_prezime CHAR(40),
+	  ime CHAR(25),
+	  prezime CHAR(25),
 	  uloga SMALLINT,
 	  status_clanstva BOOLEAN,
 	  uplacen_paket BOOLEAN,
@@ -11,12 +15,14 @@ CREATE TABLE Korisnici
 
 DROP TABLE IF EXISTS Trening;
 CREATE TABLE Trening 
-	( id_treninga CHAR(4) PRIMARY KEY NOT NULL,
-	  id_sala INTEGER,
+	( id_treninga CHAR(4) PRIMARY KEY NOT NULL, -- MOZE DA SE DODA JOS JEDAN ZA SIFRU TRENINGA CHAR(4) A ID DA BUDE INTEGER
+	  id_sale INTEGER, --
 	  vreme_pocetka TIME,
 	  vreme_kraja TIME,
 	  dani_nedelje CHAR(7),
-	  id_programa INTEGER
+	  id_programa INTEGER, --
+	  FOREIGN KEY (id_sale) REFERENCES Sala(id_sale)
+	  FOREIGN KEY (id_programa) REFERENCES Program(id_programa)
 	  );
 	  
 DROP TABLE IF EXISTS Sala;
@@ -31,11 +37,13 @@ DROP TABLE IF EXISTS Program;
 CREATE TABLE Program 
 	( id_programa INTEGER PRIMARY KEY NOT NULL,
 	  naziv CHAR(20),
-	  id_vrste_treninga INTEGER,
+	  id_vrste_treninga INTEGER,--
 	  trajanje TIME,
-	  id_instruktora INTEGER,
+	  id_instruktora CHAR(25),--
 	  potreban_paket BOOLEAN,
-	  opis BLOB
+	  opis BLOB,
+	  FOREIGN KEY (id_vrste_treninga) REFERENCES Vrste_treninga(id_vrste_treninga),
+	  FOREIGN KEY (id_instruktora) REFERENCES Korisnici(username)
 	  );
 
 DROP TABLE IF EXISTS Vrste_treninga;--OPCIONALNO OBRISI AKO SE PREDOMISLIS
@@ -45,25 +53,23 @@ CREATE TABLE Vrste_treninga
 	  );
 
 DROP TABLE IF EXISTS Instruktor_program;
-CREATE TABLE Instruktor_program 
-	( id_instruktor_program INTEGER PRIMARY KEY,
-	  id_instruktora INTEGER,
-	  id_programa INTEGER
-	  );
 
 DROP TABLE IF EXISTS Termin;
 CREATE TABLE Termin 
 	( id_termina CHAR(6) PRIMARY KEY NOT NULL,
 	  datum_odrzavanja DATE,
-	  id_treninga CHAR(4)
+	  id_treninga CHAR(4),--
+	  FOREIGN KEY (id_treninga) REFERENCES Trening(id_treninga)
 	  );
 
 DROP TABLE IF EXISTS Rezervacija;
 CREATE TABLE Rezervacija 
 	( id_rezervacije INTEGER PRIMARY KEY NOT NULL,
-	  id_korisnika INTEGER,
-	  id_termina INTEGER,
+	  id_korisnika CHAR(25),--
+	  id_termina INTEGER,--
 	  oznaka_reda_kolone INTEGER,
-	  datum DATE
+	  datum DATE,
+	  FOREIGN KEY (id_korisnika) REFERENCES Korisnici(username)
+	  FOREIGN KEY (id_termina) REFERENCES Termin(id_termina)
 	  );
-
+	
