@@ -66,7 +66,7 @@ canvas.create_rectangle(
     outline="")
 
 image_image_2 = PhotoImage(
-    file=("src/img/TopFormLogoBeliMali.png"))
+    file=("src/img/TopFormLogoBeliMali2.png"))
 image_2 = canvas.create_image(
     565.0,
     74.0,
