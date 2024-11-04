@@ -6,16 +6,29 @@ import sys
 
 import queries
 import helperFunctions
+import login
+import signup
 
 queries.executeScriptsFromFile("src/sql/Teretana.sql")
 queries.executeScriptsFromFile("src/sql/TeretanaUnosPodataka.sql")
 
-set_appearance_mode('Dark')
+window = CTk()
+set_appearance_mode("Dark")
 
-win=CTk()
-win.title("TopForm")
-win.geometry('700x450+0+0')
-lblAloBre=CTkLabel(master=win,text="textOvaj",font=("Calibri", 16))
-lblAloBre.pack()
+def login_startup_loop(window,user):
+    return_value=0
+    while(1):
+        return_value=login.start(window)
+        if(return_value!="signup"):
+            print(return_value)
+            break;
+        return_value=signup.start(window,user)
+        if(return_value!="login"):
+            break;
+    return return_value
 
-win.mainloop()
+return_value=login_startup_loop(window,'None')
+print("ovja lik"+return_value)
+    
+
+
