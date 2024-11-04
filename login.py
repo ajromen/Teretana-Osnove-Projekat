@@ -9,6 +9,8 @@ from pathlib import Path
 # Explicit imports to satisfy Flake8
 from tkinter import *
 import customtkinter as ctk
+import queries
+import helperFunctions
 
 
 def start(window):
@@ -37,8 +39,11 @@ def start(window):
         return_value=text
         window.quit()
     def prijavi_se(event):
-        global return_value
-        vrati(window,"login")
+        korIme=str(username.get())
+        loz=helperFunctions.hashPassword(str(password.get()))
+        queries.cursor.execute("SELECT uloga FROM Korisnici WHERE username=='{korIMe}' AND password=='{loz}'")
+        ima=queries.cursor.fetchall()
+        vrati(window,str(ima))
 
     canvas.place(x = 0, y = 0)
     image_image_1 = PhotoImage(
@@ -90,13 +95,13 @@ def start(window):
         292.0,
         image=entry_image_1
     )
-    entry_1 = Entry(
+    password = Entry(
         bd=0,
         bg="#1A1B20",
         fg="#FFFFFF",
         highlightthickness=0
     )
-    entry_1.place(
+    password.place(
         x=403.0,
         y=281.0,
         width=303.0,
@@ -104,21 +109,21 @@ def start(window):
     )
 
     def on_entry_click(event):
-        if entry_1.get() == "Lozinka":
-            entry_1.delete(0, END)
-            entry_1.configure(foreground="white")
-            entry_1.configure(show='•')
+        if password.get() == "Lozinka":
+            password.delete(0, END)
+            password.configure(foreground="white")
+            password.configure(show='•')
 
     def on_focus_out(event):
-        if entry_1.get() == "":
-            entry_1.insert(0, "Lozinka")
-            entry_1.configure(foreground="gray",show='')
+        if password.get() == "":
+            password.insert(0, "Lozinka")
+            password.configure(foreground="gray",show='')
 
-    entry_1.configure(foreground="gray")
-    entry_1.insert(0, "Lozinka")
-    entry_1.bind("<FocusIn>", on_entry_click)
-    entry_1.bind("<FocusOut>", on_focus_out)
-    entry_1.bind("<Return>",prijavi_se)
+    password.configure(foreground="gray")
+    password.insert(0, "Lozinka")
+    password.bind("<FocusIn>", on_entry_click)
+    password.bind("<FocusOut>", on_focus_out)
+    password.bind("<Return>",prijavi_se)
 
     entry_image_2 = PhotoImage(
         file=("src/img/login/entry_2.png"))
@@ -127,13 +132,13 @@ def start(window):
         236.0,
         image=entry_image_2
     )
-    entry_2 = Entry(
+    username = Entry(
         bd=0,
         bg="#1A1B20",
         fg="#FFFFFF",
         highlightthickness=0
     )
-    entry_2.place(
+    username.place(
         x=403,
         y=225.0,
         width=303.0,
@@ -141,24 +146,24 @@ def start(window):
     )
 
     def on_entry_click2(event):
-        if entry_2.get() == "Korisničko ime":
-            entry_2.delete(0, END)
-            entry_2.configure(foreground="white")
+        if username.get() == "Korisničko ime":
+            username.delete(0, END)
+            username.configure(foreground="white")
 
     def on_focus_out2(event):
-        if entry_2.get() == "":
-            entry_2.insert(0, "Korisničko ime")
-            entry_2.configure(foreground="gray")
+        if username.get() == "":
+            username.insert(0, "Korisničko ime")
+            username.configure(foreground="gray")
         
 
     def funk(event):
-        canvas.itemconfig(text_id, text="Pozdrav, "+str(entry_2.get()))
+        canvas.itemconfig(text_id, text="Pozdrav, "+str(username.get()))
 
-    entry_2.configure(foreground="gray")
-    entry_2.insert(0, "Korisničko ime")
-    entry_2.bind("<FocusIn>", on_entry_click2)
-    entry_2.bind("<FocusOut>", on_focus_out2)
-    entry_2.bind("<KeyRelease>", funk)
+    username.configure(foreground="gray")
+    username.insert(0, "Korisničko ime")
+    username.bind("<FocusIn>", on_entry_click2)
+    username.bind("<FocusOut>", on_focus_out2)
+    username.bind("<KeyRelease>", funk)
 
     
     
@@ -169,7 +174,7 @@ def start(window):
         image=button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: vrati(window,"login"),
+        command=lambda: prijavi_se,
         relief="flat"
     )
     login.place(
@@ -197,16 +202,16 @@ def start(window):
     )
 
     def set_custom_tab_order(event):
-        if event.widget == entry_2:
-            entry_1.focus_set()
-        elif event.widget == entry_1:
-            entry_2.focus_set()
+        if event.widget == username:
+            password.focus_set()
+        elif event.widget == password:
+            username.focus_set()
         else:
-            entry_2.focus_set()
+            username.focus_set()
         return "break"
 
-    entry_1.bind("<Tab>", set_custom_tab_order)
-    entry_2.bind("<Tab>", set_custom_tab_order)
+    password.bind("<Tab>", set_custom_tab_order)
+    username.bind("<Tab>", set_custom_tab_order)
 
     window.resizable(False, False)
     window.mainloop()
