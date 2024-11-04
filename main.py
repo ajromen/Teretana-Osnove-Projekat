@@ -1,6 +1,5 @@
 import tkinter as tk
 from customtkinter import *
-# import PyQt6.QtWidgets as QtWidgets
 import sys
 
 
@@ -28,7 +27,7 @@ def login_startup_loop(window,user):
     return return_value
 
 return_value=login_startup_loop(window,'None')
-print("ovja lik"+return_value)
+print("ovja lik : "+str(return_value))
     
 
 

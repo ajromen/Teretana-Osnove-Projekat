@@ -7,7 +7,7 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+from tkinter import *
 import customtkinter
 
 def start(window,user):
@@ -33,74 +33,133 @@ def start(window,user):
         225.0,
         image=image_image_1
     )
+    
+    def vrati(window,text):
+        global return_value
+        return_value=text
+        window.quit()
+    def prijavi_se(event):
+        global return_value
+        vrati(window,"signup")
+    
+    def on_name_click(event):
+        if name.get() == "Ime i Prezime":
+            name.delete(0, END)
+            name.configure(foreground="white")
 
-    entry_image_1 = PhotoImage(
+    def on_name_out(event):
+        if name.get() == "":
+            name.insert(0, "Ime i Prezime")
+            name.configure(foreground="gray",show='')
+            
+    def change_welcome_text(event):
+        canvas.itemconfig(text_id, text="Dobrodošao/la, "+str((name.get().split(' '))[0]))
+        
+    
+    def on_username_click(event):
+        if username.get() == "Korisničko ime":
+            username.delete(0, END)
+            username.configure(foreground="white")
+
+    def on_username_out(event):
+        if username.get() == "":
+            username.insert(0, "Korisničko ime")
+            username.configure(foreground="gray",show='')
+            
+    def on_password_click(event):
+        if password.get() == "Lozinka":
+            password.delete(0, END)
+            password.configure(foreground="white")
+            password.configure(show='•')
+
+    def on_password_out(event):
+        if password.get() == "":
+            password.insert(0, "Lozinka")
+            password.configure(foreground="gray",show='')
+    
+
+    name_image = PhotoImage(
         file=("src/img/Signup/entry_1.png"))
-    entry_bg_1 = canvas.create_image(
+    name_bg = canvas.create_image(
         197.5,
         220.0,
-        image=entry_image_1
+        image=name_image
     )
-    entry_1 = Entry(
+    name = Entry(
         bd=0,
         bg="#131419",
         fg="#000716",
         highlightthickness=0
     )
-    entry_1.place(
+    name.place(
         x=46.0,
         y=209.0,
         width=303.0,
         height=20.0
     )
+    name.configure(foreground="gray")
+    name.insert(0, "Ime i Prezime")
+    name.bind("<FocusIn>", on_name_click)
+    name.bind("<FocusOut>", on_name_out)
+    name.bind("<KeyRelease>",change_welcome_text)
 
-    entry_image_2 = PhotoImage(
+    username_image = PhotoImage(
         file=("src/img/Signup/entry_2.png"))
-    entry_bg_2 = canvas.create_image(
+    username_bg = canvas.create_image(
         197.5,
         264.0,
-        image=entry_image_2
+        image=username_image
     )
-    entry_2 = Entry(
+    username = Entry(
         bd=0,
         bg="#131419",
         fg="#000716",
         #highlightthickness=0
     )
-    entry_2.place(
+    username.place(
         x=46.0,
         y=253.0,
         width=303.0,
         height=20.0
     )
+    username.configure(foreground="gray")
+    username.insert(0, "Korisničko ime")
+    username.bind("<FocusIn>", on_username_click)
+    username.bind("<FocusOut>", on_username_out)
+    
 
-    entry_image_3 = PhotoImage(
+    password_image = PhotoImage(
         file=("src/img/Signup/entry_3.png"))
-    entry_bg_3 = canvas.create_image(
+    password_bg = canvas.create_image(
         197.5,
         304.0,
-        image=entry_image_3
+        image=password_image
     )
-    entry_3 = Entry(
+    password = Entry(
         bd=0,
         bg="#131419",
         fg="#000716",
         highlightthickness=0
     )
-    entry_3.place(
+    password.place(
         x=46.0,
         y=293.0,
         width=303.0,
         height=20.0
     )
+    
+    password.configure(foreground="gray")
+    password.insert(0, "Lozinka")
+    password.bind("<FocusIn>", on_password_click)
+    password.bind("<FocusOut>", on_password_out)
+    password.bind("<Return>", prijavi_se)
 
-    def vrati(window,text):
-        global return_value
-        return_value=text
-        window.quit()
+    
 
+    
+    
     login_image = PhotoImage(
-        file=("src/img/Signup/login.png"))
+        file=("src/img/Signup/button_1.png"))
     login = Button(
         image=login_image,
         borderwidth=0,
@@ -139,13 +198,13 @@ def start(window,user):
         fill="#FFFFFF",
         outline="")
 
-    canvas.create_text(
+    text_id=canvas.create_text(
         39.0,
         172.0,
         anchor="nw",
         text="Dobrodošao/la, ",
         fill="#FFFFFF",
-        font=("Inter SemiBold", 16 * -1)
+        font=("Inter SemiBold", 24 * -1)
     )
 
     gost_image = PhotoImage(
@@ -186,6 +245,8 @@ def start(window,user):
         76.0,
         image=image_image_2
     )
+    
+    
     window.resizable(False, False)
     window.mainloop()
 

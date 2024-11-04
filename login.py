@@ -31,6 +31,14 @@ def start(window):
         highlightthickness = 0,
         relief = "ridge"
     )
+    
+    def vrati(window,text):
+        global return_value
+        return_value=text
+        window.quit()
+    def prijavi_se(event):
+        global return_value
+        vrati(window,"login")
 
     canvas.place(x = 0, y = 0)
     image_image_1 = PhotoImage(
@@ -110,6 +118,7 @@ def start(window):
     entry_1.insert(0, "Lozinka")
     entry_1.bind("<FocusIn>", on_entry_click)
     entry_1.bind("<FocusOut>", on_focus_out)
+    entry_1.bind("<Return>",prijavi_se)
 
     entry_image_2 = PhotoImage(
         file=("src/img/login/entry_2.png"))
@@ -152,11 +161,7 @@ def start(window):
     entry_2.bind("<KeyRelease>", funk)
 
     
-    def vrati(window,text):
-        global return_value
-        return_value=text
-        window.quit()
-        
+    
 
     button_image_1 = PhotoImage(
         file=("src/img/login/button_1.png"))
