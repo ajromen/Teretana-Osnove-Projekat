@@ -41,7 +41,7 @@ def start(window):
     def prijavi_se(event):
         korIme=str(username.get())
         loz=helperFunctions.hashPassword(str(password.get()))
-        queries.cursor.execute("SELECT uloga FROM Korisnici WHERE username=='{korIMe}' AND password=='{loz}'")
+        queries.cursor.execute("SELECT * FROM Korisnici WHERE username=='{korIMe}' AND password=='{loz}'")
         ima=queries.cursor.fetchall()
         vrati(window,str(ima))
 
