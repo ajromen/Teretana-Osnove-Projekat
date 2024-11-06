@@ -9,6 +9,11 @@ from pathlib import Path
 # Explicit imports to satisfy Flake8
 from tkinter import *
 import customtkinter
+import queries
+from datetime import date
+import helperFunctions
+
+
 
 def start(window,user):
     window.title('Kreiraj nalog')
@@ -38,10 +43,23 @@ def start(window,user):
         global return_value
         return_value=text
         window.quit()
-    def prijavi_se(event):
-        global return_value
-        vrati(window,"signup")
     
+    def napraviNalog():
+        usrname=username.get()
+        imeIPrezime=name.get().split(" ")
+        if(len(imeIPrezime)!=2):
+            helperFunctions.pisi_eror("Polje ime i prezime mora da ima samo 2 argumenta")
+            return
+        ime=imeIPrezime[0]
+        prezime=imeIPrezime[1]
+        lozinka=password.get()
+        uloga=0
+        status_clanstva=1
+        uplacen_paket=0
+        datum_registracije=date.today().strftime("%Y-%m-%d")
+        if(queries.napraviNalog(usrname,lozinka,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)=="vecPostoji"):
+            helperFunctions.pisi_eror("Nalog sa korisničkim imenom već postoje")
+            
     def on_name_click(event):
         if name.get() == "Ime i Prezime":
             name.delete(0, END)
@@ -152,7 +170,7 @@ def start(window,user):
     password.insert(0, "Lozinka")
     password.bind("<FocusIn>", on_password_click)
     password.bind("<FocusOut>", on_password_out)
-    password.bind("<Return>", prijavi_se)
+    password.bind("<Return>", napraviNalog)
 
     
 
@@ -207,13 +225,17 @@ def start(window,user):
         font=("Inter SemiBold", 24 * -1)
     )
 
+    def gostf():
+        queries.cursor.execute("SELECT * FROM Korisnici")
+        print(queries.cursor.fetchall())
+    
     gost_image = PhotoImage(
         file=("src/img/Signup/button_2.png"))
     gost = Button(
         image=gost_image,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: vrati(window,"gost"),
+        command=gostf,
         relief="flat"
     )
     gost.place(
@@ -229,7 +251,7 @@ def start(window,user):
         image=signup_image,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: vrati(window,"signup"),
+        command=napraviNalog,
         relief="flat"
     )
     signup.place(

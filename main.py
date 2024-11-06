@@ -8,8 +8,8 @@ import helperFunctions
 import login
 import signup
 
-queries.executeScriptsFromFile("src/sql/Teretana.sql")
-queries.executeScriptsFromFile("src/sql/TeretanaUnosPodataka.sql")
+#queries.executeScriptsFromFile("src/sql/Teretana.sql")
+#queries.executeScriptsFromFile("src/sql/TeretanaUnosPodataka.sql")
 
 window = CTk()
 set_appearance_mode("Dark")
@@ -39,5 +39,8 @@ def login_startup_loop(window,user):
 
 return_value=login_startup_loop(window,'None')
 print("ovja lik : "+str(return_value))
+
+
+queries.connection.commit()
 
 

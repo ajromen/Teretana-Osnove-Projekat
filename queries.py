@@ -1,4 +1,5 @@
 import sqlite3
+import helperFunctions
 connection=sqlite3.connect("Teretana.db")
 cursor=connection.cursor()
 
@@ -15,3 +16,14 @@ def executeScriptsFromFile(filename):
             cursor.execute(sqlCommands[i])
         except sqlite3.OperationalError as msg:
             print("Command skipped: ", msg," OVA KOMANDA:"+str(i))
+            
+def napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije):
+    cursor.execute("SELECT * FROM Korisnici WHERE username=?",(username,))
+    if(len(cursor.fetchall())>0):
+        return "vecPostoji"
+    password=helperFunctions.hashPassword(password)
+    komanda='''INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
+	 VALUES (?, ?, ?, ?, ?, ?, ?, ?);'''
+    cursor.execute(komanda, (username, password, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije))
+    
+    return "uspeo"

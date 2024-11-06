@@ -33,27 +33,6 @@ def start(window):
         highlightthickness = 0,
         relief = "ridge"
     )
-    def pisi_eror(poruka):
-        error_window = ctk.CTkToplevel()
-        error_window.title("Greška")
-
-        error_window.update_idletasks()
-        screen_width = error_window.winfo_screenwidth()
-        screen_height = error_window.winfo_screenheight()
-        window_width = 350
-        window_height = 150
-        x = (screen_width // 2) - (window_width // 2)
-        y = (screen_height // 2) - (window_height // 2)
-        error_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
-
-        error_window.focus()
-        error_window.grab_set()
-
-        error_label = ctk.CTkLabel(error_window, text=poruka, fg_color="red")
-        error_label.pack(pady=20)
-
-        close_button = ctk.CTkButton(error_window, text="Zatvori", command=error_window.destroy)
-        close_button.pack(pady=10)
         
         
     def vrati(window,text):
@@ -68,7 +47,7 @@ def start(window):
         if(len(ima)!=0):
             vrati(window,str(ima))
         else:
-            pisi_eror("Pogrešno korisničko ime ili lozinka")
+            helperFunctions.pisi_eror("Pogrešno korisničko ime ili lozinka")
 
     canvas.place(x = 0, y = 0)
     image_image_1 = PhotoImage(
