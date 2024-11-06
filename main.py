@@ -12,33 +12,25 @@ import winLoginOOP
 
 #queries.executeScriptsFromFile("src/sql/Teretana.sql")
 #queries.executeScriptsFromFile("src/sql/TeretanaUnosPodataka.sql")
+#window=CTk()
 
-'''window = CTk()
-set_appearance_mode("Dark")
-helperFunctions.centerWindow(window)
-'''
 winLogin=winLoginOOP.LoginWindow()
+print(winLogin.start())
 
-
-
-
-def login_startup_loop(window,user):
+def login_startup_loop(user):
     return_value=0
     while(1):
         return_value=winLogin.start()
         if(return_value!="signup"):
             print(return_value)
             break;
-        return_value=winSignup.start(window,user)
+        return_value=winSignup.start(user)
         if(return_value!="login"):
             break;
     return return_value
 
-window = CTk()
-set_appearance_mode("Dark")
-helperFunctions.centerWindow(window)
 
-return_value=login_startup_loop(window,'None')
+return_value=login_startup_loop('None')
 print("ovja lik : "+str(return_value))
 
 

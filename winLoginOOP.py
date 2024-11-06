@@ -94,8 +94,9 @@ class LoginWindow:
         self.canvas.itemconfig(self.text_id, text="Pozdrav, " + str(self.entryUsername.get()))
     
     def vrati(self,text):
-        self.return_value=text
         self.window.quit()
+        self.window.destroy()
+        self.return_value=text
         
     def prijavi_se(self,event=None):
         korIme=str(self.entryUsername.get())
