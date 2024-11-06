@@ -45,55 +45,55 @@ def start(window,user):
         window.quit()
     
     def napraviNalog():
-        usrname=username.get()
-        imeIPrezime=name.get().split(" ")
+        username=entyUsername.get()
+        imeIPrezime=entryName.get().split(" ")
         if(len(imeIPrezime)!=2):
             helperFunctions.pisi_eror("Polje ime i prezime mora da ima samo 2 argumenta")
             return
         ime=imeIPrezime[0]
         prezime=imeIPrezime[1]
-        lozinka=password.get()
+        lozinka=entryPassword.get()
         uloga=0
         status_clanstva=1
         uplacen_paket=0
         datum_registracije=date.today().strftime("%Y-%m-%d")
-        if(queries.napraviNalog(usrname,lozinka,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)=="vecPostoji"):
+        if(queries.napraviNalog(username,lozinka,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)=="vecPostoji"):
             helperFunctions.pisi_eror("Nalog sa korisničkim imenom već postoje")
             
     def on_name_click(event):
-        if name.get() == "Ime i Prezime":
-            name.delete(0, END)
-            name.configure(foreground="white")
+        if entryName.get() == "Ime i Prezime":
+            entryName.delete(0, END)
+            entryName.configure(foreground="white")
 
     def on_name_out(event):
-        if name.get() == "":
-            name.insert(0, "Ime i Prezime")
-            name.configure(foreground="gray",show='')
+        if entryName.get() == "":
+            entryName.insert(0, "Ime i Prezime")
+            entryName.configure(foreground="gray",show='')
             
     def change_welcome_text(event):
-        canvas.itemconfig(text_id, text="Dobrodošao/la, "+str((name.get().split(' '))[0]))
+        canvas.itemconfig(text_id, text="Dobrodošao/la, "+str((entryName.get().split(' '))[0]))
         
     
     def on_username_click(event):
-        if username.get() == "Korisničko ime":
-            username.delete(0, END)
-            username.configure(foreground="white")
+        if entyUsername.get() == "Korisničko ime":
+            entyUsername.delete(0, END)
+            entyUsername.configure(foreground="white")
 
     def on_username_out(event):
-        if username.get() == "":
-            username.insert(0, "Korisničko ime")
-            username.configure(foreground="gray",show='')
+        if entyUsername.get() == "":
+            entyUsername.insert(0, "Korisničko ime")
+            entyUsername.configure(foreground="gray",show='')
             
     def on_password_click(event):
-        if password.get() == "Lozinka":
-            password.delete(0, END)
-            password.configure(foreground="white")
-            password.configure(show='•')
+        if entryPassword.get() == "Lozinka":
+            entryPassword.delete(0, END)
+            entryPassword.configure(foreground="white")
+            entryPassword.configure(show='•')
 
     def on_password_out(event):
-        if password.get() == "":
-            password.insert(0, "Lozinka")
-            password.configure(foreground="gray",show='')
+        if entryPassword.get() == "":
+            entryPassword.insert(0, "Lozinka")
+            entryPassword.configure(foreground="gray",show='')
     
 
     name_image = PhotoImage(
@@ -103,23 +103,23 @@ def start(window,user):
         220.0,
         image=name_image
     )
-    name = Entry(
+    entryName = Entry(
         bd=0,
         bg="#131419",
         fg="#000716",
         highlightthickness=0
     )
-    name.place(
+    entryName.place(
         x=46.0,
         y=209.0,
         width=303.0,
         height=20.0
     )
-    name.configure(foreground="gray")
-    name.insert(0, "Ime i Prezime")
-    name.bind("<FocusIn>", on_name_click)
-    name.bind("<FocusOut>", on_name_out)
-    name.bind("<KeyRelease>",change_welcome_text)
+    entryName.configure(foreground="gray")
+    entryName.insert(0, "Ime i Prezime")
+    entryName.bind("<FocusIn>", on_name_click)
+    entryName.bind("<FocusOut>", on_name_out)
+    entryName.bind("<KeyRelease>",change_welcome_text)
 
     username_image = PhotoImage(
         file=("src/img/Signup/entry_2.png"))
@@ -128,22 +128,22 @@ def start(window,user):
         264.0,
         image=username_image
     )
-    username = Entry(
+    entyUsername = Entry(
         bd=0,
         bg="#131419",
         fg="#000716",
         #highlightthickness=0
     )
-    username.place(
+    entyUsername.place(
         x=46.0,
         y=253.0,
         width=303.0,
         height=20.0
     )
-    username.configure(foreground="gray")
-    username.insert(0, "Korisničko ime")
-    username.bind("<FocusIn>", on_username_click)
-    username.bind("<FocusOut>", on_username_out)
+    entyUsername.configure(foreground="gray")
+    entyUsername.insert(0, "Korisničko ime")
+    entyUsername.bind("<FocusIn>", on_username_click)
+    entyUsername.bind("<FocusOut>", on_username_out)
     
 
     password_image = PhotoImage(
@@ -153,24 +153,24 @@ def start(window,user):
         304.0,
         image=password_image
     )
-    password = Entry(
+    entryPassword = Entry(
         bd=0,
         bg="#131419",
         fg="#000716",
         highlightthickness=0
     )
-    password.place(
+    entryPassword.place(
         x=46.0,
         y=293.0,
         width=303.0,
         height=20.0
     )
     
-    password.configure(foreground="gray")
-    password.insert(0, "Lozinka")
-    password.bind("<FocusIn>", on_password_click)
-    password.bind("<FocusOut>", on_password_out)
-    password.bind("<Return>", napraviNalog)
+    entryPassword.configure(foreground="gray")
+    entryPassword.insert(0, "Lozinka")
+    entryPassword.bind("<FocusIn>", on_password_click)
+    entryPassword.bind("<FocusOut>", on_password_out)
+    entryPassword.bind("<Return>", napraviNalog)
 
     
 
@@ -178,14 +178,14 @@ def start(window,user):
     
     login_image = PhotoImage(
         file=("src/img/Signup/button_1.png"))
-    login = Button(
+    btnLogin = Button(
         image=login_image,
         borderwidth=0,
         highlightthickness=0,
         command=lambda: vrati(window,"login"),
         relief="flat"
     )
-    login.place(
+    btnLogin.place(
         x=163.0,
         y=379.0,
         width=76.0,
@@ -229,16 +229,16 @@ def start(window,user):
         queries.cursor.execute("SELECT * FROM Korisnici")
         print(queries.cursor.fetchall())
     
-    gost_image = PhotoImage(
+    btnGost_image = PhotoImage(
         file=("src/img/Signup/button_2.png"))
-    gost = Button(
-        image=gost_image,
+    btnGost = Button(
+        image=btnGost_image,
         borderwidth=0,
         highlightthickness=0,
         command=gostf,
         relief="flat"
     )
-    gost.place(
+    btnGost.place(
         x=588.0,
         y=394.0,
         width=153.0,
@@ -247,14 +247,14 @@ def start(window,user):
 
     signup_image = PhotoImage(
         file=("src/img/Signup/button_3.png"))
-    signup = Button(
+    btnSignup = Button(
         image=signup_image,
         borderwidth=0,
         highlightthickness=0,
         command=napraviNalog,
         relief="flat"
     )
-    signup.place(
+    btnSignup.place(
         x=121.0,
         y=337.0,
         width=160.0,
