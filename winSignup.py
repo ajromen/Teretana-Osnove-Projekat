@@ -147,9 +147,10 @@ class SignupWindow:
         uplacen_paket=0
         datum_registracije=date.today().strftime("%Y-%m-%d")
         nalog=queries.napraviNalog(username,lozinka,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
-        if(nalog=="vecPostoji"):
-            helperFunctions.pisi_eror("Nalog sa korisničkim imenom već postoje")
-        return nalog
+        if(nalog==0):
+            return
+        self.vrati(nalog)
+
     
     def gostf(self):
         queries.cursor.execute("SELECT * FROM Korisnici")

@@ -1,13 +1,6 @@
-import tkinter as tk
 from customtkinter import *
-import sys
-
-
 import queries
 import helperFunctions
-#import winLogin
-#import winSignup
-import chatgpt
 import winLogin
 import winSignup
 
