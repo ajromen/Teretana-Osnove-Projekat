@@ -26,4 +26,9 @@ def napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_pak
 	 VALUES (?, ?, ?, ?, ?, ?, ?, ?);'''
     cursor.execute(komanda, (username, password, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije))
     
-    return "uspeo"
+    cursor.execute("SELECT username, uloga FROM Korisnici WHERE username='"+username+"'")
+    return cursor.fetchall()
+
+def  restartuj_bazu():
+    executeScriptsFromFile("src/sql/Teretana.sql")
+    executeScriptsFromFile("src/sql/TeretanaUnosPodataka.sql")

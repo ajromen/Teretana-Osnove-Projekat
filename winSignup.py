@@ -1,271 +1,156 @@
-from pathlib import Path
-
+import os
+import ctypes
 from tkinter import *
 import customtkinter as ctk
 import queries
 from datetime import date
 import helperFunctions
 
-
-
-def start(user=''):
-    window=ctk.CTk()
-    window.title('Kreiraj nalog')
-    window.geometry("760x450")
-    global return_value
-    return_value = 0
-
-    canvas = Canvas(
-        window,
-        bg = "#FFFFFF",
-        height = 450,
-        width = 760,
-        bd = 0,
-        highlightthickness = 0,
-        relief = "ridge"
-    )
-
-    canvas.place(x = 0, y = 0)
-    image_image_1 = PhotoImage(file=("src/img/Signup/image_1.png"))
+class SignupWindow:
+    def __init__(self,window):
+        self.window = window
+        
+        
+    def start(self,user=''):
+        self.return_value = 0
+        self.setup_window()
+        self.create_canvas()
+        self.create_widgets()
+        self.window.mainloop()
+        return self.return_value
+ 
+    def setup_window(self):
+        ctk.set_appearance_mode("Dark")
+        self.window.title("Kreiraj nalog")
+        self.window.geometry("760x450")
+        self.window.configure(bg = "#000000")
+        self.window.resizable(False, False)
+        helperFunctions.centerWindow(self.window)
+        self.window.iconbitmap("src/img/TFLogo.ico")
+        if os.name == "nt":
+            app_id = "mycompany.myapp.subapp"
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
     
-    image_1 = canvas.create_image(
-        380.0,
-        225.0,
-        image=image_image_1
-    )
+    def create_canvas(self):
+        self.canvas = Canvas(
+            self.window,
+            bg="#03050B",
+            height=450,
+            width=760,
+            bd=0,
+            highlightthickness=0,
+            relief="ridge"
+        )
+        self.canvas.place(x=0, y=0)
+        
+        self.imgPozadina = PhotoImage(file="src/img/Signup/image_1.png")
+        self.canvas.create_image(380, 225.0, image=self.imgPozadina)
+
+        self.imgLogo = PhotoImage(file="src/img/TopFormLogoBeliMali2.png")
+        self.canvas.create_image(201.0, 76.0, image=self.imgLogo)
+
+        self.text_id = self.canvas.create_text(39,172, anchor="nw", text="Dobrodošao/la, ", fill="#FFFFFF", font=("Inter SemiBold", 24 * -1))
+        self.canvas.create_rectangle(41.0, 230, 352.0, 231, fill="#FFFFFF",outline="")
+        self.canvas.create_rectangle(41.0, 274.0, 352, 275.0, fill="#FFFFFF", outline="")
+        self.canvas.create_rectangle(41.0, 313.0, 352, 314, fill="#FFFFFF", outline="")
     
-    def vrati(window,text):
-        global return_value
-        return_value=text
-        window.quit()
-        window.destroy()
+    def create_widgets(self):
+        self.entryName = self.create_entry(
+            x=46.0, y=209.0, placeholder="Ime i Prezime",
+            on_focus_in=self.on_name_click, on_focus_out=self.on_name_out
+        )
+        self.entryName.bind("<KeyRelease>", self.promeni_dobrodosao)
+
+        self.entyUsername = self.create_entry(
+            x=46.0, y=253.0, placeholder="Korisničko ime",
+            on_focus_in=self.on_username_click, on_focus_out=self.on_username_out
+        )
+
+        self.entryPassword = self.create_entry(
+            x=46.0, y=293.0, placeholder="Lozinka",
+            on_focus_in=self.on_password_click, on_focus_out=self.on_password_out, show='•'
+        )
+        self.entryPassword.bind("<Return>", lambda event: self.napraviNalog())
+
+        self.create_button("src/img/Signup/button_3.png", x=121.0, y=337.0, width=160.0, height=35.0, command=self.napraviNalog)
+        self.create_button("src/img/Signup/button_2.png", x=588.0, y=394.0, width=153.0, height=40.0, command=self.gostf)
+        self.create_button("src/img/Signup/button_1.png", x=163.0, y=379.0, width=76.0, height=15.0, command=lambda: self.vrati("login"))
     
-    def napraviNalog():
-        username=entyUsername.get()
-        imeIPrezime=entryName.get().split(" ")
+    
+    def create_entry(self, x, y, placeholder, on_focus_in, on_focus_out, show=''):
+        entry = Entry(
+            bd=0, bg="#1A1B20", fg="#FFFFFF", highlightthickness=0, show=show
+        )
+        entry.place(x=x, y=y, width=303.0, height=20.0)
+        entry.insert(0, placeholder)
+        entry.configure(foreground="gray")
+        entry.bind("<FocusIn>", on_focus_in)
+        entry.bind("<FocusOut>", on_focus_out)
+        return entry
+
+    def promeni_dobrodosao(self,event):
+        self.canvas.itemconfig(self.text_id, text="Dobrodošao/la, "+str((self.entryName.get().split(' '))[0]))
+    
+    def create_button(self, image_path, x, y, width, height, command):
+        image = PhotoImage(file=image_path)
+        button = Button(
+            image=image, borderwidth=0, highlightthickness=0, command=command, relief="flat"
+        )
+        button.image = image  
+        button.place(x=x, y=y, width=width, height=height)
+
+    def on_name_click(self, event):
+        if self.entryName.get() == "Ime i Prezime":
+            self.entryName.delete(0, END)
+            self.entryName.configure(foreground="white")
+
+    def on_name_out(self, event):
+        if self.entryName.get() == "":
+            self.entryName.insert(0, "Ime i Prezime")
+            self.entryName.configure(foreground="gray")
+
+    def on_username_click(self, event):
+        if self.entyUsername.get() == "Korisničko ime":
+            self.entyUsername.delete(0, END)
+            self.entyUsername.configure(foreground="white")
+
+    def on_username_out(self, event):
+        if self.entyUsername.get() == "":
+            self.entyUsername.insert(0, "Korisničko ime")
+            self.entyUsername.configure(foreground="gray")
+
+    def on_password_click(self, event):
+        if self.entryPassword.get() == "Lozinka":
+            self.entryPassword.delete(0, END)
+            self.entryPassword.configure(foreground="white", show='•')
+
+    def on_password_out(self, event):
+        if self.entryPassword.get() == "":
+            self.entryPassword.insert(0, "Lozinka")
+            self.entryPassword.configure(foreground="gray", show='')
+    
+    def vrati(self,text):
+        self.return_value=text
+        self.window.quit()
+    
+    def napraviNalog(self):
+        username=self.entyUsername.get()
+        imeIPrezime=self.entryName.get().split(" ")
         if(len(imeIPrezime)!=2):
             helperFunctions.pisi_eror("Polje ime i prezime mora da ima samo 2 argumenta")
             return
         ime=imeIPrezime[0]
         prezime=imeIPrezime[1]
-        lozinka=entryPassword.get()
+        lozinka=self.entryPassword.get()
         uloga=0
         status_clanstva=1
         uplacen_paket=0
         datum_registracije=date.today().strftime("%Y-%m-%d")
-        if(queries.napraviNalog(username,lozinka,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)=="vecPostoji"):
+        nalog=queries.napraviNalog(username,lozinka,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
+        if(nalog=="vecPostoji"):
             helperFunctions.pisi_eror("Nalog sa korisničkim imenom već postoje")
-            
-    def on_name_click(event):
-        if entryName.get() == "Ime i Prezime":
-            entryName.delete(0, END)
-            entryName.configure(foreground="white")
-
-    def on_name_out(event):
-        if entryName.get() == "":
-            entryName.insert(0, "Ime i Prezime")
-            entryName.configure(foreground="gray",show='')
-            
-    def change_welcome_text(event):
-        canvas.itemconfig(text_id, text="Dobrodošao/la, "+str((entryName.get().split(' '))[0]))
-        
+        return nalog
     
-    def on_username_click(event):
-        if entyUsername.get() == "Korisničko ime":
-            entyUsername.delete(0, END)
-            entyUsername.configure(foreground="white")
-
-    def on_username_out(event):
-        if entyUsername.get() == "":
-            entyUsername.insert(0, "Korisničko ime")
-            entyUsername.configure(foreground="gray",show='')
-            
-    def on_password_click(event):
-        if entryPassword.get() == "Lozinka":
-            entryPassword.delete(0, END)
-            entryPassword.configure(foreground="white")
-            entryPassword.configure(show='•')
-
-    def on_password_out(event):
-        if entryPassword.get() == "":
-            entryPassword.insert(0, "Lozinka")
-            entryPassword.configure(foreground="gray",show='')
-    
-
-    name_image = PhotoImage(
-        file=("src/img/Signup/entry_1.png"))
-    name_bg = canvas.create_image(
-        197.5,
-        220.0,
-        image=name_image
-    )
-    entryName = Entry(
-        bd=0,
-        bg="#131419",
-        fg="#000716",
-        highlightthickness=0
-    )
-    entryName.place(
-        x=46.0,
-        y=209.0,
-        width=303.0,
-        height=20.0
-    )
-    entryName.configure(foreground="gray")
-    entryName.insert(0, "Ime i Prezime")
-    entryName.bind("<FocusIn>", on_name_click)
-    entryName.bind("<FocusOut>", on_name_out)
-    entryName.bind("<KeyRelease>",change_welcome_text)
-
-    username_image = PhotoImage(
-        file=("src/img/Signup/entry_2.png"))
-    username_bg = canvas.create_image(
-        197.5,
-        264.0,
-        image=username_image
-    )
-    entyUsername = Entry(
-        bd=0,
-        bg="#131419",
-        fg="#000716",
-        #highlightthickness=0
-    )
-    entyUsername.place(
-        x=46.0,
-        y=253.0,
-        width=303.0,
-        height=20.0
-    )
-    entyUsername.configure(foreground="gray")
-    entyUsername.insert(0, "Korisničko ime")
-    entyUsername.bind("<FocusIn>", on_username_click)
-    entyUsername.bind("<FocusOut>", on_username_out)
-    
-
-    password_image = PhotoImage(
-        file=("src/img/Signup/entry_3.png"))
-    password_bg = canvas.create_image(
-        197.5,
-        304.0,
-        image=password_image
-    )
-    entryPassword = Entry(
-        bd=0,
-        bg="#131419",
-        fg="#000716",
-        highlightthickness=0
-    )
-    entryPassword.place(
-        x=46.0,
-        y=293.0,
-        width=303.0,
-        height=20.0
-    )
-    
-    entryPassword.configure(foreground="gray")
-    entryPassword.insert(0, "Lozinka")
-    entryPassword.bind("<FocusIn>", on_password_click)
-    entryPassword.bind("<FocusOut>", on_password_out)
-    entryPassword.bind("<Return>", napraviNalog)
-
-    
-
-    
-    
-    login_image = PhotoImage(
-        file=("src/img/Signup/button_1.png"))
-    btnLogin = Button(
-        image=login_image,
-        borderwidth=0,
-        highlightthickness=0,
-        command=lambda: vrati(window,"login"),
-        relief="flat"
-    )
-    btnLogin.place(
-        x=163.0,
-        y=379.0,
-        width=76.0,
-        height=15.0
-    )
-
-    canvas.create_rectangle(
-        42.0,
-        230.00000474521948,
-        352.0,
-        231.02317810058594,
-        fill="#FFFFFF",
-        outline="")
-
-    canvas.create_rectangle(
-        41.0,
-        274.0,
-        352.0000120401364,
-        275.0,
-        fill="#FFFFFF",
-        outline="")
-
-    canvas.create_rectangle(
-        41.0,
-        313.0,
-        352.0000098859837,
-        314.9935898159913,
-        fill="#FFFFFF",
-        outline="")
-
-    text_id=canvas.create_text(
-        39.0,
-        172.0,
-        anchor="nw",
-        text="Dobrodošao/la, ",
-        fill="#FFFFFF",
-        font=("Inter SemiBold", 24 * -1)
-    )
-
-    def gostf():
+    def gostf(self):
         queries.cursor.execute("SELECT * FROM Korisnici")
         print(queries.cursor.fetchall())
-    
-    btnGost_image = PhotoImage(
-        file=("src/img/Signup/button_2.png"))
-    btnGost = Button(
-        image=btnGost_image,
-        borderwidth=0,
-        highlightthickness=0,
-        command=gostf,
-        relief="flat"
-    )
-    btnGost.place(
-        x=588.0,
-        y=394.0,
-        width=153.0,
-        height=40.0
-    )
-
-    signup_image = PhotoImage(
-        file=("src/img/Signup/button_3.png"))
-    btnSignup = Button(
-        image=signup_image,
-        borderwidth=0,
-        highlightthickness=0,
-        command=napraviNalog,
-        relief="flat"
-    )
-    btnSignup.place(
-        x=121.0,
-        y=337.0,
-        width=160.0,
-        height=35.0
-    )
-
-    image_image_2 = PhotoImage(file="src/img/TopFormLogoBeliMali2.png")
-    image_2 = canvas.create_image(
-        201.0,
-        76.0,
-        image=image_image_2
-    )
-    
-    
-    window.resizable(False, False)
-    window.mainloop()
-    
-    return return_value

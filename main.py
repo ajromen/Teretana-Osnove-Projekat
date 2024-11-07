@@ -6,34 +6,31 @@ import sys
 import queries
 import helperFunctions
 #import winLogin
-import winSignup
+#import winSignup
 import chatgpt
-import winLoginOOP
+import winLogin
+import winSignup
 
-#queries.executeScriptsFromFile("src/sql/Teretana.sql")
-#queries.executeScriptsFromFile("src/sql/TeretanaUnosPodataka.sql")
-#window=CTk()
+#queries.restartuj_bazu()
 
-winLogin=winLoginOOP.LoginWindow()
-print(winLogin.start())
+window=CTk()
+winLogin=winLogin.LoginWindow(window)
+winSignup=winSignup.SignupWindow(window)
 
-def login_startup_loop(user):
+def login_startup_loop():
     return_value=0
     while(1):
         return_value=winLogin.start()
         if(return_value!="signup"):
             print(return_value)
             break;
-        return_value=winSignup.start(user)
+        
+        return_value=winSignup.start()
         if(return_value!="login"):
             break;
     return return_value
 
-
-return_value=login_startup_loop('None')
+return_value=login_startup_loop()
 print("ovja lik : "+str(return_value))
 
-
 queries.connection.commit()
-
-
