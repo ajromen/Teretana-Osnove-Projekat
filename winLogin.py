@@ -27,7 +27,7 @@ class LoginWindow:
         self.window.configure(bg = "#03050B")
         self.window.resizable(False, False)
         helperFunctions.centerWindow(self.window)
-        self.window.iconbitmap("src/img/TFLogo.ico")
+        self.window.iconbitmap("src/img/Logo/TFLogo.ico")
         if os.name == "nt":
             app_id = "mycompany.myapp.subapp"
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
@@ -70,7 +70,7 @@ class LoginWindow:
         self.imgPozadina = PhotoImage(file="src/img/login/image_1.png")
         self.canvas.create_image(386.0, 226.0, image=self.imgPozadina)
 
-        self.imgLogo = PhotoImage(file="src/img/TopFormLogoBeliMali2.png")
+        self.imgLogo = PhotoImage(file="src/img/Logo/TopFormLogoBeliMali2.png")
         self.canvas.create_image(565.0, 74.0, image=self.imgLogo)
 
         self.text_id = self.canvas.create_text(
@@ -105,7 +105,7 @@ class LoginWindow:
         queries.cursor.execute("SELECT username, uloga FROM Korisnici WHERE username='"+str(korIme)+"' AND password='"+str(loz)+"'")
         ima=queries.cursor.fetchall()
         if(len(ima)!=0):
-            self.vrati(str(ima))
+            self.vrati(ima)
         else:
             helperFunctions.pisi_eror("Pogrešno korisničko ime ili lozinka")
             

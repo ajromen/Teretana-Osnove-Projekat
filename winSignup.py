@@ -9,8 +9,7 @@ import helperFunctions
 class SignupWindow:
     def __init__(self,window):
         self.window = window
-        
-        
+          
     def start(self,user=''):
         self.return_value = 0
         self.setup_window()
@@ -26,7 +25,7 @@ class SignupWindow:
         self.window.configure(bg = "#000000")
         self.window.resizable(False, False)
         helperFunctions.centerWindow(self.window)
-        self.window.iconbitmap("src/img/TFLogo.ico")
+        self.window.iconbitmap("src/img/Logo/TFLogo.ico")
         if os.name == "nt":
             app_id = "mycompany.myapp.subapp"
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
@@ -46,7 +45,7 @@ class SignupWindow:
         self.imgPozadina = PhotoImage(file="src/img/Signup/image_1.png")
         self.canvas.create_image(380, 225.0, image=self.imgPozadina)
 
-        self.imgLogo = PhotoImage(file="src/img/TopFormLogoBeliMali2.png")
+        self.imgLogo = PhotoImage(file="src/img/Logo/TopFormLogoBeliMali2.png")
         self.canvas.create_image(201.0, 76.0, image=self.imgLogo)
 
         self.text_id = self.canvas.create_text(39,172, anchor="nw", text="Dobrodošao/la, ", fill="#FFFFFF", font=("Inter SemiBold", 24 * -1))
