@@ -1,3 +1,5 @@
+import datetime
+import random
 import sqlite3
 import helperFunctions
 import re
@@ -23,12 +25,6 @@ def napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_pak
     if(len(cursor.fetchall())>0):
         helperFunctions.pisi_eror("Nalog sa korisničkim imenom već postoji")
         return 0
-    if(len(password)<6):
-        helperFunctions.pisi_eror("Lozinka mora da sadrži više od 6 karaktera")
-        return 0
-    if(not re.search(r'\d', password)):
-        helperFunctions.pisi_eror("Lozinka mora sadržati bar jednu cifru")
-        return 0
     password=helperFunctions.hashPassword(password)
     komanda='''INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
 	 VALUES (?, ?, ?, ?, ?, ?, ?, ?);'''
@@ -36,6 +32,15 @@ def napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_pak
     
     cursor.execute("SELECT username, uloga FROM Korisnici WHERE username='"+username+"'")
     return cursor.fetchall()
+
+def napraviGosta():
+    random_id = random.randint(10000000, 99999999)
+    username = f"guest_{random_id}"
+    cursor.execute("SELECT username FROM Korisnici where username=?", (username,))
+    if(cursor.fetchone() is None):
+        datum=datetime.datetime.now().strftime("%Y-%m-%d")
+        napraviNalog(username,"","","",-1,0,0,datum)
+    return username
 
 def  restartuj_bazu():
     executeScriptsFromFile("src/sql/Teretana.sql")

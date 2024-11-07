@@ -1,5 +1,6 @@
 import os
 import ctypes
+import re
 from tkinter import *
 import customtkinter as ctk
 import queries
@@ -141,16 +142,19 @@ class SignupWindow:
         ime=imeIPrezime[0]
         prezime=imeIPrezime[1]
         lozinka=self.entryPassword.get()
+        if(len(lozinka)<6):
+            helperFunctions.pisi_eror("Lozinka mora da sadrži više od 6 karaktera")
+            return 0
+        if(not re.search(r'\d', lozinka)):
+            helperFunctions.pisi_eror("Lozinka mora sadržati bar jednu cifru")
+            return 0
         uloga=0
         status_clanstva=1
         uplacen_paket=0
         datum_registracije=date.today().strftime("%Y-%m-%d")
         nalog=queries.napraviNalog(username,lozinka,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
-        if(nalog==0):
-            return
         self.vrati(nalog)
 
     
     def gostf(self):
-        queries.cursor.execute("SELECT * FROM Korisnici")
-        print(queries.cursor.fetchall())
+        self.vrati("gost")

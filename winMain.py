@@ -13,7 +13,6 @@ class MainWindow:
     def start(self,user,uloga):
         self.user=user
         self.uloga=self.nadji_ulogu(uloga)
-        print(self.uloga)
         self.return_value = 0
         self.setup_window()
         self.create_canvas()
@@ -66,10 +65,10 @@ class MainWindow:
     
     def napravi_dugmad_po_ulozi(self):
         role_buttons = {
-            "gost": ["btnVrsteTreninga","btnregistrujSe"],
-            "admin": ["btnVrsteTreninga", "btnTreninzi", "btnIzvestaji", "btnAdmin","btnOdjaviSe"],
-            "instruktor": ["btnVrsteTreninga", "btnTreninzi", "btnIzvestaji","btnOdjaviSe"],
-            "korisnik": ["btnVrsteTreninga", "btnTreninzi","btnOdjaviSe"]
+            "gost": ["btnVrsteTreninga","btnRegistrujSe"],
+            "admin": ["btnVrsteTreninga", "btnTreninzi", "btnProgrami", "btnClanovi", "btnIzvestaji", "btnAdmin","btnOdjaviSe"],
+            "instruktor": ["btnRezervacije","btnClanovi", "btnOdjaviSe"],
+            "korisnik": ["btnProgrami","btnTermini","btnRezervacije","btnOdjaviSe"]
         }
         buttons = {
             "btnVrsteTreninga": lambda i: self.create_button("src/img/Main/btnVrsteTreninga.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnVrsteTreninga clicked")),
@@ -80,8 +79,8 @@ class MainWindow:
             "btnTermini": lambda i: self.create_button("src/img/Main/btnTermini.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnTermini clicked")),
             "btnRezervacije": lambda i: self.create_button("src/img/Main/btnRezervacije.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnRezervacije clicked")),
             "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnProgrami clicked")),
-            "btnRegistrujSe": lambda i: self.create_button("src/img/Main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: print("btnRegistrujSe clicked")),
-            "btnOdjaviSe": lambda i: self.create_button("src/img/Main/btnOdjaviSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("signup"))
+            "btnRegistrujSe": lambda i: self.create_button("src/img/Main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("signup")),
+            "btnOdjaviSe": lambda i: self.create_button("src/img/Main/btnOdjaviSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("login"))
         }
 
         i = 1
