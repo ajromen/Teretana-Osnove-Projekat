@@ -1,3 +1,4 @@
+import datetime
 from tkinter import *
 import customtkinter as ctk
 import helperFunctions
@@ -11,7 +12,8 @@ class MainWindow:
          
     def start(self,user,uloga):
         self.user=user
-        self.uloga=uloga
+        self.uloga=self.nadji_ulogu(uloga)
+        print(self.uloga)
         self.return_value = 0
         self.setup_window()
         self.create_canvas()
@@ -46,30 +48,82 @@ class MainWindow:
         self.imgPozadina = PhotoImage(file="src/img/Main/imgPozadina.png")
         self.canvas.create_image(655, 304, image=self.imgPozadina)
         
-        #self.imgLogo = PhotoImage(file="src/img/Main/imgPozadina.png")
-        #self.canvas.create_image(455, 175, image=self.imgLogo)
+        self.imgLogo = PhotoImage(file="src/img/Logo/TopFormLogoBeliSrednji.png")
+        self.canvas.create_image(420+465//2, 180+142//2, image=self.imgLogo)
         
         self.imgUser = PhotoImage(file="src/img/Main/imgUser.png")
         self.canvas.create_image(115, 31, image=self.imgUser)
 
         self.text_id_user = self.canvas.create_text(64,25, anchor="nw", text=self.user, fill="#FFFFFF", font=("Inter Medium", 12 * -1))
-        self.text_id_date_time = self.canvas.create_text(540,313, anchor="nw", text="19:49 / Saturday /  01.11.2024", fill="#DFDFDF", font=("Inter", 24 * -1))
-        #self.text_id = self.canvas.create_text(540,313, anchor="nw", text="19:49 / Saturday /  01.11.2024", fill="#DFDFDF", font=("Inter", 24 * -1))
-        self.canvas.create_rectangle(218.0, 0, 230.0, 62, fill="#FFFFFF",outline="")
-            
+        self.text_id_date_time = self.canvas.create_text(475,313, anchor="nw", text="19:49 / Saturday /  01.11.2024", fill="#DFDFDF", font=("Inter", 24 * -1))
         
+        self.rect=self.canvas.create_rectangle(218.0, 0, 230.0, 63, fill="#FFFFFF",outline="")
+
     def create_widgets(self):
-        self.btnVrsteTreninga = self.create_button( "src/img/Main/btnVrsteTreninga.png", x=0, y=501, width=320, height=63, command=lambda: print("btnVrsteTreninga clicked"))
-        self.btnTreninzi = self.create_button("src/img/Main/btnTreninzi.png", x=0, y=501, width=320, height=63, command=lambda: print("btnVrsteTreninga clicked"))
-        self.btnIzvestaji = self.create_button("src/img/Main/btnIzvestaji.png", x=0, y=501, width=320, height=63, command=lambda: print("btnVrsteTreninga clicked"))
-        self.btnAdmin = self.create_button("src/img/Main/btnAdmin.png", x=0, y=501, width=320, height=63, command=lambda: print("btnVrsteTreninga clicked"))
-        self.btnClanovi = self.create_button("src/img/Main/btnClanovi.png", x=0, y=501, width=320, height=63, command=lambda: print("btnVrsteTreninga clicked"))
-        self.btnTermini = self.create_button("src/img/Main/btnTermini.png", x=0, y=501, width=320, height=63, command=lambda: print("btnVrsteTreninga clicked"))
-        self.btnRezervacije = self.create_button("src/img/Main/btnRezervacije.png", x=0, y=501, width=320, height=63, command=lambda: print("btnVrsteTreninga clicked"))
-        self.btnProgrami = self.create_button("src/img/Main/btnProgrami.png", x=0, y=501, width=320, height=63, command=lambda: print("btnVrsteTreninga clicked"))
+        self.napravi_dugmad_po_ulozi()
+    
+        self.vreme()
+    
+    def napravi_dugmad_po_ulozi(self):
+        role_buttons = {
+            "gost": ["btnVrsteTreninga","btnregistrujSe"],
+            "admin": ["btnVrsteTreninga", "btnTreninzi", "btnIzvestaji", "btnAdmin","btnOdjaviSe"],
+            "instruktor": ["btnVrsteTreninga", "btnTreninzi", "btnIzvestaji","btnOdjaviSe"],
+            "korisnik": ["btnVrsteTreninga", "btnTreninzi","btnOdjaviSe"]
+        }
+        buttons = {
+            "btnVrsteTreninga": lambda i: self.create_button("src/img/Main/btnVrsteTreninga.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnVrsteTreninga clicked")),
+            "btnTreninzi": lambda i: self.create_button("src/img/Main/btnTreninzi.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnTreninzi clicked")),
+            "btnIzvestaji": lambda i: self.create_button("src/img/Main/btnIzvestaji.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnIzvestaji clicked")),
+            "btnAdmin": lambda i: self.create_button("src/img/Main/btnAdmin.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnAdmin clicked")),
+            "btnClanovi": lambda i: self.create_button("src/img/Main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnClanovi clicked")),
+            "btnTermini": lambda i: self.create_button("src/img/Main/btnTermini.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnTermini clicked")),
+            "btnRezervacije": lambda i: self.create_button("src/img/Main/btnRezervacije.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnRezervacije clicked")),
+            "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnProgrami clicked")),
+            "btnRegistrujSe": lambda i: self.create_button("src/img/Main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: print("btnRegistrujSe clicked")),
+            "btnOdjaviSe": lambda i: self.create_button("src/img/Main/btnOdjaviSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("signup"))
+        }
+
+        i = 1
+        for btn_name in role_buttons.get(self.uloga, []):
+            buttons[btn_name](i)
+            i += 1
+            
+    def vrati(self,text):
+        self.return_value=text
+        self.window.quit()
+                
+    def vreme(self):
+        sad = datetime.datetime.now()
+        datum = sad.strftime("%d. %m. %Y")
+        vreme = sad.strftime("%H:%M:%S")
+        dan = self.zastoNemaSwitch(sad.strftime("%A"))
+        self.canvas.itemconfig(self.text_id_date_time, text=f"{vreme} / {dan} / {datum}")
+        self.window.after(1000,self.vreme)
         
-        self.btnRegistrujSe = self.create_button("src/img/Main/btnRegistrujSe.png", x=0, y=501, width=320, height=63, command=lambda: print("btnVrsteTreninga clicked"))
-        self.btnOdjaviSe = self.create_button("src/img/Main/btnOdjaviSe.png", x=0, y=501, width=320, height=63, command=lambda: print("btnVrsteTreninga clicked"))
+    def pomeri_rect(self,x,y):
+        self.canvas.coords(self.rect, x, y, x+12, y+63)
+    
+    def nadji_ulogu(self,uloga):
+        mapa = {
+            -1 : "gost",
+            0 : "korisnik",
+            1 : "instruktor",
+            2 : "admin"
+        }
+        return mapa.get(uloga,"Ne znam sta je ovo")
+    
+    def zastoNemaSwitch(self,dan):
+        mapa = {
+            "Monday" : "Ponedeljak",
+            "Tuesday" : "Utorak",
+            "Wednesday" : "Sreda",
+            "Thursday" : "Četvrtak",
+            "Friday" : "Petak",
+            "Saturday" : "Subota",
+            "Sunday" : "Nedelja"
+        }
+        return mapa.get(dan,"Nepoznat dan")
     
     def create_button(self, image_path, x, y, width, height, command):
         image = PhotoImage(file=image_path)
