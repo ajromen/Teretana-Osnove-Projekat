@@ -45,3 +45,22 @@ def napraviGosta():
 def  restartuj_bazu():
     executeScriptsFromFile("src/sql/Teretana.sql")
     executeScriptsFromFile("src/sql/TeretanaUnosPodataka.sql")
+
+def obrisiKorisnika(username):
+    if(username==""): return
+    cursor.execute("DELETE FROM Korisnici WHERE username=?", (username,))
+
+def azurirajNalog(stariUsername,username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije):
+    cursor.execute("SELECT * FROM Korisnici WHERE username=?",(stariUsername,))
+    if(len(cursor.fetchall())>0):
+        password=helperFunctions.hashPassword(password)
+        komanda=f'''UPDATE Korisnici 
+                   SET username='{username}', password='{password}', ime='{ime}', prezime='{prezime}', uloga={uloga},status_clanstva={status_clanstva}, uplacen_paket={uplacen_paket}, datum_registracije='{datum_registracije}'
+                   WHERE username='{stariUsername}';
+                   '''
+        cursor.execute(komanda)
+        
+        cursor.execute("SELECT username, uloga FROM Korisnici WHERE username='"+username+"'")
+        return cursor.fetchall()
+    else:
+        return napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)

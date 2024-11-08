@@ -12,6 +12,9 @@ class SignupWindow:
         self.window = window
           
     def start(self,user=''):
+        self.user=user
+        self.guest=0
+        if(len(user)>0): self.guest=1
         self.return_value = 0
         self.setup_window()
         self.create_canvas()
@@ -59,21 +62,28 @@ class SignupWindow:
             x=46.0, y=209.0, placeholder="Ime i Prezime",
             on_focus_in=self.on_name_click, on_focus_out=self.on_name_out
         )
+            
         self.entryName.bind("<KeyRelease>", self.promeni_dobrodosao)
 
         self.entyUsername = self.create_entry(
             x=46.0, y=253.0, placeholder="Korisničko ime",
             on_focus_in=self.on_username_click, on_focus_out=self.on_username_out
         )
+        
+        if(self.guest):
+            self.entyUsername.delete(0, END)
+            self.entyUsername.insert(0,self.user)
+            self.entyUsername.configure(foreground="white")
 
         self.entryPassword = self.create_entry(
             x=46.0, y=293.0, placeholder="Lozinka",
-            on_focus_in=self.on_password_click, on_focus_out=self.on_password_out, show='•'
+            on_focus_in=self.on_password_click, on_focus_out=self.on_password_out, show=''
         )
         self.entryPassword.bind("<Return>", lambda event: self.napraviNalog())
 
         self.create_button("src/img/Signup/button_3.png", x=121.0, y=337.0, width=160.0, height=35.0, command=self.napraviNalog)
-        self.create_button("src/img/Signup/button_2.png", x=588.0, y=394.0, width=153.0, height=40.0, command=self.gostf)
+        self.create_button("src/img/Signup/button_3.png", x=0.0, y=0.0, width=160.0, height=35.0, command=self.List)
+        self.create_button("src/img/Signup/button_2.png", x=588.0, y=394.0, width=153.0, height=40.0, command=lambda: self.vrati("gost"))
         self.create_button("src/img/Signup/button_1.png", x=163.0, y=379.0, width=76.0, height=15.0, command=lambda: self.vrati("login"))
     
     
@@ -152,9 +162,12 @@ class SignupWindow:
         status_clanstva=1
         uplacen_paket=0
         datum_registracije=date.today().strftime("%Y-%m-%d")
-        nalog=queries.napraviNalog(username,lozinka,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
+        if(not self.guest):
+            nalog=queries.napraviNalog(username, lozinka, ime, prezime, uloga,status_clanstva, uplacen_paket,datum_registracije)
+        else:
+            nalog=queries.azurirajNalog(self.user, username, lozinka, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije)
         self.vrati(nalog)
 
-    
-    def gostf(self):
-        self.vrati("gost")
+    def List(self):
+        queries.cursor.execute("SELECT * FROM Korisnici")
+        print(queries.cursor.fetchall())

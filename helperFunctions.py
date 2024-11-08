@@ -1,5 +1,6 @@
 import hashlib
 import customtkinter as ctk
+from tkinter import *
 
 def hashPassword(password):
    password_bytes = password.encode('utf-8')

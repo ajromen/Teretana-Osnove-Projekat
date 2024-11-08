@@ -38,7 +38,7 @@ class LoginWindow:
         self.entryUsername.bind("<KeyRelease>", self.promeni_pozdrav)
         
         #lozinka
-        self.entryPassword = self.create_entry(403, 281, "Lozinka", self.on_entry_click_password, self.on_focus_out_password, show='•')
+        self.entryPassword = self.create_entry(403, 281, "Lozinka", self.on_entry_click_password, self.on_focus_out_password, show='')
         self.entryPassword.bind("<Return>", self.prijavi_se)
         
         #login dugme

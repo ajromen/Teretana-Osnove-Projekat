@@ -1,17 +1,21 @@
 import datetime
+import sys
 from tkinter import *
 import customtkinter as ctk
 import helperFunctions
 import queries
 import os
 import ctypes
+sys.path.append('./MainProzori')
+import winProgrami
 
 class MainWindow:
     def __init__(self,window):
          self.window=window
+         self.programi_window = None
          
-    def start(self,user,uloga):
-        self.user=user
+    def start(self,username,uloga):
+        self.username=username
         self.uloga=self.nadji_ulogu(uloga)
         self.return_value = 0
         self.setup_window()
@@ -53,7 +57,7 @@ class MainWindow:
         self.imgUser = PhotoImage(file="src/img/Main/imgUser.png")
         self.canvas.create_image(115, 31, image=self.imgUser)
 
-        self.text_id_user = self.canvas.create_text(64,25, anchor="nw", text=self.user, fill="#FFFFFF", font=("Inter Medium", 12 * -1))
+        self.text_id_user = self.canvas.create_text(64,25, anchor="nw", text=self.username, fill="#FFFFFF", font=("Inter Medium", 12 * -1))
         self.text_id_date_time = self.canvas.create_text(475,313, anchor="nw", text="19:49 / Saturday /  01.11.2024", fill="#DFDFDF", font=("Inter", 24 * -1))
         
         self.rect=self.canvas.create_rectangle(218.0, 0, 230.0, 63, fill="#FFFFFF",outline="")
@@ -65,7 +69,7 @@ class MainWindow:
     
     def napravi_dugmad_po_ulozi(self):
         role_buttons = {
-            "gost": ["btnVrsteTreninga","btnRegistrujSe"],
+            "gost": ["btnProgrami","btnTermini","btnRezervacije","btnRegistrujSe"],
             "admin": ["btnVrsteTreninga", "btnTreninzi", "btnProgrami", "btnClanovi", "btnIzvestaji", "btnAdmin","btnOdjaviSe"],
             "instruktor": ["btnRezervacije","btnClanovi", "btnOdjaviSe"],
             "korisnik": ["btnProgrami","btnTermini","btnRezervacije","btnOdjaviSe"]
@@ -78,8 +82,8 @@ class MainWindow:
             "btnClanovi": lambda i: self.create_button("src/img/Main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnClanovi clicked")),
             "btnTermini": lambda i: self.create_button("src/img/Main/btnTermini.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnTermini clicked")),
             "btnRezervacije": lambda i: self.create_button("src/img/Main/btnRezervacije.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnRezervacije clicked")),
-            "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnProgrami clicked")),
-            "btnRegistrujSe": lambda i: self.create_button("src/img/Main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("signup")),
+            "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=self.napravi_win_programi),
+            "btnRegistrujSe": lambda i: self.create_button("src/img/Main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.registrujSe()),
             "btnOdjaviSe": lambda i: self.create_button("src/img/Main/btnOdjaviSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("login"))
         }
 
@@ -143,3 +147,11 @@ class MainWindow:
         entry.bind("<FocusIn>", on_focus_in)
         entry.bind("<FocusOut>", on_focus_out)
         return entry
+    
+    def registrujSe(self):
+        niz=["signup",self.username]
+        self.vrati(niz)
+
+    def napravi_win_programi(self):
+        self.programi_window=winProgrami.ProgramiWindow(self.window)
+        self.programi_window.start()
