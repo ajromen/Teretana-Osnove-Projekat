@@ -2,6 +2,7 @@ import datetime
 import sys
 from tkinter import *
 import customtkinter as ctk
+sys.path.append('./..')
 import helperFunctions
 import queries
 import os
@@ -21,7 +22,7 @@ class ProgramiWindow:
         self.current_canvas.place(x=230, y=0)
 
         self.imgBackground = PhotoImage(file="src/img/Main/imgPozadinaPrazna.png")
-        self.current_canvas.create_image(655, 304, image=self.imgBackground)
+        self.current_canvas.create_image(0, 0, image=self.imgBackground)
 
         value = [[1,2,3,4,5],
          [1,2,3,4,5],
@@ -29,9 +30,9 @@ class ProgramiWindow:
          [1,2,3,4,5],
          [1,2,3,4,5]]
 
-        table = CTkTable(master=self.window, row=5, column=5, values=value)
+        #table = CTkTable(master=self.window, row=5, column=5, values=value)
         
-        table.pack(expand=False, fill="both", padx=20, pady=20)
+        #table.pack(expand=False, fill="both", padx=20, pady=20)
         
         self.create_search_bar()
 
@@ -40,10 +41,9 @@ class ProgramiWindow:
         search_entry = Entry(self.current_canvas, textvariable=self.search_var, font=("Inter", 12), bg="#1A1B20", fg="#FFFFFF")
         search_entry.place(x=35, y=50, width=300, height=30)
 
-        search_button = Button(self.current_canvas, text="Search", command=self.update_table)
+        search_button = Button(self.current_canvas, text="Search", command=lambda: print("cao"))
         search_button.place(x=350, y=50, width=80, height=30)
 
-        self.search_var.trace("w", lambda name, index, mode: self.update_table())
 
     def create_table(self):
         self.table_frame = Frame(self.current_canvas)
