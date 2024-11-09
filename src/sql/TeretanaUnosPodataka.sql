@@ -16,11 +16,11 @@ INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplace
 			
 INSERT INTO Sala(id_sale, naziv, broj_redova, oznaka_mesta)
 	VALUES	(1, "Sala 1", 4, "ABCDEF"),
-			(2, "Sala 2", 4, "ABC"),
+			(2, "Sala 2", 2, "ABC"),
 			(3, "Sala 3", 4, "123"),
-			(4, "Sala 4", 4, "1234567"),
-			(5, "Sala 5", 4, "AB"),
-			(6, "Sala 6", 4, "KLMN");
+			(4, "Sala 4", 3, "1234567"),
+			(5, "Sala 5", 7, "AB"),
+			(6, "Sala 6", 1, "KLMN");
 			
 
 INSERT INTO Vrste_treninga(id_vrste_treninga, naziv)
@@ -44,10 +44,18 @@ INSERT INTO Trening(id_treninga, id_sale, vreme_pocetka, vreme_kraja, dani_nedel
 			("1245",5,"08:00","08:30","PUSCPSx",3),
 			("6421",6,"22:00","22:45","PUSCPSN",4),
 			("0909",1,"09:00","10:00","xUxCxSx",2),
-			("9435",4,"18:00","18:45","xUxCxSx",5);
+			("9435",2,"18:00","18:45","xUxCxSx",5),
+			("1112",4,"18:00","19:30","xUxCxSN",1);
 
 INSERT INTO Termin(id_termina, datum_odrzavanja, id_treninga)
-	VALUES  ();
+	VALUES  ("1111AA",'2024-01-06',"1111"),
+			("1112CZ",'2024-01-07',"1112"),
+			("6421KM",'2024-01-01',"6421"),
+			("0909PJ",'2024-01-09',"0909"),
+			("1245MK",'2024-01-10',"1245");
 
 INSERT INTO Rezervacija(id_rezervacije, id_korisnika, id_termina, oznaka_reda_kolone, datum)
-	VALUES  ();
+	VALUES  (1,'aqua',"1111AA",9,'2024-01-06'),
+			(2,'rolex',"6421KM",1,'2024-01-01'),
+			(3,'dragan',"0909PJ",3,'2024-01-09'),
+			(4,'nekoime',"1245MK",4,'2024-01-10');
