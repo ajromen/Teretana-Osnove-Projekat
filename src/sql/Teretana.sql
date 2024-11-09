@@ -19,7 +19,7 @@ CREATE TABLE Trening
 	  id_sale INTEGER, --
 	  vreme_pocetka TIME,
 	  vreme_kraja TIME,
-	  dani_nedelje CHAR(7),
+	  dani_nedelje CHAR(8),
 	  id_programa INTEGER, --
 	  FOREIGN KEY (id_sale) REFERENCES Sala(id_sale)
 	  FOREIGN KEY (id_programa) REFERENCES Program(id_programa)
@@ -36,9 +36,9 @@ CREATE TABLE Sala
 DROP TABLE IF EXISTS Program;
 CREATE TABLE Program 
 	( id_programa INTEGER PRIMARY KEY NOT NULL,
-	  naziv CHAR(20),
+	  naziv CHAR(30),
 	  id_vrste_treninga INTEGER,--
-	  trajanje TIME,
+	  trajanje SMALLINT,
 	  id_instruktora CHAR(25),--
 	  potreban_paket BOOLEAN,
 	  opis BLOB,
@@ -49,10 +49,8 @@ CREATE TABLE Program
 DROP TABLE IF EXISTS Vrste_treninga;--OPCIONALNO OBRISI AKO SE PREDOMISLIS
 CREATE TABLE Vrste_treninga 
 	( id_vrste_treninga INTEGER PRIMARY KEY NOT NULL,
-	  naziv CHAR(20)
+	  naziv BLOB
 	  );
-
-DROP TABLE IF EXISTS Instruktor_program;
 
 DROP TABLE IF EXISTS Termin;
 CREATE TABLE Termin 

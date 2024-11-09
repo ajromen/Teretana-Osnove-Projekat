@@ -1,2 +1,53 @@
-INSERT INTO Korisnici(username,password,uloga)
-	VALUES	('admin','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',2);
+INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
+	VALUES	-- Administratori
+			('admin','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', None, None, 2, None, None, None),
+			('donald', 'ea94aac9173c51185e3358cf16c30d7150157e5fa584c2ba11bddea64f79178c', 'Donald', 'Tramp', 2, None, None, '2024-11-09')
+			-- Instruktori --
+			("milovan", '1d9e5f02731c9caaccb9edb760273a55f19e6d45bbe3c6e173d416d6b7d9a66d', 'Milovan', 'Arsenović', 1, None, None, '2024-11-09'),
+			('ljuba', 'a2018358dbac5a9a2e45b3ebe0341611ef74772d9f1e02259003956c39330824', 'Ljubinka', 'Leposavić', 1, None, None, '2024-11-09'),
+			('momir', 'c6476556a13b4d96f1c86143979bbf68f2586861f462aef3c1bc65bb214a0cbd', 'Momir', 'Stanojević', 1, None, None, '2024-11-09'),
+			('milica', '6de0eacc1cb7082381fb0424a9362a148dbaf8c0e828d970bdf89a966b17e115', 'Milica', 'Adamović', 1, None, None, '2024-11-09'),
+			-- Korisnici --
+			('nekoime', '61fe830be79fdb5beb2a858e96764346e0e0a914dce5470a7a3c85b284ab1643', 'Aleksandar', 'Pavlović', 0, 1, 0, '2024-11-09'),
+			('aqua', 'aca3dddfa02ed7bb64a0248be5980963da0f610430e2c83aa40d5ee673c405da', 'Akva', 'Vivić', 0, 1, 0, '2024-11-09'),
+			('dragan', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', 'Dragan', 'Nedeljković', 0, 1, 0, '2024-11-09'),
+			('rolex', 'fd1bb71bf48668c662f44a0ae0213cbaa2a34c3099076cc2b20a1312d84bff2c', 'Rolex', 'Jovanović', 0, 1, 0, '2024-11-09')
+
+			
+INSERT INTO Sala(id_sale, naziv, broj_redova, oznaka_mesta)
+	VALUES	(1, "Sala 1", 4, "ABCDEF"),
+			(2, "Sala 2", 4, "ABC"),
+			(3, "Sala 3", 4, "123"),
+			(4, "Sala 4", 4, "1234567"),
+			(5, "Sala 5", 4, "AB"),
+			(6, "Sala 6", 4, "KLMN");
+			
+
+INSERT INTO Vrste_treninga(id_vrste_treninga, naziv)
+	VALUES	(1, "Sagorite masnoće: Trening za mršavljenje"),
+			(2, "Izvajajte telo: Rutina za jačanje i definisanje mišića"),
+			(4, "Aktivni i zdravi u zrelim godinama: Vežbe za starije osobe"),
+			(5, "Nakon povrede do pobede: Rehabilitacija i povratak na teren"),
+			(6, "Fitnes za buduće mame: Trening tokom trudnoće");
+
+INSERT INTO Program(id_programa, naziv, id_vrste_treninga, trajanje, id_instruktora, potreban_paket, opis BLOB)
+	VALUES  (1,"Mršavljenje uz Momira", 1, 90, "momir", 0,"Smršaćeš."),
+			(2,"Izvajajte telo uz Ljubinku", 2, 60, "ljuba", 0, None),
+			(3,"Fontana Mladosti - Milovan", 4, 30, "milovan", 1, None),
+			(4,"Milica do pobede", 5, 45, "milica", 1, None),
+			(5,"Od mama za mame - Momir", 6, 45, "milica", 1, None);
+
+
+
+INSERT INTO Trening(id_treninga, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa)
+	VALUES  ("1111",3,"12:45","14:15","PxSxPxx",1),
+			("1245",5,"08:00","08:30","PUSCPSx",3),
+			("6421",6,"22:00","22:45","PUSCPSN",4),
+			("0909",1,"09:00","10:00","xUxCxSx",2),
+			("9435",4,"18:00","18:45","xUxCxSx",5);
+
+INSERT INTO Termin(id_termina, datum_odrzavanja, id_treninga)
+	VALUES  ();
+
+INSERT INTO Rezervacija(id_rezervacije, id_korisnika, id_termina, oznaka_reda_kolone, datum)
+	VALUES  ();
