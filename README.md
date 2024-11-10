@@ -1,2 +1,2 @@
 # Teretana Osnove Programiranja Projekat
- Teretana aplikacija sa Custom Tkinter-om i SQLite-om
+ Teretana aplikacija sa CustomTkinter-om i SQLite-om
