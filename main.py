@@ -5,6 +5,7 @@ import winLogin
 import winSignup
 import winMain
 
+
 #queries.restartuj_bazu()
 
 window=CTk()

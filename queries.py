@@ -8,7 +8,7 @@ cursor=connection.cursor()
 
 
 def executeScriptsFromFile(filename):
-    file = open(filename, 'r')
+    file = open(filename, 'r', encoding='utf-8')
     sqlFile = file.read()
     file.close()
 

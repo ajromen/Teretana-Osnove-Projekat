@@ -152,6 +152,9 @@ class MainWindow:
         niz=["signup",self.username]
         self.vrati(niz)
 
+    def unisti_win_programi(self):
+        self.programi_window = None
+
     def napravi_win_programi(self):
-        self.programi_window=winProgrami.ProgramiWindow(self.window)
+        self.programi_window = winProgrami.ProgramiWindow(self.window, self)
         self.programi_window.start()
