@@ -16,23 +16,27 @@ class ProgramiWindow:
         self.current_canvas = None
 
     def start(self):
-        self.current_canvas = Canvas(self.window, bg="#04050C", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
+        self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
         self.current_canvas.place(x=230, y=0)
+        
+        
+        self.create_button("./src/img/Widget/btnExit.png",812,9,33,33,self.switch_back_to_main)# EXit dugme
+        self.create_button("./src/img/Widget/btnSearch.png",358,79,33,33,self.search_programs)
+        
+        self.imgsearchPozadiga = PhotoImage(file="./src/img/Widget/searchPozadina.png")
+        self.current_canvas.create_image(23, 79, image=self.imgsearchPozadiga, anchor='nw')
+        
+        self.tabelaPozadina = PhotoImage(file="./src/img/Widget/tabelaPozadina.png")
+        self.current_canvas.create_image(23, 126, image=self.tabelaPozadina, anchor='nw')
+        
+        
 
-        #self.imgBackground = PhotoImage(file="src/img/Main/imgPozadinaPrazna.png")
-        #self.current_canvas.create_image(0, 0, anchor="nw", image=self.imgBackground)
-
-        self.create_table()
-        self.create_search_bar()
-        self.create_back_button()
-
-    def create_back_button(self):
-        back_button = Button(self.current_canvas, text="Back", command=self.switch_back_to_main)
-        back_button.place(x=35, y=50, width=80, height=30)
+        #self.create_table()
+        #self.create_search_bar()
         
     def create_button(self, image_path, x, y, width, height, command):
         image = PhotoImage(file=image_path)
-        button = Button(
+        button = Button(self.current_canvas,
             image=image, borderwidth=0, highlightthickness=0, command=command, relief="flat"
         )
         button.image = image  
@@ -46,14 +50,14 @@ class ProgramiWindow:
 
     def create_search_bar(self):
         self.search_var = StringVar()
-        search_entry = Entry(self.current_canvas, textvariable=self.search_var, font=("Inter", 12), bg="#1A1B20", fg="#FFFFFF")
+        search_entry = Entry(self.current_canvas, textvariable=self.search_var, font=("Inter", 12), bg="#1A1B20", fg="#FFFFFF",border=0)
         search_entry.place(x=35, y=50, width=300, height=30)
 
         search_button = Button(self.current_canvas, text="Search", command=self.search_programs)
         search_button.place(x=350, y=50, width=80, height=30)
 
     def create_table(self):
-        self.current_canvas.create_rectangle(35, 100, 825, 500, fill="#000000", outline="#04050C")
+        self.current_canvas.create_rectangle(23, 126, 806, 398, fill="#000000", outline="#04050C")
 
         columns = ("id_programa", "naziv", "id_vrste_treninga", "trajanje", "id_instruktora", "potreban_paket", "opis")
         self.table = ttk.Treeview(self.current_canvas, columns=columns, show="headings", height=18)

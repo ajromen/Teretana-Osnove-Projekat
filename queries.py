@@ -1,8 +1,10 @@
 import datetime
+import os
 import random
 import sqlite3
 import helperFunctions
 import re
+
 connection=sqlite3.connect("Teretana.db")
 cursor=connection.cursor()
 
