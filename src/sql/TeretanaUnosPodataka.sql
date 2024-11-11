@@ -34,10 +34,10 @@ INSERT INTO Vrste_treninga(id_vrste_treninga, naziv)
 
 INSERT INTO Program(id_programa, naziv, id_vrste_treninga, trajanje, id_instruktora, potreban_paket, opis)
 	VALUES  (1,"Mršavljenje uz Momira", 1, 90, "momir", 0,"Smršaćeš."),
-			(2,"Izvajajte telo uz Ljubinku", 2, 60, "ljuba", 0, NULL),
-			(3,"Fontana Mladosti - Milovan", 4, 30, "milovan", 1, NULL),
-			(4,"Milica do pobede", 5, 45, "milica", 1, NULL),
-			(5,"Od mama za mame - Momir", 6, 45, "milica", 1, NULL);
+			(2,"Izvajajte telo uz Ljubinku", 2, 60, "ljuba", 0, ""),
+			(3,"Fontana Mladosti - Milovan", 4, 30, "milovan", 1, ""),
+			(4,"Milica do pobede", 5, 45, "milica", 1, ""),
+			(5,"Od mama za mame - Momir", 6, 45, "milica", 1, "");
 
 
 

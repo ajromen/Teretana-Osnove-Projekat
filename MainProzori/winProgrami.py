@@ -32,8 +32,19 @@ class ProgramiWindow:
         self.current_canvas.create_image(23, 102, image=self.tabelaPozadina, anchor='nw')
         
         self.create_entry_search()
+        
+        self.kriterijumi=["Šifra", "Naziv", "Vrsta treninga", "Trajanje", "Instruktor", "Potreban paket", "Opis"]
+        self.kriterijumiMap={
+            "Šifra" : "id_programa",
+            "Naziv" : "naziv_programa",
+            "Vrsta treninga" : "naziv_vrste_treninga",
+            "Trajanje" : "trajanje",
+            "Instruktor" : "instruktor_ime",
+            "Potreban paket" : "potreban_paket",
+            "Opis" : "opis"
+        }
         self.current_canvas.create_text(450,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch=ctk.CTkComboBox(self.current_canvas,width=148,height=33,corner_radius=5,border_width=0, values=["Option 1", "Option 2", "Option 3"],fg_color="#080A17",dropdown_fg_color="#080A17",button_color="#080A17")
+        self.cmbbxSearch=ctk.CTkComboBox(self.current_canvas,width=148,height=33,corner_radius=5,border_width=0, values=self.kriterijumi,fg_color="#080A17",dropdown_fg_color="#080A17",button_color="#080A17")
         self.cmbbxSearch.place(x=524,y=55)
         
         self.create_table()
@@ -46,6 +57,7 @@ class ProgramiWindow:
         self.entrySearch.bind("<FocusOut>", self.on_focus_out)
         self.entrySearch.configure(fg_color="#080A17")
         self.entrySearch.place(x=28, y=59)
+        self.entrySearch.bind("<Return>", self.search_programs)
 
         
     def create_button(self, image_path, x, y, width, height, command):
@@ -72,14 +84,6 @@ class ProgramiWindow:
             self.current_canvas.destroy()
         self.main_window.unisti_win_programi()
 
-    def create_search_bar(self):
-        self.search_var = StringVar()
-        search_entry = Entry(self.current_canvas, textvariable=self.search_var, font=("Inter", 12), bg="#1A1B20", fg="#FFFFFF",border=0)
-        search_entry.place(x=35, y=50, width=300, height=30)
-
-        search_button = Button(self.current_canvas, text="Search", command=self.search_programs)
-        search_button.place(x=350, y=50, width=80, height=30)
-
     def create_table(self):
         style = ttk.Style()
     
@@ -100,36 +104,102 @@ class ProgramiWindow:
                             relief="flat")
         style.map("Treeview.Heading",
                       background=[('active', '#3484F0')])
-        columns = ("id_programa", "naziv", "id_vrste_treninga", "trajanje", "id_instruktora", "potreban_paket", "opis")
+        columns = ("šifra", "naziv", "vrsta treninga", "trajanje", "instruktor", "potreban paket", "opis")
         self.table = ttk.Treeview(self.current_canvas, columns=columns, show="headings", height=18)
 
         for col in columns:
             self.table.heading(col, text=col.capitalize())
             self.table.column(col, anchor="center", width=120)
+            
+        
+        self.table.column("instruktor", width=50)
+        self.table.column("trajanje", width=30)
+        self.table.column("potreban paket", width=50)
+        self.table.column("opis", width=50)
+        self.table.column("šifra", width=25)
 
-        self.populate_table()
+        self.popuni_tabelu()
 
         self.table.place(x=21, y=112, width=787, height=401)
 
-    def populate_table(self):
+    def popuni_tabelu(self):
         for row in self.table.get_children():
             self.table.delete(row)
+                
         
-        queries.cursor.execute("SELECT * FROM Program")
+        queries.cursor.execute('''SELECT 
+                                    Program.id_programa,
+                                    Program.naziv AS naziv_programa,
+                                    Vrste_treninga.naziv AS naziv_vrste_treninga,
+                                    Program.trajanje || ' min' AS trajanje,
+                                    Korisnici.ime AS instruktor_ime,
+                                    CASE 
+                                        WHEN Program.potreban_paket = 0 THEN 'Standard'
+                                        WHEN Program.potreban_paket = 1 THEN 'Premium'
+                                    END AS potreban_paket,
+                                    Program.opis
+                                FROM 
+                                    Program
+                                JOIN 
+                                    Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
+                                JOIN 
+                                    Korisnici ON Program.id_instruktora = Korisnici.username;''')
         rows = queries.cursor.fetchall()
         for row in rows:
             self.table.insert("", "end", values=row)
 
-    def search_programs(self):
+    def search_programs(self,event=None):
         search_term = self.search_var.get().strip().lower()
+        kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
+
+        if not kriterijum:
+            helperFunctions.pisi_eror("Nije moguće pretražiti nepostijeći kriterijum.")
+            return
+
         for row in self.table.get_children():
             self.table.delete(row)
+            
+        if search_term =="" or search_term=="Pretraži":
+            search_term=""
+        else:
+            if search_term in "premium":
+                search_term = 1
+            elif search_term in "standard":
+                search_term = 0  
+            else:
+                pass
 
-        queries.cursor.execute("SELECT * FROM Program WHERE id_programa LIKE ?", ('%' + search_term + '%',))
+
+        # Corrected SQL query with fully qualified column names
+        query = '''SELECT 
+                        Program.id_programa,
+                        Program.naziv AS naziv_programa,
+                        Vrste_treninga.naziv AS naziv_vrste_treninga,
+                        Program.trajanje || ' min' AS trajanje,
+                        Korisnici.ime AS instruktor_ime,
+                        CASE 
+                            WHEN Program.potreban_paket = 0 THEN 'Standard'
+                            WHEN Program.potreban_paket = 1 THEN 'Premium'
+                        END AS potreban_paket,
+                        Program.opis
+                    FROM 
+                        Program
+                    JOIN 
+                        Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
+                    JOIN 
+                        Korisnici ON Program.id_instruktora = Korisnici.username
+                    WHERE 
+                        {} LIKE ?'''.format(kriterijum)  # Insert the column for searching
+
+        # Execute the query with the parameterized search term
+        queries.cursor.execute(query, ('%' + str(search_term) + '%',))
         rows = queries.cursor.fetchall()
 
+        # Insert fetched rows into the table
         for row in rows:
             self.table.insert("", "end", values=row)
+
+
 
     def create_entry(self, x, y, placeholder, on_focus_in, on_focus_out, show=''):
         entry = Entry(
