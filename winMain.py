@@ -137,16 +137,7 @@ class MainWindow:
         button.place(x=x, y=y, width=width, height=height)
         return button
     
-    def create_entry(self, x, y, placeholder, on_focus_in, on_focus_out, show=''):
-        entry = Entry(
-            bd=0, bg="#1A1B20", fg="#FFFFFF", highlightthickness=0, show=show
-        )
-        entry.place(x=x, y=y, width=303.0, height=20.0)
-        entry.insert(0, placeholder)
-        entry.configure(foreground="gray")
-        entry.bind("<FocusIn>", on_focus_in)
-        entry.bind("<FocusOut>", on_focus_out)
-        return entry
+    
     
     def registrujSe(self):
         niz=["signup",self.username]

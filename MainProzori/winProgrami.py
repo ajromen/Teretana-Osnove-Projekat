@@ -7,6 +7,7 @@ import sqlite3
 import os
 import ctypes
 import queries
+import helperFunctions
 
 
 class ProgramiWindow:
@@ -21,18 +22,31 @@ class ProgramiWindow:
         
         
         self.create_button("./src/img/Widget/btnExit.png",812,9,33,33,self.switch_back_to_main)# EXit dugme
-        self.create_button("./src/img/Widget/btnSearch.png",358,79,33,33,self.search_programs)
+        self.create_button("./src/img/Widget/btnSearch.png",358,53,33,33,self.search_programs) # Search dugme
+        self.create_button("./src/img/Widget/btnFilteri.png",687,55,142,33,lambda: helperFunctions.pisi_eror("caouuu")) # Filteri Dugme
         
         self.imgsearchPozadiga = PhotoImage(file="./src/img/Widget/searchPozadina.png")
-        self.current_canvas.create_image(23, 79, image=self.imgsearchPozadiga, anchor='nw')
+        self.current_canvas.create_image(23, 53, image=self.imgsearchPozadiga, anchor='nw')
         
         self.tabelaPozadina = PhotoImage(file="./src/img/Widget/tabelaPozadina.png")
-        self.current_canvas.create_image(23, 126, image=self.tabelaPozadina, anchor='nw')
+        self.current_canvas.create_image(23, 102, image=self.tabelaPozadina, anchor='nw')
         
+        self.create_entry_search()
+        self.current_canvas.create_text(450,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
+        self.cmbbxSearch=ctk.CTkComboBox(self.current_canvas,width=148,height=33,corner_radius=5,border_width=0, values=["Option 1", "Option 2", "Option 3"],fg_color="#080A17",dropdown_fg_color="#080A17",button_color="#080A17")
+        self.cmbbxSearch.place(x=524,y=55)
         
+        self.create_table()
+        
+    def create_entry_search(self):
+        self.search_var = StringVar()
+        self.entrySearch = ctk.CTkEntry(self.current_canvas, width=303.0, height=20.0, corner_radius=0, fg_color="#080A17",textvariable=self.search_var,font=("Inter", 12),border_width=0)
+        self.entrySearch.insert(0, "Pretraži")
+        self.entrySearch.bind("<FocusIn>", self.on_entry_click)
+        self.entrySearch.bind("<FocusOut>", self.on_focus_out)
+        self.entrySearch.configure(fg_color="#080A17")
+        self.entrySearch.place(x=28, y=59)
 
-        #self.create_table()
-        #self.create_search_bar()
         
     def create_button(self, image_path, x, y, width, height, command):
         image = PhotoImage(file=image_path)
@@ -42,6 +56,16 @@ class ProgramiWindow:
         button.image = image  
         button.place(x=x, y=y, width=width, height=height)
         return button
+    
+    def on_entry_click(self,event):
+        if self.entrySearch.get() == "Pretraži":
+            self.entrySearch.delete(0, END)
+            self.entrySearch.configure(text_color="white")
+
+    def on_focus_out(self,event):
+        if self.entrySearch.get() == "":
+            self.entrySearch.insert(0, "Pretraži")
+            self.entrySearch.configure(text_color="gray")
     
     def switch_back_to_main(self):
         if self.current_canvas:
@@ -57,8 +81,25 @@ class ProgramiWindow:
         search_button.place(x=350, y=50, width=80, height=30)
 
     def create_table(self):
-        self.current_canvas.create_rectangle(23, 126, 806, 398, fill="#000000", outline="#04050C")
-
+        style = ttk.Style()
+    
+        style.theme_use("default")
+    
+        style.configure("Treeview",
+                            background="#2a2d2e",
+                            foreground="white",
+                            rowheight=25,
+                            fieldbackground="#343638",
+                            bordercolor="#343638",
+                            borderwidth=0)
+        style.map('Treeview', background=[('selected', '#22559b')])
+    
+        style.configure("Treeview.Heading",
+                            background="#565b5e",
+                            foreground="white",
+                            relief="flat")
+        style.map("Treeview.Heading",
+                      background=[('active', '#3484F0')])
         columns = ("id_programa", "naziv", "id_vrste_treninga", "trajanje", "id_instruktora", "potreban_paket", "opis")
         self.table = ttk.Treeview(self.current_canvas, columns=columns, show="headings", height=18)
 
@@ -68,7 +109,7 @@ class ProgramiWindow:
 
         self.populate_table()
 
-        self.table.place(x=35, y=100, width=790, height=400)
+        self.table.place(x=21, y=112, width=787, height=401)
 
     def populate_table(self):
         for row in self.table.get_children():
