@@ -23,7 +23,10 @@ class ProgramiWindow:
         
         self.create_button("./src/img/Widget/btnExit.png",812,9,33,33,self.switch_back_to_main)# EXit dugme
         self.create_button("./src/img/Widget/btnSearch.png",358,53,33,33,self.search_programs) # Search dugme
-        self.create_button("./src/img/Widget/btnFilteri.png",687,55,142,33,lambda: helperFunctions.pisi_eror("caouuu")) # Filteri Dugme
+        self.create_button("./src/img/Widget/btnFilteri.png",687,55,142,33,self.winProgramiFilteri) # Filteri Dugme
+        self.create_button("./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: helperFunctions.pisi_eror("Dodaj")) # Dodaj Dugme
+        self.create_button("./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: helperFunctions.pisi_eror("IZmeni")) # Izmeni Dugme
+        self.create_button("./src/img/Widget/btnObrisi.png",577,543,252,40,lambda: helperFunctions.pisi_eror("Obrisi")) # Obrisi Dugme
         
         self.imgsearchPozadiga = PhotoImage(file="./src/img/Widget/searchPozadina.png")
         self.current_canvas.create_image(23, 53, image=self.imgsearchPozadiga, anchor='nw')
@@ -90,16 +93,16 @@ class ProgramiWindow:
         style.theme_use("default")
     
         style.configure("Treeview",
-                            background="#2a2d2e",
+                            background="#121633",
                             foreground="white",
                             rowheight=25,
-                            fieldbackground="#343638",
+                            fieldbackground="#080A17",
                             bordercolor="#343638",
                             borderwidth=0)
-        style.map('Treeview', background=[('selected', '#22559b')])
+        style.map('Treeview', background=[('selected', '#3e4cb3')])
     
         style.configure("Treeview.Heading",
-                            background="#565b5e",
+                            background="#2d3680",
                             foreground="white",
                             relief="flat")
         style.map("Treeview.Heading",
@@ -120,7 +123,7 @@ class ProgramiWindow:
 
         self.popuni_tabelu()
 
-        self.table.place(x=21, y=112, width=787, height=401)
+        self.table.place(x=31, y=112, width=787, height=401)
 
     def popuni_tabelu(self):
         for row in self.table.get_children():
@@ -211,3 +214,25 @@ class ProgramiWindow:
         entry.bind("<FocusIn>", on_focus_in)
         entry.bind("<FocusOut>", on_focus_out)
         return entry
+
+    def winProgramiFilteri(self):
+        self.filteri_window = ctk.CTkToplevel()
+        self.filteri_window.title("Filteri")
+
+        self.filteri_window.update_idletasks()
+        screen_width = self.filteri_window.winfo_screenwidth()
+        screen_height = self.filteri_window.winfo_screenheight()
+        window_width = 343
+        window_height = 346
+        x = (screen_width // 2) - (window_width // 2)
+        y = (screen_height // 2) - (window_height // 2)
+        self.filteri_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+        self.filteri_window.focus()
+        self.filteri_window.grab_set()
+
+        lblSifra = ctk.CTkLabel(self.filteri_window, text="Šifra", fg_color="red")
+        lblSifra.place(x=64,y=39)
+
+        close_button = ctk.CTkButton(self.filteri_window, text="Zatvori", command=self.filteri_window.destroy)
+        close_button.pack(pady=10)
