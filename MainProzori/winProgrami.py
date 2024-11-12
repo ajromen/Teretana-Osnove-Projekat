@@ -18,8 +18,7 @@ class ProgramiWindow:
 
     def start(self):
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
-        self.current_canvas.place(x=230, y=0)
-        
+        self.current_canvas.place(x=230, y=0)        
         
         self.create_button("./src/img/Widget/btnExit.png",812,9,33,33,self.switch_back_to_main)# EXit dugme
         self.create_button("./src/img/Widget/btnSearch.png",358,53,33,33,self.search_programs) # Search dugme
@@ -47,10 +46,13 @@ class ProgramiWindow:
             "Opis" : "opis"
         }
         self.current_canvas.create_text(450,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch=ctk.CTkComboBox(self.current_canvas,width=148,height=33,corner_radius=5,border_width=0, values=self.kriterijumi,fg_color="#080A17",dropdown_fg_color="#080A17",button_color="#080A17")
+        self.cmbbxSearch=self.create_comboBox(self.current_canvas,self.kriterijumi)
         self.cmbbxSearch.place(x=524,y=55)
         
         self.create_table()
+        
+    def create_comboBox(self,canvas,values):
+        return ctk.CTkComboBox(canvas,width=148,height=33,corner_radius=5,border_width=0, values=values,fg_color="#080A17",dropdown_fg_color="#080A17",button_color="#0D1026")
         
     def create_entry_search(self):
         self.search_var = StringVar()
@@ -107,12 +109,12 @@ class ProgramiWindow:
                             relief="flat")
         style.map("Treeview.Heading",
                       background=[('active', '#3484F0')])
-        columns = ("šifra", "naziv", "vrsta treninga", "trajanje", "instruktor", "potreban paket", "opis")
-        self.table = ttk.Treeview(self.current_canvas, columns=columns, show="headings", height=18)
+        kolone = ("šifra", "naziv", "vrsta treninga", "trajanje", "instruktor", "potreban paket", "opis")
+        self.table = ttk.Treeview(self.current_canvas, columns=kolone, show="headings", height=18)
 
-        for col in columns:
-            self.table.heading(col, text=col.capitalize())
-            self.table.column(col, anchor="center", width=120)
+        for kolona in kolone:
+            self.table.heading(kolona, text=kolona.capitalize())
+            self.table.column(kolona, anchor="center", width=120)
             
         
         self.table.column("instruktor", width=50)
@@ -126,83 +128,39 @@ class ProgramiWindow:
         self.table.place(x=31, y=112, width=787, height=401)
 
     def popuni_tabelu(self):
-        for row in self.table.get_children():
-            self.table.delete(row)
+        for red in self.table.get_children():
+            self.table.delete(red)
                 
+        podaci=queries.izlistaj_programe()
         
-        queries.cursor.execute('''SELECT 
-                                    Program.id_programa,
-                                    Program.naziv AS naziv_programa,
-                                    Vrste_treninga.naziv AS naziv_vrste_treninga,
-                                    Program.trajanje || ' min' AS trajanje,
-                                    Korisnici.ime AS instruktor_ime,
-                                    CASE 
-                                        WHEN Program.potreban_paket = 0 THEN 'Standard'
-                                        WHEN Program.potreban_paket = 1 THEN 'Premium'
-                                    END AS potreban_paket,
-                                    Program.opis
-                                FROM 
-                                    Program
-                                JOIN 
-                                    Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
-                                JOIN 
-                                    Korisnici ON Program.id_instruktora = Korisnici.username;''')
-        rows = queries.cursor.fetchall()
-        for row in rows:
-            self.table.insert("", "end", values=row)
+        for podatak in podaci:
+            self.table.insert("", "end", values=podatak)
 
     def search_programs(self,event=None):
-        search_term = self.search_var.get().strip().lower()
+        pretraga = self.search_var.get().strip().lower()
         kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
 
         if not kriterijum:
             helperFunctions.pisi_eror("Nije moguće pretražiti nepostijeći kriterijum.")
             return
 
-        for row in self.table.get_children():
-            self.table.delete(row)
+        for red in self.table.get_children():
+            self.table.delete(red)
             
-        if search_term =="" or search_term=="Pretraži":
-            search_term=""
+        if pretraga =="" or pretraga=="pretraži":
+            pretraga=""
         else:
-            if search_term in "premium":
-                search_term = 1
-            elif search_term in "standard":
-                search_term = 0  
+            if pretraga in "premium":
+                pretraga = 1
+            elif pretraga in "standard":
+                pretraga = 0  
             else:
                 pass
 
+        podaci=queries.izlistaj_programe(pretraga=pretraga,kriterijum=kriterijum)
 
-        # Corrected SQL query with fully qualified column names
-        query = '''SELECT 
-                        Program.id_programa,
-                        Program.naziv AS naziv_programa,
-                        Vrste_treninga.naziv AS naziv_vrste_treninga,
-                        Program.trajanje || ' min' AS trajanje,
-                        Korisnici.ime AS instruktor_ime,
-                        CASE 
-                            WHEN Program.potreban_paket = 0 THEN 'Standard'
-                            WHEN Program.potreban_paket = 1 THEN 'Premium'
-                        END AS potreban_paket,
-                        Program.opis
-                    FROM 
-                        Program
-                    JOIN 
-                        Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
-                    JOIN 
-                        Korisnici ON Program.id_instruktora = Korisnici.username
-                    WHERE 
-                        {} LIKE ?'''.format(kriterijum)  # Insert the column for searching
-
-        # Execute the query with the parameterized search term
-        queries.cursor.execute(query, ('%' + str(search_term) + '%',))
-        rows = queries.cursor.fetchall()
-
-        # Insert fetched rows into the table
-        for row in rows:
-            self.table.insert("", "end", values=row)
-
-
+        for podatak in podaci:
+            self.table.insert("", "end", values=podatak)
 
     def create_entry(self, x, y, placeholder, on_focus_in, on_focus_out, show=''):
         entry = Entry(
@@ -216,23 +174,31 @@ class ProgramiWindow:
         return entry
 
     def winProgramiFilteri(self):
-        self.filteri_window = ctk.CTkToplevel()
+        self.filteri_window = ctk.CTkToplevel(fg_color='#000000')
         self.filteri_window.title("Filteri")
+        self.filteri_window.geometry("343x382")
+        self.filteri_window.resizable(False,False)
+        helperFunctions.centerWindow(self.filteri_window)
 
-        self.filteri_window.update_idletasks()
-        screen_width = self.filteri_window.winfo_screenwidth()
-        screen_height = self.filteri_window.winfo_screenheight()
-        window_width = 343
-        window_height = 346
-        x = (screen_width // 2) - (window_width // 2)
-        y = (screen_height // 2) - (window_height // 2)
-        self.filteri_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+        cmbbxSifre=self.napravi_filter_cmbbx("Šifra:",64,39,172,31,"SELECT id_programa FROM Program") #Kombo box za id
+        cmbbxNaziv=self.napravi_filter_cmbbx("Naziv:",56,78,172,72,"SELECT DISTINCT naziv FROM Program") #Kombo box za naziv
 
-        self.filteri_window.focus()
-        self.filteri_window.grab_set()
-
-        lblSifra = ctk.CTkLabel(self.filteri_window, text="Šifra", fg_color="red")
-        lblSifra.place(x=64,y=39)
-
-        close_button = ctk.CTkButton(self.filteri_window, text="Zatvori", command=self.filteri_window.destroy)
-        close_button.pack(pady=10)
+        btnSacuvaj = ctk.CTkButton(self.filteri_window, text="Sačuvaj", command=self.filteri_window.destroy)
+        btnSacuvaj.place(x=102,y=323)
+        self.imgObrisiFiltere = PhotoImage(file="./src/img/Widget/btnObrisiFiltere.png")
+        btnObrisiFiltere = Button(self.filteri_window,image=self.imgObrisiFiltere, borderwidth=0, highlightthickness=0, command=self.kraj_filteri, relief="flat")
+        btnObrisiFiltere.place(x=135,y=357,width=72,height=17)
+        
+    def napravi_filter_cmbbx(self,text,labelX,labelY,comboX,comboY,query):
+        lblSifra = ctk.CTkLabel(self.filteri_window, text=text, font=("Inter",15 * -1),anchor='nw')
+        lblSifra.place(x=labelX,y=labelY)
+        queries.cursor.execute(query)
+        listaSifre=queries.cursor.fetchall()
+        lista=[]
+        for sifra in listaSifre:
+            lista.append(str(sifra[0]))
+        cmbbx=self.create_comboBox(self.filteri_window, values=lista)
+        cmbbx.place(x=comboX,y=comboY) 
+        return cmbbx
+    def kraj_filteri(self):
+        pass

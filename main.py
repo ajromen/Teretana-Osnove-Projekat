@@ -8,11 +8,6 @@ import winMain
 
 #queries.restartuj_bazu()
 
-window=CTk()
-winLogin=winLogin.LoginWindow(window)
-winSignup=winSignup.SignupWindow(window)
-winMain=winMain.MainWindow(window)
-
 def login_startup_loop(ekran,user=''):
     return_value=ekran
     while(1):
@@ -37,6 +32,12 @@ def vozi(ekran,user=''):
 
 
 if __name__ == '__main__':
+    window=CTk()
+    
+    winLogin=winLogin.LoginWindow(window)
+    winSignup=winSignup.SignupWindow(window)
+    winMain=winMain.MainWindow(window)
+    
     staDaRadim="login"
     user=''
     lista=[0,0]
