@@ -12,9 +12,10 @@ from ctk_rangeslider import *
 
 
 class ProgramiWindow:
-    def __init__(self, window, main_window):
+    def __init__(self, window, main_window,uloga):
         self.window = window
         self.main_window=main_window
+        self.uloga=uloga
         self.current_canvas = None
         self.promenljive_filteri()
 
@@ -25,7 +26,7 @@ class ProgramiWindow:
         self.create_button("./src/img/Widget/btnExit.png",812,9,33,33,self.switch_back_to_main)# EXit dugme
         self.create_button("./src/img/Widget/btnSearch.png",358,53,33,33,self.search_programs) # Search dugme
         self.create_button("./src/img/Widget/btnFilteri.png",687,55,142,33,self.winProgramiFilteri) # Filteri Dugme
-        self.create_button("./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: helperFunctions.obavestenje("Dodaj")) # Dodaj Dugme
+        self.create_button("./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winProgrami_Dodaj()) # Dodaj Dugme
         self.create_button("./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winProgrami_Izmeni()) # Izmeni Dugme
         self.create_button("./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi_program) # Obrisi Dugme
         
@@ -261,10 +262,12 @@ class ProgramiWindow:
         lblSifra.place(x=labelX,y=labelY)
         queries.cursor.execute(query)
         listaSifre=queries.cursor.fetchall()
-        lista=[] if not specificni else ["SVE"]
+        lista=[] if specificni else ["SVE"]
         for sifra in listaSifre:
+            tekst=""
             for i in range(0,broj_kolona):
-                lista.append(str(sifra[i]))
+                tekst+=str(sifra[i])+" "
+            lista.append(tekst)
         cmbbx=self.create_comboBox(canvas, values=lista)
         cmbbx.place(x=comboX,y=comboY) 
         return cmbbx
@@ -276,38 +279,8 @@ class ProgramiWindow:
         self.trenutni_window = None
         self.popuni_tabelu()
 
-    def izlistaj_programe(self,kriterijum='id_programa',pretraga=""):
-        komanda=''' SELECT 
-                        Program.id_programa,
-                        Program.naziv AS naziv_programa,
-                        Vrste_treninga.naziv AS naziv_vrste_treninga,
-                        Program.trajanje || ' min' AS trajanje,
-                        Korisnici.ime AS instruktor_ime,
-                        CASE 
-                            WHEN Program.potreban_paket = 0 THEN 'Standard'
-                            WHEN Program.potreban_paket = 1 THEN 'Premium'
-                        END AS potreban_paket,
-                        Program.opis
-                    FROM 
-                        Program
-                    JOIN 
-                        Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
-                    JOIN 
-                        Korisnici ON Program.id_instruktora = Korisnici.username'''
-       
-        komanda += f''' WHERE {kriterijum} LIKE ? 
-                        AND id_programa LIKE ? 
-                        AND naziv_programa LIKE ? 
-                        AND naziv_vrste_treninga LIKE ?
-                        AND trajanje >= ?
-                        AND trajanje <= ?
-                        AND instruktor_ime LIKE ?'''
-        if(self.potrebanPaket==0):
-            komanda += "AND potreban_paket = 0"
-        queries.cursor.execute(komanda, ('%' + str(pretraga) + '%','%' + str(self.id_programa) + '%','%' + str(self.naziv) + '%','%' + str(self.naziv_vrste_treninga) + '%', self.trajanjeOd,self.trajanjeDo,'%' + str(self.instruktor) + '%',))
-       
-                                
-        return queries.cursor.fetchall()
+    def izlistaj_programe(self,kriterijum='id_programa',pretraga=""):                
+        return queries.izlistaj_programe(pretraga,kriterijum,self.potrebanPaket,self.id_programa,self.naziv,self.naziv_vrste_treninga,self.trajanjeOd,self.trajanjeDo,self.instruktor)
     
     def promenljive_filteri(self):
         queries.cursor.execute("SELECT MIN(trajanje), MAX(trajanje) FROM Program")
@@ -370,7 +343,7 @@ class ProgramiWindow:
             return
         
         slctd_data = self.table.item(slctd_item)
-        slctd_id = slctd_data["values"][0]
+        self.slctd_id = slctd_data["values"][0]
         slctd_naziv=slctd_data["values"][1]
         slctd_vrsta_treninga=slctd_data["values"][2]
         slctd_trajanje=str(slctd_data["values"][3]).split(" ")[0]
@@ -389,41 +362,139 @@ class ProgramiWindow:
         helperFunctions.centerWindow(self.trenutni_window)
 
        
-        self.cmbbxVrsteTreninga=self.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga",2,True) #Kombo box za naziv
-        self.cmbbxInstruktor=self.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1",3,True) #Kombo box za naziv
-        self.cmbbxVrsteTreninga.set(slctd_vrsta_treninga)
-        self.cmbbxInstruktor.set(slctd_trener)
-        
+        self.izmeni_cmbbxVrsteTreninga=self.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga",2,True) #Kombo box za naziv
+        self.izemni_cmbbxInstruktor=self.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1",3,True) #Kombo box za naziv
+        self.selektuj_pravi(self.izmeni_cmbbxVrsteTreninga,slctd_vrsta_treninga)
+        self.selektuj_pravi(self.izmeni_cmbbxVrsteTreninga,slctd_vrsta_treninga)
         
         lblPaket = ctk.CTkLabel(self.trenutni_window, text="Potreban Premium Paket:", font=("Inter",15 * -1),anchor='nw')
         lblPaket.place(x=60,y=280)
-        self.switchPaket=ctk.CTkSwitch(self.trenutni_window,width=43,height=24,text='')
-        self.switchPaket.place(x=252,y=278)
+        self.izmeni_switchPaket=ctk.CTkSwitch(self.trenutni_window,width=43,height=24,text='')
+        self.izmeni_switchPaket.place(x=252,y=278)
         
-        if (self.potrebanPaket): self.switchPaket.select() 
-        else: self.switchPaket.deselect()
+        if (self.potrebanPaket): self.izmeni_switchPaket.select() 
+        else: self.izmeni_switchPaket.deselect()
         
-        lblSifra = ctk.CTkLabel(self.trenutni_window, text="Šifra: "+str(slctd_id), font=("Inter",15 * -1),anchor='nw')
+
+        
+        lblSifra = ctk.CTkLabel(self.trenutni_window, text="Šifra: "+str(self.slctd_id), font=("Inter",15 * -1),anchor='nw')
         lblSifra.place(x=142,y=29)
         
         lblNaziv = ctk.CTkLabel(self.trenutni_window, text="Naziv:", font=("Inter",15 * -1),anchor='nw')
-        lblNaziv.place(x=142,y=29)
-        entryNaziv = self.create_entry(self.trenutni_window,141,32,width=179,height=23,placeholder=slctd_naziv,belo=True)
+        lblNaziv.place(x=58,y=79)
+        self.izmeni_entryNaziv = self.create_entry(self.trenutni_window,141,74,width=179,height=23,placeholder=slctd_naziv,belo=True)
         
         lblTrajanje = ctk.CTkLabel(self.trenutni_window, text="Trajanje:", font=("Inter",15 * -1),anchor='nw')
         lblTrajanje.place(x=46,y=169)
-        entryTrajanje = self.create_entry(self.trenutni_window,141,168,width=179,height=23,placeholder=slctd_trajanje,belo=True)
+        self.izmeni_entryTrajanje = self.create_entry(self.trenutni_window,141,168,width=179,height=23,placeholder=slctd_trajanje,belo=True)
+        
+        
         
         lblOpis = ctk.CTkLabel(self.trenutni_window, text="Opis:", font=("Inter",15 * -1),anchor='nw')
         lblOpis.place(x=27,y=308)
         
-        txtOpis=ctk.StringVar(value=slctd_opis)
-        txtbxOpis = ctk.CTkTextbox(self.trenutni_window,294,80,4,textvariable=txtOpis,fg_color="#080A17")
-        txtbxOpis.place(x=26,y=334)
         
-        btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Sačuvaj", command=self.trenutni_window.destroy)
+        self.izmeni_txtbxOpis = ctk.CTkTextbox(self.trenutni_window,294,80,4,fg_color="#080A17")
+        self.izmeni_txtbxOpis.place(x=26,y=334)
+        self.izmeni_txtbxOpis.insert("0.0", slctd_opis)
+        
+        btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Izmeni", command=self.azuriraj_program)
         btnSacuvaj.place(x=102,y=424)
         self.imgOtkazi = PhotoImage(file="./src/img/Widget/btnOtkazi.png")
         btnObrisiFiltere = Button(self.trenutni_window,image=self.imgOtkazi, borderwidth=0, highlightthickness=0, relief="flat",command=self.trenutni_window.destroy) 
         btnObrisiFiltere.place(x=136,y=461,width=72,height=17)
         
+    def azuriraj_program(self):
+        if(not helperFunctions.pitaj(title="Izmeni program",poruka="Da li ste sigurni da želite da izmenite program?")):return
+        naziv=self.izmeni_entryNaziv.get()
+        vrsta_treninga=self.izmeni_cmbbxVrsteTreninga.get()
+        trajanje=self.izmeni_entryTrajanje.get()
+        instruktor=self.izemni_cmbbxInstruktor.get()
+        paket=self.izmeni_switchPaket.get()
+        opis=self.izmeni_txtbxOpis.get("0.0", END)
+        if(naziv==""):helperFunctions.obavestenje("Naziv ne sme biti prazan.")
+        if(vrsta_treninga==""):helperFunctions.obavestenje("Vrsta treninga ne sme biti prazana.")
+        if(not trajanje.isdigit()):helperFunctions.obavestenje("Trajanje mora biti broj.")
+        if(instruktor==""):helperFunctions.obavestenje("Instruktor polje ne sme biti prazno.")
+        instruktor=instruktor.split(" ")[0]
+        vrsta_treninga=vrsta_treninga.split(" ")[0]
+        
+        if(queries.azuriraj_program(self.slctd_id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
+        helperFunctions.obavestenje(title="Izmena programa", poruka="Uspešno izmenjen program.")
+        
+        self.trenutni_window.destroy()
+        self.trenutni_window=None
+        
+    def selektuj_pravi(self,komboBox,kriterijum):
+        vrednosti=komboBox.cget('values')
+        for vrednost in vrednosti:
+            if kriterijum in vrednost:
+                komboBox.set(vrednost)
+
+    def winProgrami_Dodaj(self):
+        self.trenutni_window = ctk.CTkToplevel(fg_color='#000000')
+        self.trenutni_window.title("Dodaj")
+        self.trenutni_window.geometry("343x485")
+        self.trenutni_window.resizable(False,False)
+        helperFunctions.centerWindow(self.trenutni_window)
+
+       
+        self.dodaj_cmbbxVrsteTreninga=self.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga",2,True) #Kombo box za naziv
+        self.izemni_cmbbxInstruktor=self.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1",3,True) #Kombo box za naziv
+        
+        lblPaket = ctk.CTkLabel(self.trenutni_window, text="Potreban Premium Paket:", font=("Inter",15 * -1),anchor='nw')
+        lblPaket.place(x=60,y=280)
+        self.dodaj_switchPaket=ctk.CTkSwitch(self.trenutni_window,width=43,height=24,text='')
+        self.dodaj_switchPaket.place(x=252,y=278)
+        
+        if (self.potrebanPaket): self.dodaj_switchPaket.select() 
+        else: self.dodaj_switchPaket.deselect()
+        
+
+        
+        lblSifra = ctk.CTkLabel(self.trenutni_window, text="Šifra:", font=("Inter",15 * -1),anchor='nw')
+        lblSifra.place(x=58,y=31)
+        self.dodaj_entrySifra = self.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True)
+        
+        lblNaziv = ctk.CTkLabel(self.trenutni_window, text="Naziv:", font=("Inter",15 * -1),anchor='nw')
+        lblNaziv.place(x=58,y=79)
+        self.dodaj_entryNaziv = self.create_entry(self.trenutni_window,141,74,width=179,height=23,belo=True)
+        
+        lblTrajanje = ctk.CTkLabel(self.trenutni_window, text="Trajanje:", font=("Inter",15 * -1),anchor='nw')
+        lblTrajanje.place(x=46,y=169)
+        self.dodaj_entryTrajanje = self.create_entry(self.trenutni_window,141,168,width=179,height=23,belo=True)
+        
+        lblOpis = ctk.CTkLabel(self.trenutni_window, text="Opis:", font=("Inter",15 * -1),anchor='nw')
+        lblOpis.place(x=27,y=308)
+        
+        
+        self.dodaj_txtbxOpis = ctk.CTkTextbox(self.trenutni_window,294,80,4,fg_color="#080A17")
+        self.dodaj_txtbxOpis.place(x=26,y=334)
+        
+        btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Izmeni", command=self.napravi_program)
+        btnSacuvaj.place(x=102,y=424)
+        self.imgOtkazi = PhotoImage(file="./src/img/Widget/btnOtkazi.png")
+        btnObrisiFiltere = Button(self.trenutni_window,image=self.imgOtkazi, borderwidth=0, highlightthickness=0, relief="flat",command=self.trenutni_window.destroy) 
+        btnObrisiFiltere.place(x=136,y=461,width=72,height=17)
+        
+    def napravi_program(self):
+        id=self.dodaj_entrySifra.get()
+        naziv=self.dodaj_entryNaziv.get()
+        vrsta_treninga=self.dodaj_cmbbxVrsteTreninga.get()
+        trajanje=self.dodaj_entryTrajanje.get()
+        instruktor=self.izemni_cmbbxInstruktor.get()
+        paket=self.dodaj_switchPaket.get()
+        opis=self.dodaj_txtbxOpis.get("0.0", END)
+        if(naziv==""):helperFunctions.obavestenje("Naziv ne sme biti prazan.")
+        if(id=="" or (not id.isdigit())):helperFunctions.obavestenje("Šifra ne sme biti prazna ili sadržati slova.")
+        if(vrsta_treninga==""):helperFunctions.obavestenje("Vrsta treninga ne sme biti prazna.")
+        if(not trajanje.isdigit()):helperFunctions.obavestenje("Trajanje mora biti broj.")
+        if(instruktor==""):helperFunctions.obavestenje("Instruktor polje ne sme biti prazno.")
+        instruktor=instruktor.split(" ")[0]
+        vrsta_treninga=vrsta_treninga.split(" ")[0]
+        
+        if(queries.dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
+        helperFunctions.obavestenje(title="Dodaj program", poruka="Uspešno dodat program.")
+        
+        self.trenutni_window.destroy()
+        self.trenutni_window=None

@@ -51,6 +51,12 @@ def  restartuj_bazu():
 def obrisiKorisnika(username):
     if(username==""): return
     cursor.execute("DELETE FROM Korisnici WHERE username=?", (username,))
+    connection.commit()
+
+def obrisi_rezervaciju(id_rezervacije):
+    if(id_rezervacije==None): return
+    cursor.execute("DELETE FROM Rezervacija WHERE id_rezervacije=?", (id_rezervacije,))
+    connection.commit()
 
 def azurirajNalog(stariUsername,username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije):
     cursor.execute("SELECT * FROM Korisnici WHERE username=?",(stariUsername,))
@@ -74,3 +80,106 @@ def azurirajNalog(stariUsername,username,password,ime,prezime,uloga,status_clans
     else:
         return napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
     
+def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_vrste_treninga,trajanjeOd,trajanjeDo,instruktor):
+    komanda=''' SELECT 
+                        Program.id_programa,
+                        Program.naziv AS naziv_programa,
+                        Vrste_treninga.naziv AS naziv_vrste_treninga,
+                        Program.trajanje || ' min' AS trajanje,
+                        Korisnici.ime AS instruktor_ime,
+                        CASE 
+                            WHEN Program.potreban_paket = 0 THEN 'Standard'
+                            WHEN Program.potreban_paket = 1 THEN 'Premium'
+                        END AS potreban_paket,
+                        Program.opis
+                    FROM 
+                        Program
+                    JOIN 
+                        Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
+                    JOIN 
+                        Korisnici ON Program.id_instruktora = Korisnici.username'''
+       
+    komanda += f''' WHERE {kriterijum} LIKE ? 
+                        AND id_programa LIKE ? 
+                        AND naziv_programa LIKE ? 
+                        AND naziv_vrste_treninga LIKE ?
+                        AND trajanje >= ?
+                        AND trajanje <= ?
+                        AND instruktor_ime LIKE ?'''
+    if(potrebanPaket==0):
+        komanda += "AND potreban_paket = 0"
+    cursor.execute(komanda, ('%' + str(pretraga) + '%','%' + str(id_programa) + '%','%' + str(naziv) + '%','%' + str(naziv_vrste_treninga) + '%', trajanjeOd,trajanjeDo,'%' + str(instruktor) + '%',))
+    return cursor.fetchall()
+
+def obrisi_goste():
+    danas = datetime.date.today().strftime("%Y-%m-%d")
+    cursor.execute('''SELECT 
+                            Rezervacija.id_rezervacije,
+                            Korisnici.username
+                        FROM 
+                            Rezervacija
+                        JOIN 
+                            Korisnici ON Rezervacija.id_korisnika = Korisnici.username
+                        WHERE 
+                            Korisnici.uloga = -1 AND Rezervacija.datum < ?
+                    ''',(danas,))
+    usernames=cursor.fetchall()
+    
+    for gost in usernames:
+        obrisi_rezervaciju(gost[0])
+        obrisiKorisnika(gost[1])
+    
+    cursor.execute('''SELECT 
+                            Korisnici.username
+                        FROM
+                            Korisnici
+                        LEFT JOIN 
+                            Rezervacija ON Korisnici.username = Rezervacija.id_korisnika
+                        WHERE 
+                            Korisnici.uloga = -1 AND Rezervacija.id_korisnika IS NULL
+    ''')
+    gosti_bez_rezervacije = cursor.fetchall()
+
+    for gost in gosti_bez_rezervacije:
+        obrisiKorisnika(gost[0])
+        
+def azuriraj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
+    cursor.execute("SELECT * FROM Vrste_treninga WHERE id_vrste_treninga=?",(vrsta_treninga,))
+    if(len(cursor.fetchall())==0): 
+        helperFunctions.obavestenje("Ne postoji odabrana vrsta treninga.")
+        return True
+    cursor.execute("SELECT * FROM Korisnici WHERE username=?",(instruktor,))
+    if(len(cursor.fetchall())==0): 
+        helperFunctions.obavestenje("Ne postoji odabrani instruktor.")
+        return True
+    
+    cursor.execute('''UPDATE Program 
+                        SET 
+                            naziv=?,
+                            id_vrste_treninga=?,
+                            trajanje=?,
+                            id_instruktora=?,
+                            potreban_paket=?,
+                            opis=?
+                        WHERE id_programa=?''',(naziv,vrsta_treninga,trajanje,instruktor,paket,opis,id))
+    connection.commit()
+    return False
+    
+def dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
+    cursor.execute("SELECT * FROM Vrste_treninga WHERE id_vrste_treninga=?",(vrsta_treninga,))
+    if(len(cursor.fetchall())==0): 
+        helperFunctions.obavestenje("Ne postoji odabrana vrsta treninga.")
+        return True
+    cursor.execute("SELECT * FROM Korisnici WHERE username=?",(instruktor,))
+    if(len(cursor.fetchall())==0): 
+        helperFunctions.obavestenje("Ne postoji odabrani instruktor.")
+        return True
+    cursor.execute("SELECT * FROM Program WHERE id_programa=?",(id,))
+    if(len(cursor.fetchall())>0): 
+        helperFunctions.obavestenje("Već postoji korisnik sa datom šifrom.")
+        return True
+    
+    cursor.execute('''INSERT INTO Program(id_programa, naziv, id_vrste_treninga, trajanje, id_instruktora, potreban_paket, opis)
+	                  VALUES(?,?,?,?,?,?,?)''',(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis,))
+    connection.commit()
+    return False

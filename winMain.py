@@ -147,5 +147,5 @@ class MainWindow:
         self.programi_window = None
 
     def napravi_win_programi(self):
-        self.programi_window = winProgrami.ProgramiWindow(self.window, self)
+        self.programi_window = winProgrami.ProgramiWindow(self.window, self,self.uloga)
         self.programi_window.start()

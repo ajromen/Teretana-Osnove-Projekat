@@ -5,7 +5,6 @@ import winLogin
 import winSignup
 import winMain
 
-
 #queries.restartuj_bazu()
 
 def login_startup_loop(ekran,user=''):
@@ -16,9 +15,6 @@ def login_startup_loop(ekran,user=''):
             if(return_value!="signup"): break
         if(return_value=="signup"):
             return_value=winSignup.start(user)
-            if(return_value=="login"): 
-                queries.obrisiKorisnika(user)
-                user=''
             if(return_value!="login"): break
     return return_value
 
@@ -50,4 +46,5 @@ if __name__ == '__main__':
             user=staDaRadim[1]
             staDaRadim=staDaRadim[0]
         
+    queries.obrisi_goste()
     queries.connection.commit()
