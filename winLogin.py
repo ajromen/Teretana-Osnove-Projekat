@@ -11,7 +11,6 @@ class LoginWindow:
     def __init__(self,window):
         self.window = window
         
-        
     def start(self):
         self.return_value = 0
         self.setup_window()

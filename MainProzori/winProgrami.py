@@ -15,6 +15,7 @@ class ProgramiWindow:
         self.window = window
         self.main_window=main_window
         self.current_canvas = None
+        self.promenljive_filteri()
 
     def start(self):
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
@@ -131,7 +132,7 @@ class ProgramiWindow:
         for red in self.table.get_children():
             self.table.delete(red)
                 
-        podaci=queries.izlistaj_programe()
+        podaci=self.izlistaj_programe()
         
         for podatak in podaci:
             self.table.insert("", "end", values=podatak)
@@ -157,7 +158,7 @@ class ProgramiWindow:
             else:
                 pass
 
-        podaci=queries.izlistaj_programe(pretraga=pretraga,kriterijum=kriterijum)
+        podaci=self.izlistaj_programe(pretraga=pretraga,kriterijum=kriterijum)
 
         for podatak in podaci:
             self.table.insert("", "end", values=podatak)
@@ -180,25 +181,113 @@ class ProgramiWindow:
         self.filteri_window.resizable(False,False)
         helperFunctions.centerWindow(self.filteri_window)
 
-        cmbbxSifre=self.napravi_filter_cmbbx("Šifra:",64,39,172,31,"SELECT id_programa FROM Program") #Kombo box za id
-        cmbbxNaziv=self.napravi_filter_cmbbx("Naziv:",56,78,172,72,"SELECT DISTINCT naziv FROM Program") #Kombo box za naziv
-
-        btnSacuvaj = ctk.CTkButton(self.filteri_window, text="Sačuvaj", command=self.filteri_window.destroy)
+        self.cmbbxSifre=self.napravi_filter_cmbbx("Šifra:",64,39,172,31,"SELECT id_programa FROM Program") #Kombo box za id
+        self.cmbbxNaziv=self.napravi_filter_cmbbx("Naziv:",56,78,172,72,"SELECT DISTINCT naziv FROM Program") #Kombo box za naziv
+        self.cmbbxVrsteTreninga=self.napravi_filter_cmbbx("Vrsta treninga:",26,121,172,115,"SELECT DISTINCT Vrste_treninga.naziv FROM Program JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga") #Kombo box za naziv
+        self.cmbbxInstruktor=self.napravi_filter_cmbbx("Trener:",52,233,172,225,"SELECT DISTINCT Korisnici.ime FROM Program JOIN Korisnici ON Program.id_instruktora = Korisnici.username") #Kombo box za naziv
+        
+        naziv = self.naziv if self.naziv != "" else "SVE"
+        self.cmbbxNaziv.set(naziv)
+        sifra = self.id_programa if self.id_programa != "" else "SVE"
+        self.cmbbxSifre.set(sifra)
+        naziv_vrste_treninga = self.naziv_vrste_treninga if self.naziv_vrste_treninga != "" else "SVE"
+        self.cmbbxVrsteTreninga.set(naziv_vrste_treninga)
+        instruktor = self.instruktor if self.instruktor != "" else "SVE"
+        self.cmbbxInstruktor.set(instruktor)
+        
+        lblPaket = ctk.CTkLabel(self.filteri_window, text="Potreban Premium Paket:", font=("Inter",15 * -1),anchor='nw')
+        lblPaket.place(x=27,y=280)
+        
+        self.slajder=ctk.CTkSlider(self.filteri_window,height=30,width=288,from_=0, to=200)
+        self.slajder.place(x=32,y=121)
+        
+        self.switchPaket=ctk.CTkSwitch(self.filteri_window,width=43,height=24,text='')
+        self.switchPaket.place(x=252,y=278)
+        if (self.potrebanPaket): self.switchPaket.select() 
+        else: self.switchPaket.deselect()
+        
+        btnSacuvaj = ctk.CTkButton(self.filteri_window, text="Sačuvaj", command=self.ugasi_filteri)
         btnSacuvaj.place(x=102,y=323)
         self.imgObrisiFiltere = PhotoImage(file="./src/img/Widget/btnObrisiFiltere.png")
-        btnObrisiFiltere = Button(self.filteri_window,image=self.imgObrisiFiltere, borderwidth=0, highlightthickness=0, command=self.kraj_filteri, relief="flat")
+        btnObrisiFiltere = Button(self.filteri_window,image=self.imgObrisiFiltere, borderwidth=0, highlightthickness=0, command=self.restartuj_filtere, relief="flat")
         btnObrisiFiltere.place(x=135,y=357,width=72,height=17)
+        
+        
         
     def napravi_filter_cmbbx(self,text,labelX,labelY,comboX,comboY,query):
         lblSifra = ctk.CTkLabel(self.filteri_window, text=text, font=("Inter",15 * -1),anchor='nw')
         lblSifra.place(x=labelX,y=labelY)
         queries.cursor.execute(query)
         listaSifre=queries.cursor.fetchall()
-        lista=[]
+        lista=["SVE"]
         for sifra in listaSifre:
             lista.append(str(sifra[0]))
         cmbbx=self.create_comboBox(self.filteri_window, values=lista)
         cmbbx.place(x=comboX,y=comboY) 
         return cmbbx
-    def kraj_filteri(self):
-        pass
+    def restartuj_filtere(self):
+        self.promenljive_filteri()
+        self.filteri_window.destroy()
+        self.filteri_window = None
+
+    def izlistaj_programe(self,kriterijum='id_programa',pretraga=""):
+        komanda=''' SELECT 
+                        Program.id_programa,
+                        Program.naziv AS naziv_programa,
+                        Vrste_treninga.naziv AS naziv_vrste_treninga,
+                        Program.trajanje || ' min' AS trajanje,
+                        Korisnici.ime AS instruktor_ime,
+                        CASE 
+                            WHEN Program.potreban_paket = 0 THEN 'Standard'
+                            WHEN Program.potreban_paket = 1 THEN 'Premium'
+                        END AS potreban_paket,
+                        Program.opis
+                    FROM 
+                        Program
+                    JOIN 
+                        Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
+                    JOIN 
+                        Korisnici ON Program.id_instruktora = Korisnici.username'''
+        
+       
+        komanda += f''' WHERE {kriterijum} LIKE ? 
+                        AND id_programa LIKE ? 
+                        AND naziv_programa LIKE ? 
+                        AND naziv_vrste_treninga LIKE ?
+                        AND trajanje >= ?
+                        AND trajanje <= ?
+                        AND instruktor_ime LIKE ?'''
+        if(self.potrebanPaket==0):
+            komanda += "AND potreban_paket = 0"
+        queries.cursor.execute(komanda, ('%' + str(pretraga) + '%','%' + str(self.id_programa) + '%','%' + str(self.naziv) + '%','%' + str(self.naziv_vrste_treninga) + '%', self.trajanjeOd,self.trajanjeDo,'%' + str(self.instruktor) + '%',))
+       
+                                
+        return queries.cursor.fetchall()
+    
+    def promenljive_filteri(self):
+        self.trajanjeOd=-1000
+        self.trajanjeDo=1000
+        self.potrebanPaket=1
+        self.id_programa=''
+        self.naziv=''
+        self.naziv_vrste_treninga=''
+        self.instruktor=''
+    
+    def ugasi_filteri(self):
+        id=self.cmbbxSifre.get()
+        self.id_programa = "" if id == "SVE" else id
+        
+        naziv=self.cmbbxNaziv.get()
+        self.naziv = "" if naziv == "SVE" else naziv
+        
+        vrste_treninga=self.cmbbxVrsteTreninga.get()
+        self.naziv_vrste_treninga = "" if vrste_treninga == "SVE" else vrste_treninga
+        
+        instruktor=self.cmbbxInstruktor.get()
+        self.instruktor = "" if instruktor == "SVE" else instruktor
+    
+        self.potrebanPaket=self.switchPaket.get()
+
+        self.filteri_window.destroy()
+        self.filteri_window = None
+        self.popuni_tabelu()
