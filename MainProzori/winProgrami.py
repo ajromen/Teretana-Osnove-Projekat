@@ -8,6 +8,7 @@ import os
 import ctypes
 import queries
 import helperFunctions
+from ctk_rangeslider import *
 
 
 class ProgramiWindow:
@@ -56,14 +57,9 @@ class ProgramiWindow:
         return ctk.CTkComboBox(canvas,width=148,height=33,corner_radius=5,border_width=0, values=values,fg_color="#080A17",dropdown_fg_color="#080A17",button_color="#0D1026")
         
     def create_entry_search(self):
-        self.search_var = StringVar()
-        self.entrySearch = ctk.CTkEntry(self.current_canvas, width=303.0, height=20.0, corner_radius=0, fg_color="#080A17",textvariable=self.search_var,font=("Inter", 12),border_width=0)
-        self.entrySearch.insert(0, "Pretraži")
-        self.entrySearch.bind("<FocusIn>", self.on_entry_click)
-        self.entrySearch.bind("<FocusOut>", self.on_focus_out)
-        self.entrySearch.configure(fg_color="#080A17")
-        self.entrySearch.place(x=28, y=59)
-        self.entrySearch.bind("<Return>", self.search_programs)
+        self.entrySearch = self.create_entry(canvas=self.current_canvas,x=28,y=59,placeholder="Pretraži",on_focus_in=self.on_entry_click,on_focus_out=self.on_focus_out)
+        self.entrySearch.bind("<Return>", lambda event:self.search_programs())
+        self.entrySearch.bind("<KeyRelease>", lambda event: self.search_programs())
 
         
     def create_button(self, image_path, x, y, width, height, command):
@@ -137,8 +133,8 @@ class ProgramiWindow:
         for podatak in podaci:
             self.table.insert("", "end", values=podatak)
 
-    def search_programs(self,event=None):
-        pretraga = self.search_var.get().strip().lower()
+    def search_programs(self):
+        pretraga = self.entrySearch.get().strip().lower()
         kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
 
         if not kriterijum:
@@ -163,13 +159,14 @@ class ProgramiWindow:
         for podatak in podaci:
             self.table.insert("", "end", values=podatak)
 
-    def create_entry(self, x, y, placeholder, on_focus_in, on_focus_out, show=''):
-        entry = Entry(
-            self.current_canvas, bd=0, bg="#1A1B20", fg="#FFFFFF", highlightthickness=0, show=show
+    def create_entry(self, canvas, x, y, placeholder='', on_focus_in=print("focus"), on_focus_out=print("focus out"), show='',width=303,height=20):
+        entry = ctk.CTkEntry(
+            canvas,border_width=0,fg_color="#080A17", text_color="#FFFFFF", show=show,width=width,height=height
         )
-        entry.place(x=x, y=y, width=303.0, height=20.0)
+        entry.place(x=x, y=y,)
         entry.insert(0, placeholder)
-        entry.configure(foreground="gray")
+        #entry.configure(fg_color="#080A17")
+        entry.configure(text_color="gray")
         entry.bind("<FocusIn>", on_focus_in)
         entry.bind("<FocusOut>", on_focus_out)
         return entry
@@ -197,22 +194,54 @@ class ProgramiWindow:
         
         lblPaket = ctk.CTkLabel(self.filteri_window, text="Potreban Premium Paket:", font=("Inter",15 * -1),anchor='nw')
         lblPaket.place(x=27,y=280)
-        
-        self.slajder=ctk.CTkSlider(self.filteri_window,height=30,width=288,from_=0, to=200)
-        self.slajder.place(x=32,y=121)
-        
         self.switchPaket=ctk.CTkSwitch(self.filteri_window,width=43,height=24,text='')
         self.switchPaket.place(x=252,y=278)
+        
+        
+        queries.cursor.execute("SELECT MIN(trajanje), MAX(trajanje) FROM Program")
+        rez=queries.cursor.fetchall()[0]
+        min=rez[0]
+        max=rez[1]
+        lblTrajanje = ctk.CTkLabel(self.filteri_window, text="Trajanje od do:", font=("Inter",15 * -1),anchor='nw')
+        lblTrajanje.place(x=124,y=167)
+        self.slajder=CTkRangeSlider(self.filteri_window,height=16,width=288,from_=min, to=max,command=self.update_trajanje)
+        self.slajder.place(x=32,y=191)
+        self.slajder.set([self.trajanjeOd,self.trajanjeDo])
+        
+        
+        self.entryTrajanjeOd=self.create_entry(canvas=self.filteri_window,x=32,y=166,width=59,height=18,on_focus_in=self.on_entry_trajanjeOd_click,on_focus_out=self.on_focus_out_trajanjeOd)
+        self.entryTrajanjeDo=self.create_entry(canvas=self.filteri_window,x=261,y=166,width=59,height=18)
+        self.update_trajanje()
+        
         if (self.potrebanPaket): self.switchPaket.select() 
         else: self.switchPaket.deselect()
         
         btnSacuvaj = ctk.CTkButton(self.filteri_window, text="Sačuvaj", command=self.ugasi_filteri)
         btnSacuvaj.place(x=102,y=323)
         self.imgObrisiFiltere = PhotoImage(file="./src/img/Widget/btnObrisiFiltere.png")
-        btnObrisiFiltere = Button(self.filteri_window,image=self.imgObrisiFiltere, borderwidth=0, highlightthickness=0, command=self.restartuj_filtere, relief="flat")
+        btnObrisiFiltere = Button(self.filteri_window,image=self.imgObrisiFiltere, borderwidth=0, highlightthickness=0, relief="flat")
+        self.slajder.configure(command=lambda value: self.update_trajanje())
         btnObrisiFiltere.place(x=135,y=357,width=72,height=17)
         
+    def on_entry_trajanjeOd_click(self,event):
+        self.entryTrajanjeDo.configure(text_color="white")
+
+    def on_focus_out_trajanjeOd(self,event):
+        if self.entrySearch.get() == "":
+            self.entrySearch.insert(0, self.trajanjeOd)
+        self.entrySearch.configure(text_color="gray")
+
+    def apdejtujSlajder():
+        self.update_trajanje()
+            
+    def update_trajanje(self):
+        self.trajanjeOd, self.trajanjeDo = self.slajder.get()
         
+        self.entryTrajanjeOd.delete(0, ctk.END)
+        self.entryTrajanjeOd.insert(0, int(self.trajanjeOd))
+        
+        self.entryTrajanjeDo.delete(0, ctk.END)
+        self.entryTrajanjeDo.insert(0, int(self.trajanjeDo))
         
     def napravi_filter_cmbbx(self,text,labelX,labelY,comboX,comboY,query):
         lblSifra = ctk.CTkLabel(self.filteri_window, text=text, font=("Inter",15 * -1),anchor='nw')
@@ -225,6 +254,7 @@ class ProgramiWindow:
         cmbbx=self.create_comboBox(self.filteri_window, values=lista)
         cmbbx.place(x=comboX,y=comboY) 
         return cmbbx
+    
     def restartuj_filtere(self):
         self.promenljive_filteri()
         self.filteri_window.destroy()
@@ -248,7 +278,6 @@ class ProgramiWindow:
                         Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
                     JOIN 
                         Korisnici ON Program.id_instruktora = Korisnici.username'''
-        
        
         komanda += f''' WHERE {kriterijum} LIKE ? 
                         AND id_programa LIKE ? 
@@ -265,8 +294,10 @@ class ProgramiWindow:
         return queries.cursor.fetchall()
     
     def promenljive_filteri(self):
-        self.trajanjeOd=-1000
-        self.trajanjeDo=1000
+        queries.cursor.execute("SELECT MIN(trajanje), MAX(trajanje) FROM Program")
+        rez=queries.cursor.fetchall()[0]
+        self.trajanjeOd=rez[0]
+        self.trajanjeDo=rez[1]
         self.potrebanPaket=1
         self.id_programa=''
         self.naziv=''
