@@ -147,16 +147,16 @@ class SignupWindow:
         username=self.entyUsername.get()
         imeIPrezime=self.entryName.get().split(" ")
         if(len(imeIPrezime)!=2):
-            helperFunctions.pisi_eror("Polje ime i prezime mora da ima samo 2 argumenta")
+            helperFunctions.obavestenje("Polje ime i prezime mora da ima samo 2 argumenta")
             return
         ime=imeIPrezime[0]
         prezime=imeIPrezime[1]
         lozinka=self.entryPassword.get()
         if(len(lozinka)<6):
-            helperFunctions.pisi_eror("Lozinka mora da sadrži više od 6 karaktera")
+            helperFunctions.obavestenje("Lozinka mora da sadrži više od 6 karaktera")
             return 0
         if(not re.search(r'\d', lozinka)):
-            helperFunctions.pisi_eror("Lozinka mora sadržati bar jednu cifru")
+            helperFunctions.obavestenje("Lozinka mora sadržati bar jednu cifru")
             return 0
         uloga=0
         status_clanstva=1

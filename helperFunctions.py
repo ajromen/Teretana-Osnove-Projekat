@@ -7,9 +7,9 @@ def hashPassword(password):
    hash_object = hashlib.sha256(password_bytes)
    return hash_object.hexdigest()
 
-def pisi_eror(poruka):
-   error_window = ctk.CTkToplevel()
-   error_window.title("Greška")
+def obavestenje(poruka,title="Greška"):
+   error_window = ctk.CTkToplevel(fg_color='#000000')
+   error_window.title(title)
    error_window.geometry("350x150")
    error_window.resizable(False, False)
    centerWindow(error_window)
@@ -19,6 +19,28 @@ def pisi_eror(poruka):
 
    close_button = ctk.CTkButton(error_window, text="Zatvori", command=error_window.destroy)
    close_button.pack(pady=10)
+
+def pitaj(poruka,title="Greška",text1="Da",text2="Ne"):
+   error_window = ctk.CTkToplevel(fg_color='#000000')
+   error_window.title(title)
+   error_window.geometry("350x150")
+   error_window.resizable(False, False)
+   centerWindow(error_window)
+
+   error_label = ctk.CTkLabel(error_window, text=poruka, fg_color="red")
+   error_label.pack(pady=20)
+
+   result = {"value": False}
+
+   button_1 = ctk.CTkButton(error_window, text=text1,fg_color="#252525", command=lambda: (result.update(value=True), error_window.destroy()),width=140)
+   button_2 = ctk.CTkButton(error_window, text=text2, command=lambda: (result.update(value=False), error_window.destroy()),width=140)
+   button_1.place(x=28,y=108)
+   button_2.place(x=181,y=108)
+
+   error_window.wait_window()
+
+   return result["value"]
+   
         
 def centerWindow(window):
    window.update_idletasks()

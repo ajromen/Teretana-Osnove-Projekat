@@ -106,7 +106,7 @@ class LoginWindow:
         if(len(ima)!=0):
             self.vrati(ima)
         else:
-            helperFunctions.pisi_eror("Pogrešno korisničko ime ili lozinka")
+            helperFunctions.obavestenje("Pogrešno korisničko ime ili lozinka")
             
     def on_entry_click_username(self,event):
         if self.entryUsername.get() == "Korisničko ime":

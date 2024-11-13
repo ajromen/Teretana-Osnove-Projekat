@@ -25,7 +25,7 @@ def executeScriptsFromFile(filename):
 def napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije):
     cursor.execute("SELECT * FROM Korisnici WHERE username=?",(username,))
     if(len(cursor.fetchall())>0):
-        helperFunctions.pisi_eror("Nalog sa korisničkim imenom već postoji")
+        helperFunctions.obavestenje("Nalog sa korisničkim imenom već postoji")
         return 0
     password=helperFunctions.hashPassword(password)
     komanda='''INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
