@@ -394,7 +394,7 @@ class ProgramiWindow:
         lblOpis.place(x=27,y=308)
         
         
-        self.izmeni_txtbxOpis = ctk.CTkTextbox(self.trenutni_window,294,80,4,fg_color="#080A17")
+        self.izmeni_txtbxOpis = ctk.CTkTextbox(self.trenutni_window,width=294,height=80,corner_radius=4,fg_color="#080A17")
         self.izmeni_txtbxOpis.place(x=26,y=334)
         self.izmeni_txtbxOpis.insert("0.0", slctd_opis)
         
@@ -411,16 +411,26 @@ class ProgramiWindow:
         trajanje=self.izmeni_entryTrajanje.get()
         instruktor=self.izemni_cmbbxInstruktor.get()
         paket=self.izmeni_switchPaket.get()
-        opis=self.izmeni_txtbxOpis.get("0.0", END)
-        if(naziv==""):helperFunctions.obavestenje("Naziv ne sme biti prazan.")
-        if(vrsta_treninga==""):helperFunctions.obavestenje("Vrsta treninga ne sme biti prazana.")
-        if(not trajanje.isdigit()):helperFunctions.obavestenje("Trajanje mora biti broj.")
-        if(instruktor==""):helperFunctions.obavestenje("Instruktor polje ne sme biti prazno.")
-        instruktor=instruktor.split(" ")[0]
+        opis=self.izmeni_txtbxOpis.get("1.0", END)
+        if(naziv==""):
+            helperFunctions.obavestenje("Naziv ne sme biti prazan.")
+            return
+        if(vrsta_treninga==""):
+            helperFunctions.obavestenje("Vrsta treninga ne sme biti prazana.")
+            return
+        if(not trajanje.isdigit()):
+            helperFunctions.obavestenje("Trajanje mora biti broj.")
+            return
+        if(instruktor==""):
+            helperFunctions.obavestenje("Instruktor polje ne sme biti prazno.")
+            return
         vrsta_treninga=vrsta_treninga.split(" ")[0]
+        instruktor=instruktor.split(" ")[0]
         
         if(queries.azuriraj_program(self.slctd_id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
         helperFunctions.obavestenje(title="Izmena programa", poruka="Uspešno izmenjen program.")
+        
+        self.popuni_tabelu()
         
         self.trenutni_window.destroy()
         self.trenutni_window=None
@@ -468,10 +478,11 @@ class ProgramiWindow:
         lblOpis.place(x=27,y=308)
         
         
-        self.dodaj_txtbxOpis = ctk.CTkTextbox(self.trenutni_window,294,80,4,fg_color="#080A17")
+        self.dodaj_txtbxOpis = ctk.CTkTextbox(self.trenutni_window, width=294, height=80,corner_radius=4, fg_color="#080A17")
         self.dodaj_txtbxOpis.place(x=26,y=334)
+        self.trenutni_window.bind("<Map>", lambda e: self.dodaj_txtbxOpis.focus_set())
         
-        btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Izmeni", command=self.napravi_program)
+        btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Dodaj", command=self.napravi_program)
         btnSacuvaj.place(x=102,y=424)
         self.imgOtkazi = PhotoImage(file="./src/img/Widget/btnOtkazi.png")
         btnObrisiFiltere = Button(self.trenutni_window,image=self.imgOtkazi, borderwidth=0, highlightthickness=0, relief="flat",command=self.trenutni_window.destroy) 
@@ -485,16 +496,28 @@ class ProgramiWindow:
         instruktor=self.izemni_cmbbxInstruktor.get()
         paket=self.dodaj_switchPaket.get()
         opis=self.dodaj_txtbxOpis.get("0.0", END)
-        if(naziv==""):helperFunctions.obavestenje("Naziv ne sme biti prazan.")
-        if(id=="" or (not id.isdigit())):helperFunctions.obavestenje("Šifra ne sme biti prazna ili sadržati slova.")
-        if(vrsta_treninga==""):helperFunctions.obavestenje("Vrsta treninga ne sme biti prazna.")
-        if(not trajanje.isdigit()):helperFunctions.obavestenje("Trajanje mora biti broj.")
-        if(instruktor==""):helperFunctions.obavestenje("Instruktor polje ne sme biti prazno.")
+        if(naziv==""):
+            helperFunctions.obavestenje("Naziv ne sme biti prazan.")
+            return
+        if(id=="" or (not id.isdigit())):
+            helperFunctions.obavestenje("Šifra ne sme biti prazna ili sadržati slova.")
+            return
+        if(vrsta_treninga==""):
+            helperFunctions.obavestenje("Vrsta treninga ne sme biti prazna.")
+            return
+        if(not trajanje.isdigit()):
+            helperFunctions.obavestenje("Trajanje mora biti broj.")
+            return
+        if(instruktor==""):
+            helperFunctions.obavestenje("Instruktor polje ne sme biti prazno.")
+            return
         instruktor=instruktor.split(" ")[0]
         vrsta_treninga=vrsta_treninga.split(" ")[0]
         
         if(queries.dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
         helperFunctions.obavestenje(title="Dodaj program", poruka="Uspešno dodat program.")
+        self.popuni_tabelu()
+        
         
         self.trenutni_window.destroy()
         self.trenutni_window=None
