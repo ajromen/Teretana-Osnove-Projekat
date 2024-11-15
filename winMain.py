@@ -8,11 +8,12 @@ import os
 import ctypes
 sys.path.append('./MainProzori')
 import winProgrami
+import winTrening
 
 class MainWindow:
     def __init__(self,window):
          self.window=window
-         self.programi_window = None
+         self.trenutni_window = None
          
     def start(self,username,uloga):
         self.username=username
@@ -76,13 +77,13 @@ class MainWindow:
         }
         buttons = {
             "btnVrsteTreninga": lambda i: self.create_button("src/img/Main/btnVrsteTreninga.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnVrsteTreninga clicked")),
-            "btnTreninzi": lambda i: self.create_button("src/img/Main/btnTreninzi.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnTreninzi clicked")),
+            "btnTreninzi": lambda i: self.create_button("src/img/Main/btnTreninzi.png", x=0, y=63*i, width=230, height=63, command=lambda:self.prebaci_win("trening")),
             "btnIzvestaji": lambda i: self.create_button("src/img/Main/btnIzvestaji.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnIzvestaji clicked")),
             "btnAdmin": lambda i: self.create_button("src/img/Main/btnAdmin.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnAdmin clicked")),
             "btnClanovi": lambda i: self.create_button("src/img/Main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnClanovi clicked")),
             "btnTermini": lambda i: self.create_button("src/img/Main/btnTermini.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnTermini clicked")),
             "btnRezervacije": lambda i: self.create_button("src/img/Main/btnRezervacije.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnRezervacije clicked")),
-            "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=self.napravi_win_programi),
+            "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=lambda:self.prebaci_win("programi")),
             "btnRegistrujSe": lambda i: self.create_button("src/img/Main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.registrujSe()),
             "btnOdjaviSe": lambda i: self.create_button("src/img/Main/btnOdjaviSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("login"))
         }
@@ -143,9 +144,19 @@ class MainWindow:
         niz=["signup",self.username]
         self.vrati(niz)
 
-    def unisti_win_programi(self):
-        self.programi_window = None
+    def unisti_trenutni_win(self):
+        self.trenutni_window = None
 
     def napravi_win_programi(self):
-        self.programi_window = winProgrami.ProgramiWindow(self.window, self,self.uloga)
-        self.programi_window.start()
+        self.trenutni_window = winProgrami.ProgramiWindow(self.window, self,self.uloga)
+        self.trenutni_window.start()
+        
+    def napravi_win_trening(self):
+        print("radim")
+        self.trenutni_window = winTrening.TreningWindow(self.window, self)
+        self.trenutni_window.start()
+        
+    def prebaci_win(self,win):
+        self.trenutni_window=None
+        if  win=="programi": self.napravi_win_programi()
+        if  win=="trening": self.napravi_win_trening()

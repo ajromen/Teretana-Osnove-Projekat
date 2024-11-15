@@ -82,7 +82,6 @@ class SignupWindow:
         self.entryPassword.bind("<Return>", lambda event: self.napraviNalog())
 
         self.create_button("src/img/Signup/button_3.png", x=121.0, y=337.0, width=160.0, height=35.0, command=self.napraviNalog)
-        self.create_button("src/img/Signup/button_3.png", x=0.0, y=0.0, width=160.0, height=35.0, command=self.List)
         self.create_button("src/img/Signup/button_2.png", x=588.0, y=394.0, width=153.0, height=40.0, command=lambda: self.vrati("gost"))
         self.create_button("src/img/Signup/button_1.png", x=163.0, y=379.0, width=76.0, height=15.0, command=lambda: self.vrati("login"))
     
@@ -167,7 +166,3 @@ class SignupWindow:
         else:
             nalog=queries.azurirajNalog(self.user, username, lozinka, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije)
         self.vrati(nalog)
-
-    def List(self):
-        queries.cursor.execute("SELECT * FROM Korisnici")
-        print(queries.cursor.fetchall())

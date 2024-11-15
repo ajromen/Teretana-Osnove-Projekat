@@ -81,6 +81,13 @@ def azurirajNalog(stariUsername,username,password,ime,prezime,uloga,status_clans
         return napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
     
 def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_vrste_treninga,trajanjeOd,trajanjeDo,instruktor):
+    kriterijum = kriterijum.strip()
+    pretraga = pretraga.strip()
+    id_programa = id_programa.strip()
+    naziv = naziv.strip()
+    naziv_vrste_treninga = naziv_vrste_treninga.strip()
+    instruktor = instruktor.strip()
+
     komanda=''' SELECT 
                         Program.id_programa,
                         Program.naziv AS naziv_programa,
@@ -109,6 +116,7 @@ def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_
     if(potrebanPaket==0):
         komanda += "AND potreban_paket = 0"
     cursor.execute(komanda, ('%' + str(pretraga) + '%','%' + str(id_programa) + '%','%' + str(naziv) + '%','%' + str(naziv_vrste_treninga) + '%', trajanjeOd,trajanjeDo,'%' + str(instruktor) + '%',))
+
     return cursor.fetchall()
 
 def obrisi_goste():
@@ -162,7 +170,6 @@ def azuriraj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
                             potreban_paket=?,
                             opis=?
                         WHERE id_programa=?''',(naziv,vrsta_treninga,trajanje,instruktor,paket,opis,id))
-    connection.commit()
     return False
     
 def dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
@@ -181,5 +188,25 @@ def dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
     
     cursor.execute('''INSERT INTO Program(id_programa, naziv, id_vrste_treninga, trajanje, id_instruktora, potreban_paket, opis)
 	                  VALUES(?,?,?,?,?,?,?)''',(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis,))
-    connection.commit()
     return False
+
+def izlistaj_trening(pretraga,kriterijum):
+    kriterijum = kriterijum.strip()
+    pretraga = pretraga.strip()
+
+    komanda=''' SELECT 
+                    Trening.id_treninga,
+                    Sala.id_sale AS id_sale,
+                    Trening.vreme_pocetka AS pocetak_treninga,
+                    Trening.vreme_kraja AS kraj_treninga,
+                    Trening.dani_nedelje,
+                    Program.id_programa AS id_programa
+                FROM 
+                    Trening
+                JOIN 
+                    Program ON Trening.id_programa = Program.id_programa
+                JOIN 
+                    Sala ON Trening.id_sale = Sala.id_sale'''
+       
+    komanda += f''' WHERE {kriterijum} LIKE ?'''
+    cursor.execute(komanda, ('%' + str(pretraga) + '%',))
