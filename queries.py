@@ -191,16 +191,19 @@ def dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
     return False
 
 def izlistaj_trening(pretraga,kriterijum):
+    pretraga=str(pretraga)
     kriterijum = kriterijum.strip()
     pretraga = pretraga.strip()
 
     komanda=''' SELECT 
-                    Trening.id_treninga,
-                    Sala.id_sale AS id_sale,
-                    Trening.vreme_pocetka AS pocetak_treninga,
-                    Trening.vreme_kraja AS kraj_treninga,
-                    Trening.dani_nedelje,
-                    Program.id_programa AS id_programa
+                    Trening.id_treninga AS id_treninga,
+                    Sala.naziv AS naziv_sale,
+                    Trening.vreme_pocetka AS vreme_pocetka,
+                    Trening.vreme_kraja AS vreme_kraja,
+                    Trening.dani_nedelje AS dani,
+                    Program.naziv AS naziv_programa,
+                    Sala.id_sale AS sifra_sale,
+                    Program.id_programa AS sifra_programa
                 FROM 
                     Trening
                 JOIN 
@@ -210,3 +213,5 @@ def izlistaj_trening(pretraga,kriterijum):
        
     komanda += f''' WHERE {kriterijum} LIKE ?'''
     cursor.execute(komanda, ('%' + str(pretraga) + '%',))
+    
+    return cursor.fetchall()

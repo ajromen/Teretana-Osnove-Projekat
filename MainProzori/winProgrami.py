@@ -24,7 +24,7 @@ class ProgramiWindow:
         self.current_canvas.place(x=230, y=0)        
         
         self.create_button("./src/img/Widget/btnExit.png",812,9,33,33,self.switch_back_to_main)# EXit dugme
-        self.create_button("./src/img/Widget/btnSearch.png",358,53,33,33,self.search_programs) # Search dugme
+        self.create_button("./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
         self.create_button("./src/img/Widget/btnFilteri.png",687,55,142,33,self.winProgramiFilteri) # Filteri Dugme
         self.uloga=="admin" and self.create_button("./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winProgrami_Dodaj()) # Dodaj Dugme
         self.uloga=="admin" and self.create_button("./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winProgrami_Izmeni()) # Izmeni Dugme
@@ -59,8 +59,8 @@ class ProgramiWindow:
         
     def create_entry_search(self):
         self.entrySearch = self.create_entry(canvas=self.current_canvas,x=28,y=59,placeholder="Pretraži",on_focus_in=self.on_entry_click,on_focus_out=self.on_focus_out)
-        self.entrySearch.bind("<Return>", lambda event:self.search_programs())
-        self.entrySearch.bind("<KeyRelease>", lambda event: self.search_programs())
+        self.entrySearch.bind("<Return>", lambda event:self.pretrazi())
+        self.entrySearch.bind("<KeyRelease>", lambda event: self.pretrazi())
 
         
     def create_button(self, image_path, x, y, width, height, command):
@@ -134,7 +134,7 @@ class ProgramiWindow:
         for podatak in podaci:
             self.table.insert("", "end", values=podatak)
 
-    def search_programs(self):
+    def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
         kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
 
@@ -328,8 +328,8 @@ class ProgramiWindow:
         program_id = slctd_data["values"][0]  
 
         try:
-            delete_command = "DELETE FROM Program WHERE id_programa = ?"
-            queries.cursor.execute(delete_command, (program_id,))
+            komanda = "DELETE FROM Program WHERE id_programa = ?"
+            queries.cursor.execute(komanda, (program_id,))
             queries.connection.commit()
 
             self.table.delete(slctd_item)
@@ -354,7 +354,7 @@ class ProgramiWindow:
         self.napravi_dodaj_izmeni_prozor()
         
         slctd_data = self.table.item(slctd_item)
-        self.slctd_id = slctd_data["values"][0]
+        slctd_id = slctd_data["values"][0]
         slctd_naziv=slctd_data["values"][1]
         slctd_vrsta_treninga=slctd_data["values"][2]
         slctd_trajanje=str(slctd_data["values"][3]).split(" ")[0]
@@ -373,10 +373,7 @@ class ProgramiWindow:
         self.selektuj_pravi(self.cmbbxVrsteTreninga,slctd_vrsta_treninga)
         self.selektuj_pravi(self.cmbbxInstruktor,slctd_instruktor)
         
-        btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Izmeni", command=lambda: self.dodaj_izmeni_program(mode=1))
-        btnSacuvaj.place(x=102,y=424)
-        
-        self.entrySifra = self.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True,placeholder=self.slctd_id,state="disabled")
+        self.entrySifra = self.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True,placeholder=slctd_id,state="disabled")
         
         self.zajednicke_Dodaj_Izmeni(slctd_naziv,slctd_trajanje,slctd_paket,slctd_opis,mode=1)
 
@@ -385,9 +382,6 @@ class ProgramiWindow:
         
         self.cmbbxVrsteTreninga=self.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga",2,True) #Kombo box za naziv
         self.cmbbxInstruktor=self.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1",3,True) #Kombo box za naziv
-        
-        btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Dodaj", command=lambda: self.dodaj_izmeni_program(mode=0))
-        btnSacuvaj.place(x=102,y=424)
         
         self.entrySifra = self.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True)
         
@@ -426,6 +420,9 @@ class ProgramiWindow:
         self.txtbxOpis.place(x=26,y=334)
         self.txtbxOpis.insert("0.0", opis)
         
+        
+        btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Sačuvaj", command=lambda: self.dodaj_izmeni_program(mode=mode))
+        btnSacuvaj.place(x=102,y=424)
         #dugme za otkazivanje
         self.imgOtkazi = PhotoImage(file="./src/img/Widget/btnOtkazi.png")
         btnOtkazi = Button(self.trenutni_window,image=self.imgOtkazi, borderwidth=0, highlightthickness=0, relief="flat",command=self.trenutni_window.destroy) 
@@ -461,7 +458,7 @@ class ProgramiWindow:
         instruktor=instruktor.split(" ")[0]
 
         if(mode):
-            if(queries.azuriraj_program(self.slctd_id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
+            if(queries.azuriraj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
             helperFunctions.obavestenje(title="Izmena programa", poruka="Uspešno izmenjen program.")
         else:
             if(queries.dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
@@ -480,7 +477,7 @@ class ProgramiWindow:
         
     def napravi_dodaj_izmeni_prozor(self):
         self.trenutni_window = ctk.CTkToplevel(fg_color='#000000')
-        self.trenutni_window.title("Dodaj")
+        self.trenutni_window.title("Program")
         self.trenutni_window.geometry("343x485")
         self.trenutni_window.resizable(False,False)
         helperFunctions.centerWindow(self.trenutni_window) # Pravi se novi prozor za dodaj/izmeni

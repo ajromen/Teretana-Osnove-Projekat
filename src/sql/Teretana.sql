@@ -19,7 +19,7 @@ CREATE TABLE Trening
 	  id_sale INTEGER, --
 	  vreme_pocetka TIME,
 	  vreme_kraja TIME,
-	  dani_nedelje CHAR(8),
+	  dani_nedelje CHAR(28),
 	  id_programa INTEGER, --
 	  FOREIGN KEY (id_sale) REFERENCES Sala(id_sale)
 	  FOREIGN KEY (id_programa) REFERENCES Program(id_programa)

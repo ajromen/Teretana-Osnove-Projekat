@@ -145,18 +145,19 @@ class MainWindow:
         self.vrati(niz)
 
     def unisti_trenutni_win(self):
-        self.trenutni_window = None
+        del self.trenutni_window 
+        self.trenutni_window= None
 
     def napravi_win_programi(self):
         self.trenutni_window = winProgrami.ProgramiWindow(self.window, self,self.uloga)
         self.trenutni_window.start()
         
     def napravi_win_trening(self):
-        print("radim")
         self.trenutni_window = winTrening.TreningWindow(self.window, self)
         self.trenutni_window.start()
         
     def prebaci_win(self,win):
-        self.trenutni_window=None
+        del self.trenutni_window
+        self.trenutni_window= None
         if  win=="programi": self.napravi_win_programi()
         if  win=="trening": self.napravi_win_trening()

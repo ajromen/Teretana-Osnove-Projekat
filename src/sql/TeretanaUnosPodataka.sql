@@ -70,14 +70,13 @@ INSERT INTO Program(id_programa, naziv, id_vrste_treninga, trajanje, id_instrukt
 			(54,"Od mama za mame - Momir", 6, 45, "milica", 1, "");
 
 
-
 INSERT INTO Trening(id_treninga, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa)
-	VALUES  ("1111",3,"12:45","14:15","PxSxPxx",1),
-			("1245",5,"08:00","08:30","PUSCPSx",3),
-			("6421",6,"22:00","22:45","PUSCPSN",4),
-			("0909",1,"09:00","10:00","xUxCxSx",2),
-			("9435",2,"18:00","18:45","xUxCxSx",5),
-			("1112",4,"18:00","19:30","xUxCxSN",1);
+	VALUES  ("1111",3,"12:45","14:15","Pon,Uto,Sre,Cet,Pet,Sub,Ned",1),
+			("1245",5,"08:00","08:30","Pon,Uto,Sre,Cet,Pet,Sub",3),
+			("6421",6,"22:00","22:45","Pon,Uto,Sre,Cet,Pet,Sub,Ned",4),
+			("0909",1,"09:00","10:00","Pon,Sre,Pet,Sub",2),
+			("9435",2,"18:00","18:45","Uto,Cet,Sub",5),
+			("1112",4,"18:00","19:30","Uto,Cet,Pet,Ned",1);
 
 INSERT INTO Termin(id_termina, datum_odrzavanja, id_treninga)
 	VALUES  ("1111AA",'2024-01-06',"1111"),
