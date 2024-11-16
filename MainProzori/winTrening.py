@@ -238,9 +238,6 @@ class TreningWindow:
         slctd_vreme_kraja=slctd_data["values"][3]
         slctd_dani=slctd_data["values"][4]
         slctd_program=slctd_data["values"][5]
-        
-        self.switch_dane()
-        
         # sifra
         self.entrySifra = self.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True,placeholder=slctd_id,state="disabled")
         
@@ -261,7 +258,7 @@ class TreningWindow:
         
         self.zajednicke_Dodaj_Izmeni(mode=0)
         
-    def zajednicke_Dodaj_Izmeni(self,vreme_pocetka="00:00",vreme_kraja="00:00",dani="",mode=0): # 0 za dodaj 1 za izmeni
+    def zajednicke_Dodaj_Izmeni(self,vreme_pocetka="00:00",vreme_kraja="00:00",mode=0,dani=""): # 0 za dodaj 1 za izmeni
         #ulaz za sifru
         lblSifra = ctk.CTkLabel(self.trenutni_window, text="Šifra:", font=("Inter",15 * -1),anchor='nw')
         lblSifra.place(x=58,y=31)
@@ -296,6 +293,18 @@ class TreningWindow:
         self.entryPocetakMinuti = self.create_entry(self.trenutni_window,241,119,width=42,height=23,belo=True,placeholder=pocetak_minuti)
         self.entryKrajSati = self.create_entry(self.trenutni_window,156,160,width=42,height=23,belo=True,placeholder=kraj_sati)
         self.entryKrajMinuti = self.create_entry(self.trenutni_window,242,160,width=42,height=23,belo=True,placeholder=kraj_minuti)
+        
+        self.switch_dani(dani)
+
+        
+        #Kreiranje dugmadi za dane
+        self.btnPon=self.button_dani("Pon",self.trenutni_window,16,272)
+        self.btnUto=self.button_dani("Uto",self.trenutni_window,61,272)
+        self.btnSre=self.button_dani("Sre",self.trenutni_window,106,272)
+        self.btnCet=self.button_dani("Čet",self.trenutni_window,151,272)
+        self.btnPet=self.button_dani("Pet",self.trenutni_window,196,272)
+        self.btnSub=self.button_dani("Sub",self.trenutni_window,241,272)
+        self.btnNed=self.button_dani("Ned",self.trenutni_window,286,272)
         
         
         btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Sačuvaj", command=lambda: self.dodaj_izmeni_program(mode=mode))
@@ -359,11 +368,13 @@ class TreningWindow:
         self.trenutni_window.resizable(False,False)
         helperFunctions.centerWindow(self.trenutni_window) # Pravi se novi prozor za dodaj/izmeni
         
-    def button_dani(self,dan,window,x,aktiviran=False):
-        button = Button(window, borderwidth=0, highlightthickness=0, command=lambda: self.switch_dugme(dan), relief="flat")
+    def button_dani(self,dan,window,x,y):
+        aktiviran=self.dani_dict[dan]
+        button = ctk.CTkButton(window, text=dan, corner_radius=5,font=("Inter",12), width=41, height=26)
         if aktiviran: button.configure(fg_color="#1F6AA5")
         else: button.configure(fg_color="#080A17")
-        button.place(x=x, y=y, width=41, height=26)
+        button.place(x=x, y=y)
+        button.configure(command=lambda: self.switch_dugme(dan, button))
         return button
     
     def switch_dani(self,dani_str):
@@ -376,10 +387,18 @@ class TreningWindow:
             "Sub": False,
             "Ned": False,
         }
+        if(dani_str==""): return
         dani_list=dani_str.split(",")
         for dan in dani_list:
             self.dani_dict[dan]=True
-
+            
+    def switch_dani_toStr(self):
+        string=""
+        for dan in self.dani_dict.items():
+            if(dan[1]):string+=dan[0]+","
+        string = string[:-1] if string.endswith(",") else string
+        return string
+        
     def switch_dugme(self,dan,dugme):
         self.dani_dict[dan] = not self.dani_dict[dan]
         if dugme.cget("fg_color")=="#1F6AA5":
