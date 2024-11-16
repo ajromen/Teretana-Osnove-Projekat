@@ -9,6 +9,7 @@ import ctypes
 sys.path.append('./MainProzori')
 import winProgrami
 import winTrening
+import winClanovi
 
 class MainWindow:
     def __init__(self,window):
@@ -80,7 +81,7 @@ class MainWindow:
             "btnTreninzi": lambda i: self.create_button("src/img/Main/btnTreninzi.png", x=0, y=63*i, width=230, height=63, command=lambda:self.prebaci_win("trening")),
             "btnIzvestaji": lambda i: self.create_button("src/img/Main/btnIzvestaji.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnIzvestaji clicked")),
             "btnAdmin": lambda i: self.create_button("src/img/Main/btnAdmin.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnAdmin clicked")),
-            "btnClanovi": lambda i: self.create_button("src/img/Main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnClanovi clicked")),
+            "btnClanovi": lambda i: self.create_button("src/img/Main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("clanovi")),
             "btnTermini": lambda i: self.create_button("src/img/Main/btnTermini.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnTermini clicked")),
             "btnRezervacije": lambda i: self.create_button("src/img/Main/btnRezervacije.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnRezervacije clicked")),
             "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=lambda:self.prebaci_win("programi")),
@@ -138,15 +139,14 @@ class MainWindow:
         button.place(x=x, y=y, width=width, height=height)
         return button
     
-    
-    
     def registrujSe(self):
         niz=["signup",self.username]
         self.vrati(niz)
 
     def unisti_trenutni_win(self):
-        del self.trenutni_window 
-        self.trenutni_window= None
+        if self.trenutni_window is not None:
+            self.trenutni_window.current_canvas.destroy()  
+            self.trenutni_window = None
 
     def napravi_win_programi(self):
         self.trenutni_window = winProgrami.ProgramiWindow(self.window, self,self.uloga)
@@ -156,8 +156,12 @@ class MainWindow:
         self.trenutni_window = winTrening.TreningWindow(self.window, self)
         self.trenutni_window.start()
         
+    def napravi_win_clanovi(self):
+        self.trenutni_window = winClanovi.ClanoviWindow(self.window, self)
+        self.trenutni_window.start()
+        
     def prebaci_win(self,win):
-        del self.trenutni_window
-        self.trenutni_window= None
-        if  win=="programi": self.napravi_win_programi()
-        if  win=="trening": self.napravi_win_trening()
+        self.unisti_trenutni_win()
+        if win=="programi": self.napravi_win_programi()
+        elif win=="trening": self.napravi_win_trening()
+        elif win=="clanovi": self.napravi_win_clanovi()

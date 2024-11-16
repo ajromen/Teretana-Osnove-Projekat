@@ -32,7 +32,7 @@ def napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_pak
 	 VALUES (?, ?, ?, ?, ?, ?, ?, ?);'''
     cursor.execute(komanda, (username, password, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije))
     
-    cursor.execute("SELECT username, uloga FROM Korisnici WHERE username='"+username+"'")
+    cursor.execute("SELECT username, uloga FROM Korisnici WHERE username=?",(username,))
     return cursor.fetchall()
 
 def napraviGosta():
@@ -215,3 +215,24 @@ def izlistaj_trening(pretraga,kriterijum):
     cursor.execute(komanda, ('%' + str(pretraga) + '%',))
     
     return cursor.fetchall()
+
+def dodaj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa):
+    cursor.execute("SELECT * FROM Trening WHERE id_treninga=?",(id,))
+    if(len(cursor.fetchall())>0): 
+        helperFunctions.obavestenje("Već postoji trening sa datom šifrom.")
+        return True
+    
+    cursor.execute('''INSERT INTO Trening(id_treninga, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa)
+	                  VALUES(?,?,?,?,?,?)''',(id,id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa,))
+    return False
+
+def azuriraj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa):    
+    cursor.execute('''UPDATE trening 
+                        SET 
+                            id_sale=?,
+                            vreme_pocetka=?,
+                            vreme_kraja=?,
+                            dani_nedelje==?,
+                            id_programa=?
+                        WHERE id_treninga=?''',(id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa,id,))
+    return False

@@ -35,6 +35,7 @@ class LoginWindow:
         #korisnicko ime
         self.entryUsername = self.create_entry(403, 225, "Korisničko ime", self.on_entry_click_username, self.on_focus_out_username) 
         self.entryUsername.bind("<KeyRelease>", self.promeni_pozdrav)
+        self.entryUsername.focus_set()
         
         #lozinka
         self.entryPassword = self.create_entry(403, 281, "Lozinka", self.on_entry_click_password, self.on_focus_out_password, show='')
@@ -94,7 +95,6 @@ class LoginWindow:
         self.canvas.itemconfig(self.text_id, text="Pozdrav, " + str(self.entryUsername.get()))
     
     def vrati(self,text):
-        #self.window.after_cancel()
         self.window.quit()
         self.return_value=text
         

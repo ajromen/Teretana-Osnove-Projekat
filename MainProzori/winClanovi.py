@@ -11,7 +11,7 @@ import helperFunctions
 from ctk_rangeslider import *
 
 
-class TreningWindow:
+class ClanoviWindow:
     def __init__(self, window, main_window):
         self.window = window
         self.main_window=main_window
@@ -23,8 +23,8 @@ class TreningWindow:
         
         self.create_button("./src/img/Widget/btnExit.png",812,9,33,33,self.switch_back_to_main)# EXit dugme
         self.create_button("./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
-        self.create_button("./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winTrening_Dodaj()) # Dodaj Dugme
-        self.create_button("./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winTrening_Izmeni()) # Izmeni Dugme
+        self.create_button("./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winClanovi_Dodaj()) # Dodaj Dugme
+        self.create_button("./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winClanovi_Izmeni()) # Izmeni Dugme
         self.create_button("./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi_trening) # Obrisi Dugme
         
         self.imgsearchPozadiga = PhotoImage(file="./src/img/Widget/searchPozadina.png")
@@ -206,12 +206,12 @@ class TreningWindow:
         trening_id = slctd_data["values"][0]  
 
         try:
-            komanda = "DELETE FROM Trening WHERE id_treninga = ?"
+            komanda = "DELETE FROM Clanovi WHERE id_treninga = ?"
             queries.cursor.execute(komanda, (trening_id,))
             queries.connection.commit()
 
             self.table.delete(slctd_item)
-            helperFunctions.obavestenje(title="Brisanje", poruka="Trening je uspešno obrisan.")
+            helperFunctions.obavestenje(title="Brisanje", poruka="Clanovi je uspešno obrisan.")
 
         except Exception as e:
             helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja trenigna: {e}")
@@ -223,7 +223,7 @@ class TreningWindow:
             if kriterijum.strip() == vrednost.strip():
                 komboBox.set(vrednost)
                 
-    def winTrening_Izmeni(self):
+    def winClanovi_Izmeni(self):
         slctd_item = self.table.selection()
         if not slctd_item:
             helperFunctions.obavestenje(poruka="Niste odabrali nijedan trening za izmenu.")
@@ -248,7 +248,7 @@ class TreningWindow:
         
         self.zajednicke_Dodaj_Izmeni(slctd_vreme_pocetka,slctd_vreme_kraja,mode=1)
 
-    def winTrening_Dodaj(self):
+    def winClanovi_Dodaj(self):
         self.napravi_dodaj_izmeni_prozor()
         
         self.cmbbxSala=self.napravi_sql_cmbbx(self.trenutni_window,"Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala",2,True) #Kombo box za naziv
@@ -332,9 +332,6 @@ class TreningWindow:
         if(id=="" or (not id.isdigit())):
             helperFunctions.obavestenje("Šifra ne sme biti prazna ili sadržati slova.")
             return
-        if(len(id)!=4):
-            helperFunctions.obavestenje("Šifra mora imati tačno 4 cifre.")
-            return
         if(id_sale==""):
             helperFunctions.obavestenje("Polje sala ne sme biti prazano.")
             return
@@ -391,11 +388,11 @@ class TreningWindow:
         self.entryNaziv=None
         self.entrySifra=None
         self.cmbbxInstruktor=None
-        self.cmbbxVrsteTreninga=None
+        self.cmbbxVrsteClanovia=None
         
     def napravi_dodaj_izmeni_prozor(self):
         self.trenutni_window = ctk.CTkToplevel(fg_color='#000000')
-        self.trenutni_window.title("Trening")
+        self.trenutni_window.title("Clanovi")
         self.trenutni_window.geometry("343x390")
         self.trenutni_window.resizable(False,False)
         helperFunctions.centerWindow(self.trenutni_window) # Pravi se novi prozor za dodaj/izmeni

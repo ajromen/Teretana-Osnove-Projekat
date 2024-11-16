@@ -55,10 +55,10 @@ class ProgramiWindow:
         self.create_table()
         
     def create_comboBox(self,canvas,values):
-        return ctk.CTkComboBox(canvas,width=148,height=33,corner_radius=5,border_width=0, values=values,fg_color="#080A17",dropdown_fg_color="#080A17",button_color="#0D1026")
+        return ctk.CTkComboBox(canvas,width=148,height=33,corner_radius=5,border_width=0, values=values,fg_color="#080A17",dropdown_fg_color="#080A17",button_color="#0D1026",state="readonly")
         
     def create_entry_search(self):
-        self.entrySearch = self.create_entry(canvas=self.current_canvas,x=28,y=59,placeholder="Pretraži",on_focus_in=self.on_entry_click,on_focus_out=self.on_focus_out)
+        self.entrySearch = self.create_entry(canvas=self.current_canvas,x=28,y=59,placeholder="Pretraži",on_focus_in=self.on_entry_click,on_focus_out=self.on_focus_out,corner_radius=0)
         self.entrySearch.bind("<Return>", lambda event:self.pretrazi())
         self.entrySearch.bind("<KeyRelease>", lambda event: self.pretrazi())
 
@@ -160,9 +160,9 @@ class ProgramiWindow:
         for podatak in podaci:
             self.table.insert("", "end", values=podatak)
 
-    def create_entry(self, canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='', show='',width=303,height=20,belo=False,state="normal"):
+    def create_entry(self, canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='', show='',width=303,height=20,belo=False,state="normal",corner_radius=5):
         entry = ctk.CTkEntry(
-            canvas,border_width=0,fg_color="#080A17", text_color="#FFFFFF", show=show,width=width,height=height
+            canvas,border_width=0,fg_color="#080A17", text_color="#FFFFFF", show=show,width=width,height=height,corner_radius=corner_radius
         )
         entry.place(x=x, y=y,)
         entry.delete(0,END)
