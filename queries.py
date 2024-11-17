@@ -81,6 +81,8 @@ def azurirajNalog(stariUsername,username,password,ime,prezime,uloga,status_clans
         return napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
     
 def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_vrste_treninga,trajanjeOd,trajanjeDo,instruktor):
+    kriterijum=str(kriterijum)
+    pretraga=str(pretraga)
     kriterijum = kriterijum.strip()
     pretraga = pretraga.strip()
     id_programa = id_programa.strip()

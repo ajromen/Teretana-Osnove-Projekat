@@ -9,6 +9,7 @@ import ctypes
 import queries
 import helperFunctions
 from ctk_rangeslider import *
+import widgets as wid
 
 
 class ProgramiWindow:
@@ -23,12 +24,12 @@ class ProgramiWindow:
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
         self.current_canvas.place(x=230, y=0)        
         
-        self.create_button("./src/img/Widget/btnExit.png",812,9,33,33,self.switch_back_to_main)# EXit dugme
-        self.create_button("./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
-        self.create_button("./src/img/Widget/btnFilteri.png",687,55,142,33,self.winProgramiFilteri) # Filteri Dugme
-        self.uloga=="admin" and self.create_button("./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winProgrami_Dodaj()) # Dodaj Dugme
-        self.uloga=="admin" and self.create_button("./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winProgrami_Izmeni()) # Izmeni Dugme
-        self.uloga=="admin" and self.create_button("./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi_program) # Obrisi Dugme
+        wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,self.switch_back_to_main)# EXit dugme
+        wid.create_button(self.current_canvas,"./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
+        wid.create_button(self.current_canvas,"./src/img/Widget/btnFilteri.png",687,55,142,33,self.winProgramiFilteri) # Filteri Dugme
+        self.uloga=="admin" and wid.create_button(self.current_canvas,"./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winProgrami_Dodaj()) # Dodaj Dugme
+        self.uloga=="admin" and wid.create_button(self.current_canvas,"./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winProgrami_Izmeni()) # Izmeni Dugme
+        self.uloga=="admin" and wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi_program) # Obrisi Dugme
         
         self.imgsearchPozadiga = PhotoImage(file="./src/img/Widget/searchPozadina.png")
         self.current_canvas.create_image(23, 53, image=self.imgsearchPozadiga, anchor='nw')
@@ -49,28 +50,14 @@ class ProgramiWindow:
             "Opis" : "opis"
         }
         self.current_canvas.create_text(450,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch=self.create_comboBox(self.current_canvas,self.kriterijumi)
-        self.cmbbxSearch.place(x=524,y=55)
+        self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,524,55)
         
         self.create_table()
-        
-    def create_comboBox(self,canvas,values):
-        return ctk.CTkComboBox(canvas,width=148,height=33,corner_radius=5,border_width=0, values=values,fg_color="#080A17",dropdown_fg_color="#080A17",button_color="#0D1026",state="readonly")
-        
+           
     def create_entry_search(self):
-        self.entrySearch = self.create_entry(canvas=self.current_canvas,x=28,y=59,placeholder="Pretraži",on_focus_in=self.on_entry_click,on_focus_out=self.on_focus_out,corner_radius=0)
+        self.entrySearch = wid.create_entry(canvas=self.current_canvas,x=28,y=59,placeholder="Pretraži",on_focus_in=self.on_entry_click,on_focus_out=self.on_focus_out,corner_radius=0)
         self.entrySearch.bind("<Return>", lambda event:self.pretrazi())
         self.entrySearch.bind("<KeyRelease>", lambda event: self.pretrazi())
-
-        
-    def create_button(self, image_path, x, y, width, height, command):
-        image = PhotoImage(file=image_path)
-        button = Button(self.current_canvas,
-            image=image, borderwidth=0, highlightthickness=0, command=command, relief="flat"
-        )
-        button.image = image  
-        button.place(x=x, y=y, width=width, height=height)
-        return button
     
     def on_entry_click(self,event):
         if self.entrySearch.get() == "Pretraži":
@@ -181,10 +168,10 @@ class ProgramiWindow:
         self.trenutni_window.resizable(False,False)
         helperFunctions.centerWindow(self.trenutni_window)
 
-        self.cmbbxSifre=self.napravi_sql_cmbbx(self.trenutni_window,"Šifra:",64,39,172,31,"SELECT id_programa FROM Program") #Kombo box za id
-        self.cmbbxNaziv=self.napravi_sql_cmbbx(self.trenutni_window,"Naziv:",56,78,172,72,"SELECT DISTINCT naziv FROM Program") #Kombo box za naziv
-        self.filt_cmbbxVrsteTreninga=self.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT DISTINCT Vrste_treninga.naziv FROM Program JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga") #Kombo box za naziv
-        self.filt_cmbbxInstruktor=self.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,233,172,225,"SELECT DISTINCT Korisnici.ime FROM Program JOIN Korisnici ON Program.id_instruktora = Korisnici.username") #Kombo box za naziv
+        self.cmbbxSifre=wid.napravi_sql_cmbbx(self.trenutni_window,"Šifra:",64,39,172,31,"SELECT id_programa FROM Program") #Kombo box za id
+        self.cmbbxNaziv=wid.napravi_sql_cmbbx(self.trenutni_window,"Naziv:",56,78,172,72,"SELECT DISTINCT naziv FROM Program") #Kombo box za naziv
+        self.filt_cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT DISTINCT Vrste_treninga.naziv FROM Program JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga") #Kombo box za naziv
+        self.filt_cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,233,172,225,"SELECT DISTINCT Korisnici.ime FROM Program JOIN Korisnici ON Program.id_instruktora = Korisnici.username") #Kombo box za naziv
         
         naziv = self.naziv if self.naziv != "" else "SVE"
         self.cmbbxNaziv.set(naziv)
@@ -213,8 +200,8 @@ class ProgramiWindow:
         self.slajder.set([self.trajanjeOd,self.trajanjeDo])
         
         
-        self.entryTrajanjeOd=self.create_entry(canvas=self.trenutni_window,x=32,y=166,width=59,height=18,on_focus_in=self.on_entry_trajanjeOd_click,on_focus_out=self.on_focus_out_trajanjeOd)
-        self.entryTrajanjeDo=self.create_entry(canvas=self.trenutni_window,x=261,y=166,width=59,height=18,on_focus_in=self.on_entry_trajanjeDo_click,on_focus_out=self.on_focus_out_trajanjeDo)
+        self.entryTrajanjeOd=wid.create_entry(canvas=self.trenutni_window,x=32,y=166,width=59,height=18,on_focus_in=self.on_entry_trajanjeOd_click,on_focus_out=self.on_focus_out_trajanjeOd)
+        self.entryTrajanjeDo=wid.create_entry(canvas=self.trenutni_window,x=261,y=166,width=59,height=18,on_focus_in=self.on_entry_trajanjeDo_click,on_focus_out=self.on_focus_out_trajanjeDo)
         self.entryTrajanjeOd.bind("<Return>", lambda event:self.apdejtuj_slajder(self.entryTrajanjeOd.get(),self.trajanjeDo))
         self.entryTrajanjeDo.bind("<Return>", lambda event: self.apdejtuj_slajder(self.trajanjeOd, self.entryTrajanjeDo.get()))
         self.update_trajanje()
@@ -367,23 +354,23 @@ class ProgramiWindow:
         slctd_opis=slctd_data["values"][6]
         
         #Izmeni specificniwidgeti
-        self.cmbbxVrsteTreninga=self.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga",2,True) #Kombo box za naziv
-        self.cmbbxInstruktor=self.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1",3,True) #Kombo box za naziv
+        self.cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga",2,True) #Kombo box za naziv
+        self.cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1",3,True) #Kombo box za naziv
         
         self.selektuj_pravi(self.cmbbxVrsteTreninga,slctd_vrsta_treninga)
         self.selektuj_pravi(self.cmbbxInstruktor,slctd_instruktor)
         
-        self.entrySifra = self.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True,placeholder=slctd_id,state="disabled")
+        self.entrySifra = wid.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True,placeholder=slctd_id,state="disabled")
         
         self.zajednicke_Dodaj_Izmeni(slctd_naziv,slctd_trajanje,slctd_paket,slctd_opis,mode=1)
 
     def winProgrami_Dodaj(self):
         self.napravi_dodaj_izmeni_prozor()
         
-        self.cmbbxVrsteTreninga=self.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga",2,True) #Kombo box za naziv
-        self.cmbbxInstruktor=self.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1",3,True) #Kombo box za naziv
+        self.cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga",2,True) #Kombo box za naziv
+        self.cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1",3,True) #Kombo box za naziv
         
-        self.entrySifra = self.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True)
+        self.entrySifra = wid.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True)
         
         self.zajednicke_Dodaj_Izmeni(mode=0)
         
@@ -404,12 +391,12 @@ class ProgramiWindow:
         #ulaz za trajanje
         lblTrajanje = ctk.CTkLabel(self.trenutni_window, text="Trajanje:", font=("Inter",15 * -1),anchor='nw')
         lblTrajanje.place(x=46,y=169)
-        self.entryTrajanje = self.create_entry(self.trenutni_window,141,168,width=179,height=23,belo=True,placeholder=trajanje)
+        self.entryTrajanje = wid.create_entry(self.trenutni_window,141,168,width=179,height=23,belo=True,placeholder=trajanje)
         
         #ulaz za naziv programa
         lblNaziv = ctk.CTkLabel(self.trenutni_window, text="Naziv:", font=("Inter",15 * -1),anchor='nw')
         lblNaziv.place(x=58,y=79)
-        self.entryNaziv = self.create_entry(self.trenutni_window,141,74,width=179,height=23,placeholder=naziv,belo=True)
+        self.entryNaziv = wid.create_entry(self.trenutni_window,141,74,width=179,height=23,placeholder=naziv,belo=True)
         
         
         
