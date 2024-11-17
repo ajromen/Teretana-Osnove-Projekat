@@ -60,10 +60,66 @@ def create_comboBox(canvas,values,x,y):
         dropdown_fg_color="#080A17",
         button_color="#0D1026",
         state="readonly")
-    combo.place(x,y)
+    combo.place(x=x,y=y)
+    return combo
 
 def create_entry_search(canvas,pretrazi,on_click,on_focus_out):
     entrySearch = create_entry(canvas=canvas,x=28,y=59,placeholder="Pretraži",on_focus_in=on_click,on_focus_out=on_focus_out,corner_radius=0)
     entrySearch.bind("<Return>", lambda event: pretrazi())
     entrySearch.bind("<KeyRelease>", lambda event: pretrazi())
     return entrySearch
+
+def create_table(canvas,popuni_tabelu,kolone,x=31,y=112,width=787,height=401):
+    style = ttk.Style()
+    style.theme_use("default")
+    
+    style.configure("Treeview",
+                    background="#121633",
+                    foreground="white",
+                    rowheight=25,
+                    fieldbackground="#080A17",
+                    bordercolor="#343638",
+                    borderwidth=0)
+    style.map('Treeview', background=[('selected', '#3e4cb3')])
+    
+    style.configure("Treeview.Heading", background="#2d3680", foreground="white", relief="flat")
+    style.map("Treeview.Heading", background=[('active', '#3484F0')])
+        
+    table = ttk.Treeview(canvas, columns=kolone, show="headings", height=18)
+
+    for kolona in kolone:
+        table.heading(kolona, text=kolona.capitalize())
+        table.column(kolona, anchor="center", width=80)
+
+        popuni_tabelu(table)
+    
+    max_sirina = 200 
+    
+    for kolona in table["columns"]:
+        max_sirina_kolone = len(table.heading(kolona, "text"))+2
+        
+        for item in table.get_children():
+            deo_text = str(table.item(item, "values")[table["columns"].index(kolona)])
+            finalna_sirina = max(max_sirina_kolone, len(deo_text))
+        
+        table.column(kolona, width=min(finalna_sirina * 8 , max_sirina))
+
+    table.place(x=x, y=y, width=width, height=height)
+    return table
+
+def selektuj_vrednost_comboBox(komboBox,kriterijum):
+    vrednosti=komboBox.cget('values')
+    for vrednost in vrednosti:
+        if kriterijum.strip() == vrednost.strip():
+            komboBox.set(vrednost)
+            
+def create_label(window,text,x,y,font_size=15):
+    labela = ctk.CTkLabel(window, text=text, font=("Inter",font_size * -1),anchor='nw')
+    labela.place(x=x,y=y)
+    return labela
+
+"""self.table.column("instruktor", width=50)
+        self.table.column("trajanje", width=30)
+        self.table.column("potreban paket", width=50)
+        self.table.column("opis", width=50)
+        self.table.column("šifra", width=25)"""

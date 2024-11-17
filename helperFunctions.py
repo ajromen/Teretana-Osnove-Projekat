@@ -53,3 +53,11 @@ def centerWindow(window):
    window.geometry(f"{window_width}x{window_height}+{x}+{y}")
    window.focus()
    window.grab_set()
+
+def napravi_toplevel(width=343,height=485,title=""):
+   trenutni_window = ctk.CTkToplevel(fg_color='#000000')
+   trenutni_window.title(title)
+   trenutni_window.geometry(str(width)+"x"+str(height))
+   trenutni_window.resizable(False,False)
+   centerWindow(trenutni_window)
+   return trenutni_window

@@ -1,14 +1,7 @@
-import datetime
-import sys
 from tkinter import *
-from tkinter import ttk
 import customtkinter as ctk
-import sqlite3
-import os
-import ctypes
 import queries
 import helperFunctions
-from ctk_rangeslider import *
 import widgets as wid
 
 
@@ -22,7 +15,7 @@ class TreningWindow:
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
         self.current_canvas.place(x=230, y=0)        
         
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,self.switch_back_to_main)# EXit dugme
+        wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,lambda: self.main_window.unisti_trenutni_win())# EXit dugme
         wid.create_button(self.current_canvas,"./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
         wid.create_button(self.current_canvas,"./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winTrening_Dodaj()) # Dodaj Dugme
         wid.create_button(self.current_canvas,"./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winTrening_Izmeni()) # Izmeni Dugme
@@ -43,12 +36,12 @@ class TreningWindow:
             "Program" : "naziv_programa"
         }
         self.kriterijumi=["Šifra", "Sala", "Vreme početka", "Vreme kraja", "Dani nedelje", "Program"]
-        self.create_entry_search(self.current_canvas,self.kriterijumi,self.pretrazi,self.on_entry_click,self.on_focus_out)
+        self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi,self.on_entry_click,self.on_focus_out)
         
         self.current_canvas.create_text(450,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
         self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,x=524,y=55)
         
-        self.create_table()
+        self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,tuple(self.kriterijumi))
     
     def on_entry_click(self,event):
         if self.entrySearch.get() == "Pretraži":
@@ -59,46 +52,10 @@ class TreningWindow:
         if self.entrySearch.get() == "":
             self.entrySearch.insert(0, "Pretraži")
             self.entrySearch.configure(text_color="gray")
-    
-    def switch_back_to_main(self):
-        if self.current_canvas:
-            self.current_canvas.destroy()
-        self.main_window.unisti_trenutni_win()
 
-    def create_table(self):
-        style = ttk.Style()
-    
-        style.theme_use("default")
-    
-        style.configure("Treeview",
-                            background="#121633",
-                            foreground="white",
-                            rowheight=25,
-                            fieldbackground="#080A17",
-                            bordercolor="#343638",
-                            borderwidth=0)
-        style.map('Treeview', background=[('selected', '#3e4cb3')])
-    
-        style.configure("Treeview.Heading",
-                            background="#2d3680",
-                            foreground="white",
-                            relief="flat")
-        style.map("Treeview.Heading",
-                      background=[('active', '#3484F0')])
-        kolone = ("Šifra", "Sala", "Vreme početka", "Vreme kraja", "Dani nedelje", "Program")
-        self.table = ttk.Treeview(self.current_canvas, columns=kolone, show="headings", height=18)
-
-        for kolona in kolone:
-            self.table.heading(kolona, text=kolona.capitalize())
-            self.table.column(kolona, anchor="center", width=120)
-
-        self.popuni_tabelu()
-
-        self.table.place(x=31, y=112, width=787, height=401)
-
-    def popuni_tabelu(self):
-        for red in self.table.get_children():
-            self.table.delete(red)
+    def popuni_tabelu(self,tabela):
+        for red in tabela.get_children():
+            tabela.delete(red)
                 
         podaci=self.izlistaj()
         
@@ -108,29 +65,18 @@ class TreningWindow:
             sifra_programa=podatak[7]
             podatak[1]=str(sifra_sale)+" "+podatak[1]
             podatak[5]=str(sifra_programa)+" "+podatak[5]
-            self.table.insert("", "end", values=podatak)
+            tabela.insert("", "end", values=podatak)
 
     def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
         kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
-
-        if not kriterijum:
-            helperFunctions.obavestenje("Nije moguće pretražiti nepostijeći kriterijum.")
-            return
 
         for red in self.table.get_children():
             self.table.delete(red)
             
         if pretraga =="" or pretraga=="pretraži":
             pretraga=""
-        else:
-            if pretraga in "premium":
-                pretraga = 1
-            elif pretraga in "standard":
-                pretraga = 0  
-            else:
-                pass
-
+        
         podaci=self.izlistaj(pretraga=pretraga,kriterijum=kriterijum)
         
         for podatak in podaci:
@@ -140,9 +86,6 @@ class TreningWindow:
             podatak[1]=str(sifra_sale)+" "+podatak[1]
             podatak[5]=str(sifra_programa)+" "+podatak[5]
             self.table.insert("", "end", values=podatak)
-
-
-    
 
     def izlistaj(self,kriterijum='id_treninga',pretraga=""):              
         return queries.izlistaj_trening(pretraga,kriterijum)
@@ -171,12 +114,6 @@ class TreningWindow:
         except Exception as e:
             helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja trenigna: {e}")
             
-    
-    def selektuj_pravi(self,komboBox,kriterijum):
-        vrednosti=komboBox.cget('values')
-        for vrednost in vrednosti:
-            if kriterijum.strip() == vrednost.strip():
-                komboBox.set(vrednost)
                 
     def winTrening_Izmeni(self):
         slctd_item = self.table.selection()
@@ -184,7 +121,7 @@ class TreningWindow:
             helperFunctions.obavestenje(poruka="Niste odabrali nijedan trening za izmenu.")
             return
         
-        self.napravi_dodaj_izmeni_prozor()
+        self.trenutni_window=helperFunctions.napravi_toplevel(height=390,title="Izmeni trening")
         
         slctd_data = self.table.item(slctd_item)
         slctd_id = slctd_data["values"][0]
@@ -198,13 +135,13 @@ class TreningWindow:
         
         self.cmbbxSala=wid.napravi_sql_cmbbx(self.trenutni_window,"Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala",2,True) #Kombo box za naziv
         self.cmbbxProgram=wid.napravi_sql_cmbbx(self.trenutni_window,"Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program",2,True) #Kombo box za naziv
-        self.selektuj_pravi(self.cmbbxSala,slctd_sala)
-        self.selektuj_pravi(self.cmbbxProgram,slctd_program)
+        wid.selektuj_vrednost_comboBox(self.cmbbxSala,slctd_sala)
+        wid.selektuj_vrednost_comboBox(self.cmbbxProgram,slctd_program)
         
         self.zajednicke_Dodaj_Izmeni(slctd_vreme_pocetka,slctd_vreme_kraja,mode=1)
 
     def winTrening_Dodaj(self):
-        self.napravi_dodaj_izmeni_prozor()
+        self.trenutni_window=helperFunctions.napravi_toplevel(height=390,title="Dodaj trening")
         
         self.cmbbxSala=wid.napravi_sql_cmbbx(self.trenutni_window,"Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala",2,True) #Kombo box za naziv
         self.cmbbxProgram=wid.napravi_sql_cmbbx(self.trenutni_window,"Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program",2,True) #Kombo box za naziv
@@ -214,27 +151,19 @@ class TreningWindow:
         self.zajednicke_Dodaj_Izmeni(mode=0)
         
     def zajednicke_Dodaj_Izmeni(self,vreme_pocetka="00:00",vreme_kraja="00:00",mode=0,dani=""): # 0 za dodaj 1 za izmeni
-        #ulaz za sifru
-        lblSifra = ctk.CTkLabel(self.trenutni_window, text="Šifra:", font=("Inter",15 * -1),anchor='nw')
-        lblSifra.place(x=58,y=31)
+        wid.create_label(self.trenutni_window, text="Šifra:",x=58,y=31)
         
         #labele za vreme
-        lblTrajanje = ctk.CTkLabel(self.trenutni_window, text="Vreme početka:", font=("Inter",15 * -1),anchor='nw')
-        lblTrajanje.place(x=20,y=122)
-        lblSatiPocetak = ctk.CTkLabel(self.trenutni_window, text="h   :", font=("Inter",15 * -1),anchor='nw')
-        lblSatiPocetak.place(x=204,y=121)
-        lblMinutaPocetak = ctk.CTkLabel(self.trenutni_window, text="min", font=("Inter",15 * -1),anchor='nw')
-        lblMinutaPocetak.place(x=288,y=121)
+        wid.create_label(self.trenutni_window, text="Vreme početka:",x=20,y=122)
+        wid.create_label(self.trenutni_window, text="h   :",x=204,y=121)
+        wid.create_label(self.trenutni_window, text="min",x=288,y=121)
         
-        lblTrajanje = ctk.CTkLabel(self.trenutni_window, text="Vreme kraja:", font=("Inter",15 * -1),anchor='nw')
-        lblTrajanje.place(x=33,y=162)
-        lblSatiPocetak = ctk.CTkLabel(self.trenutni_window, text="h   :", font=("Inter",15 * -1),anchor='nw')
-        lblSatiPocetak.place(x=204,y=161)
-        lblMinutaPocetak = ctk.CTkLabel(self.trenutni_window, text="min", font=("Inter",15 * -1),anchor='nw')
-        lblMinutaPocetak.place(x=288,y=161)
+        wid.create_label(self.trenutni_window, text="Vreme kraja:",x=33,y=162)
+        wid.create_label(self.trenutni_window, text="h   :",x=204,y=161)
+        wid.create_label(self.trenutni_window, text="min",x=288,y=161)
         
-        lblMinutaPocetak = ctk.CTkLabel(self.trenutni_window, text="Dani:", font=("Inter",15 * -1),anchor='nw')
-        lblMinutaPocetak.place(x=23,y=243)
+        wid.create_label(self.trenutni_window, text="Dani:",x=23,y=243)
+        
         
         vreme_pocetka=(vreme_pocetka.strip()).split(":")
         pocetak_sati=vreme_pocetka[0]
@@ -250,7 +179,6 @@ class TreningWindow:
         self.entryKrajMinuti = wid.create_entry(self.trenutni_window,242,160,width=42,height=23,belo=True,placeholder=kraj_minuti)
         
         self.switch_dani(dani)
-
         
         #Kreiranje dugmadi za dane
         self.btnPon=self.button_dani("Pon",self.trenutni_window,16,272)
@@ -260,7 +188,6 @@ class TreningWindow:
         self.btnPet=self.button_dani("Pet",self.trenutni_window,196,272)
         self.btnSub=self.button_dani("Sub",self.trenutni_window,241,272)
         self.btnNed=self.button_dani("Ned",self.trenutni_window,286,272)
-        
         
         btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Sačuvaj", command=lambda: self.dodaj_izmeni(mode=mode))
         btnSacuvaj.place(x=102,y=325)
@@ -336,24 +263,18 @@ class TreningWindow:
         else:
             if(queries.dodaj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani, id_programa)): return
             helperFunctions.obavestenje(title="Dodaj program", poruka="Uspešno dodat program.")
+        
         queries.connection.commit()
-        self.popuni_tabelu()
+        self.popuni_tabelu(self.table)
+
+        self.entryPocetakSati=None
+        self.entryPocetakMinuti=None
+        self.entryKrajSati=None
+        self.entryKrajMinuti=None
         
         self.trenutni_window.destroy()
         self.trenutni_window=None
-        
-        
-        self.entryNaziv=None
-        self.entrySifra=None
-        self.cmbbxInstruktor=None
-        self.cmbbxVrsteTreninga=None
-        
-    def napravi_dodaj_izmeni_prozor(self):
-        self.trenutni_window = ctk.CTkToplevel(fg_color='#000000')
-        self.trenutni_window.title("Trening")
-        self.trenutni_window.geometry("343x390")
-        self.trenutni_window.resizable(False,False)
-        helperFunctions.centerWindow(self.trenutni_window) # Pravi se novi prozor za dodaj/izmeni
+            
         
     def button_dani(self,dan,window,x,y):
         aktiviran=self.dani_dict[dan]
