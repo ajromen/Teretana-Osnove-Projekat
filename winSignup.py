@@ -25,22 +25,11 @@ class SignupWindow:
  
     
     def create_canvas(self):
-        self.canvas = Canvas(
-            self.window,
-            bg="#03050B",
-            height=450,
-            width=760,
-            bd=0,
-            highlightthickness=0,
-            relief="ridge"
-        )
+        self.canvas = Canvas(self.window, bg="#03050B", height=450, width=760, bd=0, highlightthickness=0, relief="ridge")
         self.canvas.place(x=0, y=0)
         
-        self.imgPozadina = PhotoImage(file="src/img/Signup/image_1.png")
-        self.canvas.create_image(380, 225.0, image=self.imgPozadina)
-
-        self.imgLogo = PhotoImage(file="src/img/Logo/TopFormLogoBeliMali2.png")
-        self.canvas.create_image(201.0, 76.0, image=self.imgLogo)
+        self.imgPozadina=wid.create_canvas_image(self.canvas,"src/img/Signup/image_1.png",0, 0)
+        self.imgLogo=wid.create_canvas_image(self.canvas,"src/img/Logo/TopFormLogoBeliMali2.png",201-303//2, 76.0)
 
         self.text_id = self.canvas.create_text(39,172, anchor="nw", text="Dobrodošao/la, ", fill="#FFFFFF", font=("Inter SemiBold", 24 * -1))
         self.canvas.create_rectangle(41.0, 230, 352.0, 231, fill="#FFFFFF",outline="")

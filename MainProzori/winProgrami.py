@@ -25,11 +25,10 @@ class ProgramiWindow:
         self.uloga=="admin" and wid.create_button(self.current_canvas,"./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winProgrami_Izmeni()) # Izmeni Dugme
         self.uloga=="admin" and wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi_program) # Obrisi Dugme
         
-        self.imgsearchPozadiga = PhotoImage(file="./src/img/Widget/searchPozadina.png")
-        self.current_canvas.create_image(23, 53, image=self.imgsearchPozadiga, anchor='nw')
         
-        self.tabelaPozadina = PhotoImage(file="./src/img/Widget/tabelaPozadina.png")
-        self.current_canvas.create_image(23, 102, image=self.tabelaPozadina, anchor='nw')
+        self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/searchPozadina.png",23,53)
+        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
+
         
         self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
         

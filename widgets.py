@@ -137,8 +137,7 @@ def create_label(window,text,x,y,font_size=15):
     labela.place(x=x,y=y)
     return labela
 
-"""self.table.column("instruktor", width=50)
-        self.table.column("trajanje", width=30)
-        self.table.column("potreban paket", width=50)
-        self.table.column("opis", width=50)
-        self.table.column("šifra", width=25)"""
+def create_canvas_image(canvas,image_path,x,y):
+    image=PhotoImage(file=image_path)
+    canvas.create_image(x, y, image=image,anchor='nw')
+    return image

@@ -10,6 +10,7 @@ sys.path.append('./MainProzori')
 import winProgrami
 import winTrening
 import winClanovi
+import widgets as wid
 
 class MainWindow:
     def __init__(self,window):
@@ -38,18 +39,12 @@ class MainWindow:
         )
         self.canvas.place(x=0, y=0)
         
-        self.imgPozadina = PhotoImage(file="src/img/Main/imgPozadina.png")
-        self.canvas.create_image(655, 304, image=self.imgPozadina)
-        
-        self.imgLogo = PhotoImage(file="src/img/Logo/TopFormLogoBeliSrednji.png")
-        self.canvas.create_image(420+465//2, 180+142//2, image=self.imgLogo)
-        
-        self.imgUser = PhotoImage(file="src/img/Main/imgUser.png")
-        self.canvas.create_image(115, 31, image=self.imgUser)
+        self.imgPozadina = wid.create_canvas_image(self.canvas,"src/img/Main/imgPozadina.png",230, 0)
+        self.imgLogo = wid.create_canvas_image(self.canvas,"src/img/Logo/TopFormLogoBeliSrednji.png",445, 190)#465142
+        self.imgUser = wid.create_canvas_image(self.canvas,"src/img/Main/imgUser.png",0, 0)
 
         self.text_id_user = self.canvas.create_text(64,25, anchor="nw", text=self.username, fill="#FFFFFF", font=("Inter Medium", 12 * -1))
         self.text_id_date_time = self.canvas.create_text(475,313, anchor="nw", text="19:49 / Saturday /  01.11.2024", fill="#DFDFDF", font=("Inter", 24 * -1))
-        
         self.rect=self.canvas.create_rectangle(218.0, 0, 230.0, 63, fill="#FFFFFF",outline="")
 
     def create_widgets(self):

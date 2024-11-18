@@ -13,7 +13,7 @@ class TreningWindow:
 
     def start(self):
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
-        self.current_canvas.place(x=230, y=0)        
+          
         
         wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,lambda: self.main_window.unisti_trenutni_win())# EXit dugme
         wid.create_button(self.current_canvas,"./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
@@ -21,12 +21,10 @@ class TreningWindow:
         wid.create_button(self.current_canvas,"./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winTrening_Izmeni()) # Izmeni Dugme
         wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi_trening) # Obrisi Dugme
         
-        self.imgsearchPozadiga = PhotoImage(file="./src/img/Widget/searchPozadina.png")
-        self.current_canvas.create_image(23, 53, image=self.imgsearchPozadiga, anchor='nw')
-        
-        self.tabelaPozadina = PhotoImage(file="./src/img/Widget/tabelaPozadina.png")
-        self.current_canvas.create_image(23, 102, image=self.tabelaPozadina, anchor='nw')
-        
+        self.current_canvas.place(x=230, y=0)
+        self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/searchPozadina.png",23,53)
+        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
+         
         self.kriterijumiMap={
             "Šifra" : "id_treninga",
             "Sala" : "naziv_sale",
