@@ -25,14 +25,14 @@ class ClanoviWindow:
         self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
         
         self.kriterijumiMap={
-            "Šifra" : "id_treninga",
-            "Sala" : "naziv_sale",
-            "Vreme početka" : "vreme_pocetka",
-            "Vreme kraja" : "vreme_kraja",
-            "Dani nedelje" : "dani",
-            "Program" : "naziv_programa"
+            "Korisničko ime" : "username",
+            "Ime" : "ime",
+            "Prezime" : "prezime",
+            "Članstvo" : "status_clanstva",
+            "Paket" : "uplacen_paket",
+            "Datum registracije" : "datum_registracije"
         }
-        self.kriterijumi=["Šifra", "Sala", "Vreme početka", "Vreme kraja", "Dani nedelje", "Program"]
+        self.kriterijumi=["Korisničko ime", "Ime", "Prezime", "Članstvo", "Paket","Datum registracije","Broj rezervacija za protekli mesec"]
         self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
         
         self.current_canvas.create_text(450,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
@@ -49,10 +49,9 @@ class ClanoviWindow:
         
         for podatak in podaci:
             podatak=list(podatak)
-            sifra_sale=podatak[6]
-            sifra_programa=podatak[7]
-            podatak[1]=str(sifra_sale)+" "+podatak[1]
-            podatak[5]=str(sifra_programa)+" "+podatak[5]
+            username=podatak[0]
+            broj_rezervacija=queries.broj_rezervacija_za_mesec(username)
+            podatak.append(broj_rezervacija)
             tabela.insert("", "end", values=podatak)
 
     def pretrazi(self):
@@ -68,15 +67,10 @@ class ClanoviWindow:
         podaci=self.izlistaj(pretraga=pretraga,kriterijum=kriterijum)
         
         for podatak in podaci:
-            podatak=list(podatak)
-            sifra_sale=podatak[6]
-            sifra_programa=podatak[7]
-            podatak[1]=str(sifra_sale)+" "+podatak[1]
-            podatak[5]=str(sifra_programa)+" "+podatak[5]
             self.table.insert("", "end", values=podatak)
 
-    def izlistaj(self,kriterijum='id_treninga',pretraga=""):              
-        return queries.izlistaj_trening(pretraga,kriterijum)
+    def izlistaj(self,kriterijum='username',pretraga=""):              
+        return queries.izlistaj_korisnike(pretraga,kriterijum)
     
     def obrisi_trening(self):
         slctd_item = self.table.selection()

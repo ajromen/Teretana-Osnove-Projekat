@@ -86,7 +86,7 @@ INSERT INTO Termin(id_termina, datum_odrzavanja, id_treninga)
 			("1245MK",'2024-01-10',"1245");
 
 INSERT INTO Rezervacija(id_rezervacije, id_korisnika, id_termina, oznaka_reda_kolone, datum)
-	VALUES  (1,'aqua',"1111AA",9,'2024-01-06'),
+	VALUES  (1,'aqua',"1111AA",9,'2024-11-11'),
 			(2,'rolex',"6421KM",1,'2024-01-01'),
 			(3,'dragan',"0909PJ",3,'2024-01-09'),
 			(4,'nekoime',"1245MK",4,'2024-01-10'),

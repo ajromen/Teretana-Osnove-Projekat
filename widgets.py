@@ -110,10 +110,10 @@ def create_table(canvas,popuni_tabelu,kolone,x=31,y=112,width=787,height=401):
         table.heading(kolona, text=kolona.capitalize())
         table.column(kolona, anchor="center", width=80)
 
-        popuni_tabelu(table)
+    popuni_tabelu(table)
     
+    #menjanje sirina kolona
     max_sirina = 200 
-    
     for kolona in table["columns"]:
         max_sirina_kolone = len(table.heading(kolona, "text"))+2
         

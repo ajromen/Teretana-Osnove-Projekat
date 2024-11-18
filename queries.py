@@ -238,3 +238,45 @@ def azuriraj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_p
                             id_programa=?
                         WHERE id_treninga=?''',(id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa,id,))
     return False
+def izlistaj_korisnike(pretraga,kriterijum):
+    pretraga=str(pretraga)
+    kriterijum = kriterijum.strip()
+    pretraga = pretraga.strip()
+
+    komanda=''' SELECT 
+                    username,
+                    ime,
+                    prezime,
+                    CASE 
+                        WHEN status_clanstva = 0 THEN 'Neaktiviran'
+                        WHEN status_clanstva = 1 THEN 'Aktiviran'
+                    END AS status_clanstva,
+                    CASE 
+                        WHEN uplacen_paket = 0 THEN 'Standard'
+                        WHEN uplacen_paket = 1 THEN 'Premium'
+                    END AS uplacen_paket,
+                    datum_registracije
+                FROM 
+                    Korisnici
+                WHERE uloga=0 AND '''
+       
+    komanda += f'''{kriterijum} LIKE ?;'''
+    cursor.execute(komanda, ('%' + str(pretraga) + '%',))
+    
+    return cursor.fetchall()
+
+def broj_rezervacija_za_mesec(username):
+    username=str(username)
+    username.strip()
+    komanda = """
+        SELECT COUNT(*) AS broj_rezervacija
+        FROM Rezervacija
+        WHERE id_korisnika = ?
+        AND datum >= DATE('now', '-1 month')
+        AND datum <= DATE('now');
+        """
+    
+    cursor.execute(komanda, (username,))
+    vrati = cursor.fetchone()
+    print(vrati)
+    return vrati[0]
