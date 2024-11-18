@@ -36,22 +36,13 @@ class TreningWindow:
             "Program" : "naziv_programa"
         }
         self.kriterijumi=["Šifra", "Sala", "Vreme početka", "Vreme kraja", "Dani nedelje", "Program"]
-        self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi,self.on_entry_click,self.on_focus_out)
+        self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
         
         self.current_canvas.create_text(450,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
         self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,x=524,y=55)
         
         self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,tuple(self.kriterijumi))
-    
-    def on_entry_click(self,event):
-        if self.entrySearch.get() == "Pretraži":
-            self.entrySearch.delete(0, END)
-            self.entrySearch.configure(text_color="white")
 
-    def on_focus_out(self,event):
-        if self.entrySearch.get() == "":
-            self.entrySearch.insert(0, "Pretraži")
-            self.entrySearch.configure(text_color="gray")
 
     def popuni_tabelu(self,tabela):
         for red in tabela.get_children():

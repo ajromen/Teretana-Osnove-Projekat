@@ -17,12 +17,12 @@ def create_button(canvas,image_path, x, y, width, height, command):
     button.place(x=x, y=y, width=width, height=height)
     return button
 
-def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='', show='',width=303,height=20,belo=False,state="normal",corner_radius=5):
+def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",manual_fin_fon=(False,"Polje")):
     entry = ctk.CTkEntry(
         canvas,border_width=0,
-        fg_color="#080A17",
+        fg_color= back_color,
         text_color="#FFFFFF",
-        show=show,width=width,height=height,
+        width=width,height=height,
         corner_radius=corner_radius
     )
     entry.place(x=x, y=y,)
@@ -31,9 +31,28 @@ def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder=
     not belo and entry.configure(text_color="gray")
     belo and entry.configure(text_color="white")
     entry.configure(state=state)
-    entry.bind("<FocusIn>", on_focus_in)
-    entry.bind("<FocusOut>", on_focus_out)
+    if(manual_fin_fon[0]):
+        prikazi='•' if manual_fin_fon[1]=="Lozinka" else ''
+        entry.bind("<FocusIn>", lambda event: on_entry_click(entry,placeholder,show=prikazi))
+        entry.bind("<FocusOut>", lambda event: on_entry_out(entry,placeholder))
+    else:
+        entry.bind("<FocusIn>", command=on_focus_in)
+        entry.bind("<FocusOut>", command=on_focus_out)
     return entry
+
+def on_entry_click(entry, placeholder, color_active="white",show=''):
+    if entry.get() == placeholder:
+        entry.delete(0, "end")
+        entry.configure(text_color=color_active)
+        if placeholder == "Lozinka":
+            entry.configure(show=show)
+
+def on_entry_out(entry, placeholder, color_inactive="gray",show=''):
+    if entry.get() == "":
+        entry.insert(0, placeholder)
+        entry.configure(text_color=color_inactive)
+        if placeholder == "Lozinka":
+            entry.configure(show=show)
 
 def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=1,specificni=False):
     lblSifra = ctk.CTkLabel(canvas, text=text, font=("Inter",15 * -1),anchor='nw')
@@ -63,8 +82,8 @@ def create_comboBox(canvas,values,x,y):
     combo.place(x=x,y=y)
     return combo
 
-def create_entry_search(canvas,pretrazi,on_click,on_focus_out):
-    entrySearch = create_entry(canvas=canvas,x=28,y=59,placeholder="Pretraži",on_focus_in=on_click,on_focus_out=on_focus_out,corner_radius=0)
+def create_entry_search(canvas,pretrazi):
+    entrySearch = create_entry(canvas=canvas,x=28,y=59,placeholder="Pretraži",corner_radius=0,manual_fin_fon=(True,"Polje"))
     entrySearch.bind("<Return>", lambda event: pretrazi())
     entrySearch.bind("<KeyRelease>", lambda event: pretrazi())
     return entrySearch

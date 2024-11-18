@@ -1,6 +1,6 @@
 from customtkinter import *
 import queries
-import helperFunctions
+sys.path.append('./MainProzori')
 import winLogin
 import winSignup
 import winMain

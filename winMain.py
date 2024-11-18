@@ -20,24 +20,12 @@ class MainWindow:
         self.username=username
         self.uloga=self.nadji_ulogu(uloga)
         self.return_value = 0
-        self.setup_window()
+        helperFunctions.setup_window(self.window,"TopForm","1080x608","#04050C")
         self.create_canvas()
         self.create_widgets()
         self.window.mainloop()
         return self.return_value
-    
-    def setup_window(self):
-        ctk.set_appearance_mode("Dark")
-        self.window.title("TopForm")
-        self.window.geometry("1080x608")
-        self.window.configure(bg = "#04050C")
-        self.window.resizable(False, False)
-        helperFunctions.centerWindow(self.window)
-        self.window.iconbitmap("src/img/Logo/TFLogo.ico")
-        if os.name == "nt":
-            app_id = "mycompany.myapp.subapp"
-            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
-            
+
     def create_canvas(self):
         self.canvas = Canvas(
             self.window,

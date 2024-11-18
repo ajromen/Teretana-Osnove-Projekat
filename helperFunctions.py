@@ -1,4 +1,6 @@
+import ctypes
 import hashlib
+import os
 import customtkinter as ctk
 from tkinter import *
 
@@ -41,6 +43,17 @@ def pitaj(poruka,title="Greška",text1="Da",text2="Ne"):
 
    return result["value"]
    
+def setup_window(window,title,width_height,bg_color="#000000"):
+   ctk.set_appearance_mode("Dark")
+   window.title(title)
+   window.geometry(width_height)
+   window.configure(bg = bg_color)
+   window.resizable(False, False)
+   centerWindow(window)
+   window.iconbitmap("src/img/Logo/TFLogo.ico")
+   if os.name == "nt":
+      app_id = "mycompany.myapp.subapp"
+      ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
         
 def centerWindow(window):
    window.update_idletasks()

@@ -31,7 +31,7 @@ class ProgramiWindow:
         self.tabelaPozadina = PhotoImage(file="./src/img/Widget/tabelaPozadina.png")
         self.current_canvas.create_image(23, 102, image=self.tabelaPozadina, anchor='nw')
         
-        self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi,self.on_entry_click,self.on_focus_out)
+        self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
         
         self.kriterijumi=["Šifra", "Naziv", "Vrsta treninga", "Trajanje", "Instruktor", "Potreban paket", "Opis"]
         self.kriterijumiMap={
@@ -48,16 +48,6 @@ class ProgramiWindow:
         
         self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,self.kriterijumi)
            
-    def on_entry_click(self,event):
-        if self.entrySearch.get() == "Pretraži":
-            self.entrySearch.delete(0, END)
-            self.entrySearch.configure(text_color="white")
-
-    def on_focus_out(self,event):
-        if self.entrySearch.get() == "":
-            self.entrySearch.insert(0, "Pretraži")
-            self.entrySearch.configure(text_color="gray")
-
 
     def popuni_tabelu(self,tabela):
         for red in tabela.get_children():
@@ -93,20 +83,6 @@ class ProgramiWindow:
         
         for podatak in podaci:
             self.table.insert("", "end", values=podatak)
-
-    def create_entry(self, canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='', show='',width=303,height=20,belo=False,state="normal",corner_radius=5):
-        entry = ctk.CTkEntry(
-            canvas,border_width=0,fg_color="#080A17", text_color="#FFFFFF", show=show,width=width,height=height,corner_radius=corner_radius
-        )
-        entry.place(x=x, y=y,)
-        entry.delete(0,END)
-        entry.insert(0, placeholder)
-        not belo and entry.configure(text_color="gray")
-        belo and entry.configure(text_color="white")
-        entry.configure(state=state)
-        entry.bind("<FocusIn>", on_focus_in)
-        entry.bind("<FocusOut>", on_focus_out)
-        return entry
 
     def winProgramiFilteri(self):
         self.trenutni_window = ctk.CTkToplevel(fg_color='#000000')
@@ -147,8 +123,8 @@ class ProgramiWindow:
         self.slajder.set([self.trajanjeOd,self.trajanjeDo])
         
         
-        self.entryTrajanjeOd=wid.create_entry(canvas=self.trenutni_window,x=32,y=166,width=59,height=18,on_focus_in=self.on_entry_trajanjeOd_click,on_focus_out=self.on_focus_out_trajanjeOd)
-        self.entryTrajanjeDo=wid.create_entry(canvas=self.trenutni_window,x=261,y=166,width=59,height=18,on_focus_in=self.on_entry_trajanjeDo_click,on_focus_out=self.on_focus_out_trajanjeDo)
+        self.entryTrajanjeOd=wid.create_entry(canvas=self.trenutni_window,x=32,y=166,width=59,height=18,manual_fin_fon=(True,"Polje"))
+        self.entryTrajanjeDo=wid.create_entry(canvas=self.trenutni_window,x=261,y=166,width=59,height=18,manual_fin_fon=(True,"Polje"))
         self.entryTrajanjeOd.bind("<Return>", lambda event:self.apdejtuj_slajder(self.entryTrajanjeOd.get(),self.trajanjeDo))
         self.entryTrajanjeDo.bind("<Return>", lambda event: self.apdejtuj_slajder(self.trajanjeOd, self.entryTrajanjeDo.get()))
         self.update_trajanje()
