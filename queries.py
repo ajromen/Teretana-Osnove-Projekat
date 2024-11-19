@@ -8,7 +8,6 @@ import re
 connection=sqlite3.connect("Teretana.db")
 cursor=connection.cursor()
 
-
 def executeScriptsFromFile(filename):
     file = open(filename, 'r', encoding='utf-8')
     sqlFile = file.read()
@@ -22,15 +21,15 @@ def executeScriptsFromFile(filename):
         except sqlite3.OperationalError as msg:
             print("Command skipped: ", msg," OVA KOMANDA:"+str(i))
             
-def napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije):
+def napraviNalog(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine):
     cursor.execute("SELECT * FROM Korisnici WHERE username=?",(username,))
     if(len(cursor.fetchall())>0):
         helperFunctions.obavestenje("Nalog sa korisničkim imenom već postoji")
         return 0
     password=helperFunctions.hashPassword(password)
-    komanda='''INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
-	 VALUES (?, ?, ?, ?, ?, ?, ?, ?);'''
-    cursor.execute(komanda, (username, password, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije))
+    komanda='''INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine)
+	 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);'''
+    cursor.execute(komanda, (username, password, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije, obnova_clanarine))
     
     cursor.execute("SELECT username, uloga FROM Korisnici WHERE username=?",(username,))
     return cursor.fetchall()
@@ -41,12 +40,27 @@ def napraviGosta():
     cursor.execute("SELECT username FROM Korisnici where username=?", (username,))
     if(cursor.fetchone() is None):
         datum=datetime.datetime.now().strftime("%Y-%m-%d")
-        napraviNalog(username,"","","",-1,0,0,datum)
+        napraviNalog(username,"","","",-1,0,0,datum,None)
     return username
 
-def  restartuj_bazu():
+def restartuj_bazu():
+    global connection, cursor
+    try:
+        connection.close()
+    except e:
+        pass
+
+    if os.path.exists("Teretana.db"):
+        os.remove("Teretana.db")
+
+    connection = sqlite3.connect("Teretana.db")
+    cursor = connection.cursor()
+
     executeScriptsFromFile("src/sql/Teretana.sql")
     executeScriptsFromFile("src/sql/TeretanaUnosPodataka.sql")
+    
+    print("Baza uspesno resetovana")
+    
 
 def obrisiKorisnika(username):
     if(username==""): return
@@ -58,22 +72,23 @@ def obrisi_rezervaciju(id_rezervacije):
     cursor.execute("DELETE FROM Rezervacija WHERE id_rezervacije=?", (id_rezervacije,))
     connection.commit()
 
-def azurirajNalog(stariUsername,username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije):
+def azurirajNalog(stariUsername,username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine):
     cursor.execute("SELECT * FROM Korisnici WHERE username=?",(stariUsername,))
     if(len(cursor.fetchall())>0):
         password=helperFunctions.hashPassword(password)
-        komanda=f'''UPDATE Korisnici 
-                    SET username='{username}', 
-                        password='{password}', 
-                        ime='{ime}', 
-                        prezime='{prezime}', 
-                        uloga={uloga},
-                        status_clanstva={status_clanstva},
-                        uplacen_paket={uplacen_paket},
-                        datum_registracije='{datum_registracije}'
-                   WHERE username='{stariUsername}';
+        komanda='''UPDATE Korisnici 
+                    SET username=?, 
+                        password=?, 
+                        ime=?, 
+                        prezime=?, 
+                        uloga=?,
+                        status_clanstva=?,
+                        uplacen_paket=?,
+                        datum_registracije=?,
+                        obnova_clanarine=?
+                   WHERE username=?;
                    '''
-        cursor.execute(komanda)
+        cursor.execute(komanda,(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine,stariUsername,))
         
         cursor.execute("SELECT username, uloga FROM Korisnici WHERE username='"+username+"'")
         return cursor.fetchall()
@@ -255,7 +270,8 @@ def izlistaj_korisnike(pretraga,kriterijum):
                         WHEN uplacen_paket = 0 THEN 'Standard'
                         WHEN uplacen_paket = 1 THEN 'Premium'
                     END AS uplacen_paket,
-                    datum_registracije
+                    datum_registracije,
+                    obnova_clanarine
                 FROM 
                     Korisnici
                 WHERE uloga=0 AND '''
@@ -278,5 +294,13 @@ def broj_rezervacija_za_mesec(username):
     
     cursor.execute(komanda, (username,))
     vrati = cursor.fetchone()
-    print(vrati)
     return vrati[0]
+
+def proveri_status_korisnika():
+    komanda="SELECT * FROM Korisnici WHERE uloga=0 AND obnova_clanarine<DATE('now', '-1 month')"
+    cursor.execute(komanda)
+    korisnici=cursor.fetchall()
+    if(len(korisnici)==0): return
+    for korisnik in korisnici:
+        komanda="UPDATE Korisnici SET status_clanstva=0,obnova_clanarine='1960-01-01' WHERE username=?"
+        cursor.execute(komanda,(korisnik[0],))

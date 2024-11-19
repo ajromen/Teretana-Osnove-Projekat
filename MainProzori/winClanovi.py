@@ -17,12 +17,9 @@ class ClanoviWindow:
         
         wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,lambda: self.main_window.unisti_trenutni_win())# EXit dugme
         wid.create_button(self.current_canvas,"./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winTrening_Dodaj()) # Dodaj Dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winTrening_Izmeni()) # Izmeni Dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi_trening) # Obrisi Dugme
         
         self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/searchPozadina.png",23,53)
-        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
+        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina_duza.png",23,102)
         
         self.kriterijumiMap={
             "Korisničko ime" : "username",
@@ -30,15 +27,23 @@ class ClanoviWindow:
             "Prezime" : "prezime",
             "Članstvo" : "status_clanstva",
             "Paket" : "uplacen_paket",
-            "Datum registracije" : "datum_registracije"
+            "Datum registracije" : "datum_registracije",
+            "Članarina obnovljena" : "obnova_clanarine"
         }
-        self.kriterijumi=["Korisničko ime", "Ime", "Prezime", "Članstvo", "Paket","Datum registracije","Broj rezervacija za protekli mesec"]
+        self.kriterijumi=["Korisničko ime", "Ime", "Prezime", "Članstvo", "Paket","Datum registracije","Članarina obnovljena","Broj rezervacija"]
         self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
         
-        self.current_canvas.create_text(450,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,x=524,y=55)
+        self.current_canvas.create_text(610,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
+        self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,x=681,y=53)
+        self.cmbbxSearch.configure(values=self.kriterijumi[:-1])
         
-        self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,tuple(self.kriterijumi))
+        self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,tuple(self.kriterijumi),height=462)
+        self.table.column("Korisničko ime", width=90)
+        self.table.column("Ime", width=100)
+        self.table.column("Prezime", width=100)
+        self.table.column("Datum registracije", width=100)
+        self.table.column("Članarina obnovljena", width=120)
+        self.table.bind("<Double-2>",print("IJao"))
     
 
     def popuni_tabelu(self,tabela):
@@ -52,7 +57,9 @@ class ClanoviWindow:
             username=podatak[0]
             broj_rezervacija=queries.broj_rezervacija_za_mesec(username)
             podatak.append(broj_rezervacija)
-            tabela.insert("", "end", values=podatak)
+            if(broj_rezervacija>1):
+                tabela.insert("", "end", values=podatak,tags="za_aktivaciju")
+            else: tabela.insert("", "end", values=podatak)
 
     def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
@@ -63,38 +70,33 @@ class ClanoviWindow:
             
         if pretraga =="" or pretraga=="pretraži":
             pretraga=""
+        else:
+            if pretraga in "premium":
+                pretraga = 1
+            elif pretraga in "standard":
+                pretraga = 0  
+            elif pretraga in "aktiviran":
+                pretraga = 1
+            elif pretraga in "neaktiviran":
+                pretraga = 0  
+            else:
+                pass
         
         podaci=self.izlistaj(pretraga=pretraga,kriterijum=kriterijum)
         
         for podatak in podaci:
-            self.table.insert("", "end", values=podatak)
+            podatak=list(podatak)
+            username=podatak[0]
+            broj_rezervacija=queries.broj_rezervacija_za_mesec(username)
+            podatak.append(broj_rezervacija)
+            if(broj_rezervacija>1):
+                self.table.insert("", "end", values=podatak,tags="za_aktivaciju")
+            else: self.table.insert("", "end", values=podatak)
 
     def izlistaj(self,kriterijum='username',pretraga=""):              
         return queries.izlistaj_korisnike(pretraga,kriterijum)
     
-    def obrisi_trening(self):
-        slctd_item = self.table.selection()
-        if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijedan trening za brisanje.")
-            return
 
-        pitaj = helperFunctions.pitaj(title="Potvrda brisanja", poruka="Da li ste sigurni da želite da obiršete odabrani trening?")
-        if not pitaj:
-            return
-
-        slctd_data = self.table.item(slctd_item)
-        trening_id = slctd_data["values"][0]  
-
-        try:
-            komanda = "DELETE FROM Trening WHERE id_treninga = ?"
-            queries.cursor.execute(komanda, (trening_id,))
-            queries.connection.commit()
-
-            self.table.delete(slctd_item)
-            helperFunctions.obavestenje(title="Brisanje", poruka="Trening je uspešno obrisan.")
-
-        except Exception as e:
-            helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja trenigna: {e}")
             
                 
     def winTrening_Izmeni(self):

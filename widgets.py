@@ -105,6 +105,7 @@ def create_table(canvas,popuni_tabelu,kolone,x=31,y=112,width=787,height=401):
     style.map("Treeview.Heading", background=[('active', '#3484F0')])
         
     table = ttk.Treeview(canvas, columns=kolone, show="headings", height=18)
+    table.tag_configure("za_aktivaciju", background="#19682D", foreground="white")
 
     for kolona in kolone:
         table.heading(kolona, text=kolona.capitalize())

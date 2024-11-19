@@ -27,7 +27,8 @@ class ProgramiWindow:
         
         
         self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/searchPozadina.png",23,53)
-        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
+        if self.uloga=="admin": self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
+        else: self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina_duza.png",23,102)
 
         
         self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
@@ -42,10 +43,15 @@ class ProgramiWindow:
             "Potreban paket" : "potreban_paket",
             "Opis" : "opis"
         }
+        
         self.current_canvas.create_text(450,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
         self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,524,55)
         
-        self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,self.kriterijumi)
+        if self.uloga=="admin":tabela_hieight=401
+        else: tabela_hieight=462
+        self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,self.kriterijumi,height=tabela_hieight)
+        self.table.column("Potreban paket",width=100)
+        self.table.column("Opis",width=100)
            
 
     def popuni_tabelu(self,tabela):

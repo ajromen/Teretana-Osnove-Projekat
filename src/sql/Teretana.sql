@@ -10,7 +10,8 @@ CREATE TABLE Korisnici
 	  uloga SMALLINT,
 	  status_clanstva BOOLEAN,
 	  uplacen_paket BOOLEAN,
-	  datum_registracije DATE
+	  datum_registracije DATE,
+	  obnova_clanarine DATE
 	  );
 
 DROP TABLE IF EXISTS Trening;
@@ -64,7 +65,7 @@ DROP TABLE IF EXISTS Rezervacija;
 CREATE TABLE Rezervacija 
 	( id_rezervacije INTEGER PRIMARY KEY NOT NULL,
 	  id_korisnika CHAR(25),--
-	  id_termina INTEGER,--
+	  id_termina CHAR(6),--
 	  oznaka_reda_kolone INTEGER,
 	  datum DATE,
 	  FOREIGN KEY (id_korisnika) REFERENCES Korisnici(username)

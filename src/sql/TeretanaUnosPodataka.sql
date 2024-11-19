@@ -1,20 +1,20 @@
 PRAGMA foreign_keys = ON;
 
-INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije)
-	VALUES  ('admin','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', NULL, NULL, 2, NULL, NULL, NULL),
-			('donald', 'ea94aac9173c51185e3358cf16c30d7150157e5fa584c2ba11bddea64f79178c', 'Donald', 'Tramp', 2, NULL, NULL, '2024-11-09'),
+INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine)
+	VALUES  ('admin','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', NULL, NULL, 2, NULL, NULL, NULL, NULL),
+			('donald', 'ea94aac9173c51185e3358cf16c30d7150157e5fa584c2ba11bddea64f79178c', 'Donald', 'Tramp', 2, NULL, NULL, '2024-11-09', NULL),
 			-- Instruktori --
-			("milovan", '1d9e5f02731c9caaccb9edb760273a55f19e6d45bbe3c6e173d416d6b7d9a66d', 'Milovan', 'Arsenović', 1, NULL, NULL, '2024-11-09'),
-			('ljuba', 'a2018358dbac5a9a2e45b3ebe0341611ef74772d9f1e02259003956c39330824', 'Ljubinka', 'Leposavić', 1, NULL, NULL, '2024-11-09'),
-			('momir', 'c6476556a13b4d96f1c86143979bbf68f2586861f462aef3c1bc65bb214a0cbd', 'Momir', 'Stanojević', 1, NULL, NULL, '2024-11-09'),
-			('milica', '6de0eacc1cb7082381fb0424a9362a148dbaf8c0e828d970bdf89a966b17e115', 'Milica', 'Adamović', 1, NULL, NULL, '2024-11-09'),
+			("milovan", '1d9e5f02731c9caaccb9edb760273a55f19e6d45bbe3c6e173d416d6b7d9a66d', 'Milovan', 'Arsenović', 1, NULL, NULL, '2024-11-09', NULL),
+			('ljuba', 'a2018358dbac5a9a2e45b3ebe0341611ef74772d9f1e02259003956c39330824', 'Ljubinka', 'Leposavić', 1, NULL, NULL, '2024-11-09', NULL),
+			('momir', 'c6476556a13b4d96f1c86143979bbf68f2586861f462aef3c1bc65bb214a0cbd', 'Momir', 'Stanojević', 1, NULL, NULL, '2024-11-09', NULL),
+			('milica', '6de0eacc1cb7082381fb0424a9362a148dbaf8c0e828d970bdf89a966b17e115', 'Milica', 'Adamović', 1, NULL, NULL, '2024-11-09', NULL),
 			-- Korisnici --
-			('nekoime', '61fe830be79fdb5beb2a858e96764346e0e0a914dce5470a7a3c85b284ab1643', 'Aleksandar', 'Pavlović', 0, 1, 0, '2024-11-09'),
-			('aqua', 'aca3dddfa02ed7bb64a0248be5980963da0f610430e2c83aa40d5ee673c405da', 'Akva', 'Vivić', 0, 1, 0, '2024-11-09'),
-			('dragan', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', 'Dragan', 'Nedeljković', 0, 1, 0, '2024-11-09'),
-			('rolex', 'fd1bb71bf48668c662f44a0ae0213cbaa2a34c3099076cc2b20a1312d84bff2c', 'Rolex', 'Jovanović', 0, 1, 0, '2024-11-09'),
+			('nekoime', '61fe830be79fdb5beb2a858e96764346e0e0a914dce5470a7a3c85b284ab1643', 'Aleksandar', 'Pavlović', 0, 1, 0, '2024-11-09', '2024-01-09'),
+			('aqua', 'aca3dddfa02ed7bb64a0248be5980963da0f610430e2c83aa40d5ee673c405da', 'Akva', 'Vivić', 0, 1, 0, '2024-11-09', '2024-11-09'),
+			('dragan', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', 'Dragan', 'Nedeljković', 0, 1, 0, '2024-11-09', '2024-11-09'),
+			('rolex', 'fd1bb71bf48668c662f44a0ae0213cbaa2a34c3099076cc2b20a1312d84bff2c', 'Rolex', 'Jovanović', 0, 1, 0, '2024-11-09', '2024-11-09'),
 			-- Gosti --
-			('gost', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', NULL, NULL, -1, NULL, NULL, NULL);
+			('gost', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', NULL, NULL, -1, NULL, NULL, NULL, NULL);
 
 
 			
@@ -39,36 +39,7 @@ INSERT INTO Program(id_programa, naziv, id_vrste_treninga, trajanje, id_instrukt
 			(2,"Izvajajte telo uz Ljubinku", 2, 60, "ljuba", 0, ""),
 			(3,"Fontana Mladosti - Milovan", 4, 30, "milovan", 1, ""),
 			(4,"Milica do pobede", 5, 45, "milica", 1, ""),
-			(5,"Od mama za mame - Momir", 6, 45, "milica", 1, ""),
-			(20,"Izvajajte telo uz Ljubinku", 2, 60, "ljuba", 0, ""),
-			(30,"Fontana Mladosti - Milovan", 4, 30, "milovan", 1, ""),
-			(40,"Milica do pobede", 5, 45, "milica", 1, ""),
-			(50,"Od mama za mame - Momir", 6, 45, "milica", 1, ""),
-			(200,"Izvajajte telo uz Ljubinku", 2, 60, "ljuba", 0, ""),
-			(300,"Fontana Mladosti - Milovan", 4, 30, "milovan", 1, ""),
-			(400,"Milica do pobede", 5, 45, "milica", 1, ""),
-			(500,"Od mama za mame - Momir", 6, 45, "milica", 1, ""),
-			(2000,"Izvajajte telo uz Ljubinku", 2, 60, "ljuba", 0, ""),
-			(3000,"Fontana Mladosti - Milovan", 4, 30, "milovan", 1, ""),
-			(4000,"Milica do pobede", 5, 45, "milica", 1, ""),
-			(5000,"Od mama za mame - Momir", 6, 45, "milica", 1, ""),
-			(21,"Izvajajte telo uz Ljubinku", 2, 60, "ljuba", 0, ""),
-			(31,"Fontana Mladosti - Milovan", 4, 30, "milovan", 1, ""),
-			(41,"Milica do pobede", 5, 45, "milica", 1, ""),
-			(51,"Od mama za mame - Momir", 6, 45, "milica", 1, ""),
-			(22,"Izvajajte telo uz Ljubinku", 2, 60, "ljuba", 0, ""),
-			(32,"Fontana Mladosti - Milovan", 4, 30, "milovan", 1, ""),
-			(42,"Milica do pobede", 5, 45, "milica", 1, ""),
-			(52,"Od mama za mame - Momir", 6, 45, "milica", 1, ""),
-			(23,"Izvajajte telo uz Ljubinku", 2, 60, "ljuba", 0, ""),
-			(33,"Fontana Mladosti - Milovan", 4, 30, "milovan", 1, ""),
-			(43,"Milica do pobede", 5, 45, "milica", 1, ""),
-			(53,"Od mama za mame - Momir", 6, 45, "milica", 1, ""),
-			(24,"Izvajajte telo uz Ljubinku", 2, 60, "ljuba", 0, ""),
-			(34,"Fontana Mladosti - Milovan", 4, 30, "milovan", 1, ""),
-			(44,"Milica do pobede", 5, 45, "milica", 1, ""),
-			(54,"Od mama za mame - Momir", 6, 45, "milica", 1, "");
-
+			(5,"Od mama za mame - Momir", 6, 45, "milica", 1, "");
 
 INSERT INTO Trening(id_treninga, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa)
 	VALUES  ("1111",3,"12:45","14:15","Pon,Uto,Sre,Čet,Pet,Sub,Ned",1),
@@ -87,6 +58,7 @@ INSERT INTO Termin(id_termina, datum_odrzavanja, id_treninga)
 
 INSERT INTO Rezervacija(id_rezervacije, id_korisnika, id_termina, oznaka_reda_kolone, datum)
 	VALUES  (1,'aqua',"1111AA",9,'2024-11-11'),
+			(6,'aqua',"1111AA",9,'2024-11-11'),
 			(2,'rolex',"6421KM",1,'2024-01-01'),
 			(3,'dragan',"0909PJ",3,'2024-01-09'),
 			(4,'nekoime',"1245MK",4,'2024-01-10'),

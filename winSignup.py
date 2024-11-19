@@ -82,8 +82,9 @@ class SignupWindow:
         status_clanstva=1
         uplacen_paket=0
         datum_registracije=date.today().strftime("%Y-%m-%d")
+        obnova_clanarine=datum_registracije
         if(not self.guest):
-            nalog=queries.napraviNalog(username, lozinka, ime, prezime, uloga,status_clanstva, uplacen_paket,datum_registracije)
+            nalog=queries.napraviNalog(username, lozinka, ime, prezime, uloga,status_clanstva, uplacen_paket,datum_registracije,obnova_clanarine)
         else:
-            nalog=queries.azurirajNalog(self.user, username, lozinka, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije)
+            nalog=queries.azurirajNalog(self.user, username, lozinka, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije,obnova_clanarine)
         self.vrati(nalog)

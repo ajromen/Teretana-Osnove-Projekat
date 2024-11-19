@@ -36,8 +36,8 @@ class TreningWindow:
         self.kriterijumi=["Šifra", "Sala", "Vreme početka", "Vreme kraja", "Dani nedelje", "Program"]
         self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
         
-        self.current_canvas.create_text(450,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,x=524,y=55)
+        self.current_canvas.create_text(610,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
+        self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,x=681,y=53)
         
         self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,tuple(self.kriterijumi))
 
