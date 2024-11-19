@@ -59,6 +59,9 @@ class TreningWindow:
     def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
         kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
+        if(not kriterijum):
+            helperFunctions.obavestenje("Prvo izaberite kriterijum pretrage.")
+            return
 
         for red in self.table.get_children():
             self.table.delete(red)
@@ -181,10 +184,7 @@ class TreningWindow:
         btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Sačuvaj", command=lambda: self.dodaj_izmeni(mode=mode))
         btnSacuvaj.place(x=102,y=325)
         #dugme za otkazivanje
-        self.imgOtkazi = PhotoImage(file="./src/img/Widget/btnOtkazi.png")
-        btnOtkazi = Button(self.trenutni_window,image=self.imgOtkazi, borderwidth=0, highlightthickness=0, relief="flat",command=self.trenutni_window.destroy) 
-        btnOtkazi.place(x=136,y=362,width=72,height=17)
-        
+        wid.create_button(self.trenutni_window,"./src/img/Widget/btnOtkazi.png",x=136,y=362,width=72,height=17,command=self.trenutni_window.destroy)
         
     def dodaj_izmeni(self,mode=0):
         if(mode==1): 

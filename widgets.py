@@ -17,13 +17,14 @@ def create_button(canvas,image_path, x, y, width, height, command):
     button.place(x=x, y=y, width=width, height=height)
     return button
 
-def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",manual_fin_fon=(False,"Polje")):
+def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",manual_fin_fon=(False,"Polje"),justify="left"):
     entry = ctk.CTkEntry(
         canvas,border_width=0,
         fg_color= back_color,
         text_color="#FFFFFF",
         width=width,height=height,
-        corner_radius=corner_radius
+        corner_radius=corner_radius,
+        justify=justify
     )
     entry.place(x=x, y=y,)
     entry.delete(0,END)

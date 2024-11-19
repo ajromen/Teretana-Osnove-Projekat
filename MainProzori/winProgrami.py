@@ -66,11 +66,10 @@ class ProgramiWindow:
     def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
         kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
-
-        if not kriterijum:
-            helperFunctions.obavestenje("Nije moguće pretražiti nepostijeći kriterijum.")
+        if(not kriterijum):
+            helperFunctions.obavestenje("Prvo izaberite kriterijum pretrage.")
             return
-
+        
         for red in self.table.get_children():
             self.table.delete(red)
             

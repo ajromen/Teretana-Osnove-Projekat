@@ -14,12 +14,13 @@ def login_startup_loop(ekran,user=''):
             return_value=winLogin.start()
             if(return_value!="signup"): break
         if(return_value=="signup"):
-            return_value=winSignup.start(user)
+            return_value=winSignup.start(user)  
             if(return_value!="login"): break
     return return_value
 
 def vozi(ekran,user=''):
     return_value=login_startup_loop(ekran,user)
+    
     if(return_value=="gost"):
         username=queries.napraviGosta()
         return_value=[[username,-1]]
