@@ -304,3 +304,25 @@ def proveri_status_korisnika():
     for korisnik in korisnici:
         komanda="UPDATE Korisnici SET status_clanstva=0,obnova_clanarine='1960-01-01' WHERE username=?"
         cursor.execute(komanda,(korisnik[0],))
+        
+def nagradi_lojalnost(username):
+    komanda='''UPDATE Korisnici
+                SET 
+                    status_clanstva = 1,
+                    uplacen_paket = 1,
+                    obnova_clanarine = CASE
+                        WHEN obnova_clanarine IS NOT NULL AND obnova_clanarine > DATE('now', '-1 month')
+                            THEN DATE(obnova_clanarine, '+1 month')
+                        ELSE DATE('now')
+                    END
+                WHERE username = ?;'''
+    cursor.execute(komanda,(username,))
+
+def aktiviraj_paket(username,paket):
+    komanda='''UPDATE Korisnici
+                SET 
+                    status_clanstva = 1,
+                    uplacen_paket = ?,
+                    obnova_clanarine = DATE('now')
+                WHERE username = ?;'''
+    cursor.execute(komanda,(username,paket,))

@@ -5,7 +5,7 @@ import winLogin
 import winSignup
 import winMain
 
-#queries.restartuj_bazu()
+queries.restartuj_bazu()
 
 def login_startup_loop(ekran,user=''):
     return_value=ekran

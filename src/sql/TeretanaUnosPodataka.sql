@@ -11,8 +11,8 @@ INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplace
 			-- Korisnici --
 			('nekoime', '61fe830be79fdb5beb2a858e96764346e0e0a914dce5470a7a3c85b284ab1643', 'Aleksandar', 'Pavlović', 0, 1, 0, '2024-11-09', '2024-01-09'),
 			('aqua', 'aca3dddfa02ed7bb64a0248be5980963da0f610430e2c83aa40d5ee673c405da', 'Akva', 'Vivić', 0, 1, 0, '2024-11-09', '2024-11-09'),
-			('dragan', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', 'Dragan', 'Nedeljković', 0, 1, 0, '2024-11-09', '2024-11-09'),
-			('rolex', 'fd1bb71bf48668c662f44a0ae0213cbaa2a34c3099076cc2b20a1312d84bff2c', 'Rolex', 'Jovanović', 0, 1, 0, '2024-11-09', '2024-11-09'),
+			('dragan', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', 'Dragan', 'Nedeljković', 0, 1, 1, '2024-11-09', '2024-11-09'),
+			('rolex', 'fd1bb71bf48668c662f44a0ae0213cbaa2a34c3099076cc2b20a1312d84bff2c', 'Rolex', 'Jovanović', 0, 1, 1, '2024-11-09', '2024-11-09'),
 			-- Gosti --
 			('gost', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', NULL, NULL, -1, NULL, NULL, NULL, NULL);
 
