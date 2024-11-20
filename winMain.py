@@ -21,7 +21,7 @@ class MainWindow:
         self.username=username
         self.uloga=self.nadji_ulogu(uloga)
         self.return_value = 0
-        helperFunctions.setup_window(self.window,"TopForm","1080x608","#04050C")
+        helperFunctions.setup_window(self.window,"TopForm","1080x603","#04050C")
         self.create_canvas()
         self.create_widgets()
         self.window.mainloop()
@@ -39,7 +39,7 @@ class MainWindow:
         )
         self.canvas.place(x=0, y=0)
         
-        self.imgPozadina = wid.create_canvas_image(self.canvas,"src/img/Main/imgPozadina.png",230, 0)
+        self.imgPozadina = wid.create_canvas_image(self.canvas,"src/img/Main/imgPozadina2.png",230, 0)
         self.imgLogo = wid.create_canvas_image(self.canvas,"src/img/Logo/TopFormLogoBeliSrednji.png",445, 190)#465142
         self.imgUser = wid.create_canvas_image(self.canvas,"src/img/Main/imgUser.png",0, 0)
 
