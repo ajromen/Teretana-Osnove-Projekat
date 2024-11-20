@@ -58,7 +58,7 @@ def restartuj_bazu():
 
     executeScriptsFromFile("src/sql/Teretana.sql")
     executeScriptsFromFile("src/sql/TeretanaUnosPodataka.sql")
-    
+    connection.commit()
     print("Baza uspesno resetovana")
     
 
@@ -285,11 +285,16 @@ def broj_rezervacija_za_mesec(username):
     username=str(username)
     username.strip()
     komanda = """
-        SELECT COUNT(*) AS broj_rezervacija
-        FROM Rezervacija
-        WHERE id_korisnika = ?
-        AND datum >= DATE('now', '-1 month')
-        AND datum <= DATE('now');
+        SELECT COUNT(*) FROM 
+            Rezervacija
+        JOIN 
+            Korisnici ON Rezervacija.id_korisnika = Korisnici.username
+        WHERE 
+            Rezervacija.id_korisnika = ? AND
+            
+            Rezervacija.datum > Korisnici.obnova_clanarine AND
+            Rezervacija.datum <= DATE('now') AND
+            Rezervacija.datum <= DATE(Korisnici.obnova_clanarine, '+1 month');
         """
     
     cursor.execute(komanda, (username,))
@@ -302,7 +307,7 @@ def proveri_status_korisnika():
     korisnici=cursor.fetchall()
     if(len(korisnici)==0): return
     for korisnik in korisnici:
-        komanda="UPDATE Korisnici SET status_clanstva=0,obnova_clanarine='1960-01-01' WHERE username=?"
+        komanda="UPDATE Korisnici SET status_clanstva=0,uplacen_paket=0,obnova_clanarine='1970-01-01' WHERE username=?"
         cursor.execute(komanda,(korisnik[0],))
         
 def nagradi_lojalnost(username):
@@ -317,6 +322,7 @@ def nagradi_lojalnost(username):
                     END
                 WHERE username = ?;'''
     cursor.execute(komanda,(username,))
+    connection.commit()
 
 def aktiviraj_paket(username,paket):
     komanda='''UPDATE Korisnici
@@ -325,4 +331,6 @@ def aktiviraj_paket(username,paket):
                     uplacen_paket = ?,
                     obnova_clanarine = DATE('now')
                 WHERE username = ?;'''
-    cursor.execute(komanda,(username,paket,))
+    
+    cursor.execute(komanda, (paket,username,))
+    connection.commit()

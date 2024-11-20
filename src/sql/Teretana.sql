@@ -16,12 +16,12 @@ CREATE TABLE Korisnici
 
 DROP TABLE IF EXISTS Trening;
 CREATE TABLE Trening 
-	( id_treninga CHAR(4) PRIMARY KEY NOT NULL, -- MOZE DA SE DODA JOS JEDAN ZA SIFRU TRENINGA CHAR(4) A ID DA BUDE INTEGER
-	  id_sale INTEGER, --
+	( id_treninga CHAR(4) PRIMARY KEY NOT NULL,
+	  id_sale INTEGER, 
 	  vreme_pocetka TIME,
 	  vreme_kraja TIME,
 	  dani_nedelje CHAR(28),
-	  id_programa INTEGER, --
+	  id_programa INTEGER, 
 	  FOREIGN KEY (id_sale) REFERENCES Sala(id_sale)
 	  FOREIGN KEY (id_programa) REFERENCES Program(id_programa)
 	  );

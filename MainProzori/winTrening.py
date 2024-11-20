@@ -122,6 +122,9 @@ class TreningWindow:
         slctd_vreme_kraja=slctd_data["values"][3]
         slctd_dani=slctd_data["values"][4]
         slctd_program=slctd_data["values"][5]
+        
+        self.switch_dani(slctd_dani)
+        
         # sifra
         self.entrySifra = wid.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True,placeholder=slctd_id,state="disabled")
         
@@ -169,8 +172,6 @@ class TreningWindow:
         self.entryPocetakMinuti = wid.create_entry(self.trenutni_window,241,119,width=42,height=23,belo=True,placeholder=pocetak_minuti)
         self.entryKrajSati = wid.create_entry(self.trenutni_window,156,160,width=42,height=23,belo=True,placeholder=kraj_sati)
         self.entryKrajMinuti = wid.create_entry(self.trenutni_window,242,160,width=42,height=23,belo=True,placeholder=kraj_minuti)
-        
-        self.switch_dani(dani)
         
         #Kreiranje dugmadi za dane
         self.btnPon=self.button_dani("Pon",self.trenutni_window,16,272)
@@ -266,7 +267,7 @@ class TreningWindow:
             
         
     def button_dani(self,dan,window,x,y):
-        aktiviran=self.dani_dict[dan]
+        aktiviran=self.dani_dict.get(dan,False)
         button = ctk.CTkButton(window, text=dan, corner_radius=5,font=("Inter",12), width=41, height=26)
         if aktiviran: button.configure(fg_color="#1F6AA5")
         else: button.configure(fg_color="#080A17")

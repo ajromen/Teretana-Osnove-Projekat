@@ -140,7 +140,7 @@ class MainWindow:
         self.trenutni_window.start()
         
     def napravi_win_clanovi(self):
-        self.trenutni_window = winClanovi.ClanoviWindow(self.window, self)
+        self.trenutni_window = winClanovi.ClanoviWindow(self.window, self,self.uloga)
         self.trenutni_window.start()
         
     def prebaci_win(self,win):

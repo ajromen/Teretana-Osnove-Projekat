@@ -6,11 +6,13 @@ import widgets as wid
 
 
 class ClanoviWindow:
-    def __init__(self, window, main_window):
+    def __init__(self, window, main_window,uloga):
         self.window = window
         self.main_window=main_window
         self.current_canvas = None
         self.broj_rezervacija_za_nagradjivanje=2
+        self.uloga=uloga
+        
 
     def start(self):
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
@@ -18,7 +20,7 @@ class ClanoviWindow:
         
         wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,lambda: self.main_window.unisti_trenutni_win())# EXit dugme
         wid.create_button(self.current_canvas,"./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnNagradi.png",23,541,252,40,lambda: self.winClan_Izmeni("Nagradi")) # nagradi
+        self.uloga=="admin" and wid.create_button(self.current_canvas,"./src/img/Widget/btnNagradi.png",23,541,252,40,lambda: self.winClan_Izmeni("Nagradi")) # nagradi
         wid.create_button(self.current_canvas,"./src/img/Widget/btnAktiviraj.png",300,541,252,40,lambda: self.winClan_Izmeni("Aktiviraj")) # aktiviraj
         wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",576,541,252,40,self.clan_delete) # delete
         
@@ -145,7 +147,7 @@ class ClanoviWindow:
             self.switchPaket.place(x=272,y=90)
             if (slctd_paket=="Premium"): self.switchPaket.select() 
             else: self.switchPaket.deselect()
-            btnSacuvaj = ctk.CTkButton(self.trenutni_window,width=166,height=27, text="Aktiviraj status",font=("Inter", 15), command=lambda: self.aktiviraj_paket)
+            btnSacuvaj = ctk.CTkButton(self.trenutni_window,width=166,height=27, text="Aktiviraj status",font=("Inter", 15), command=self.aktiviraj_paket)
             btnSacuvaj.place(x=89,y=132)
             
         wid.create_button(self.trenutni_window,"./src/img/Widget/btnOtkazi.png",x=136,y=166,width=72,height=17,command=self.trenutni_window.destroy)
@@ -161,7 +163,7 @@ class ClanoviWindow:
             return
 
         slctd_data = self.table.item(slctd_item)
-        username = slctd_data["values"][0]  
+        username = slctd_data["values"][0]
 
         try:
             komanda = "DELETE FROM Korisnici WHERE username = ?"
@@ -176,14 +178,15 @@ class ClanoviWindow:
         pass
     
     def nagradi_lojalnost(self):
-        username=self.entryID.get()[0]
+        username = self.entryID.get().split(",")[0].strip()
         queries.nagradi_lojalnost(username)
         self.popuni_tabelu(self.table)
         self.trenutni_window.destroy()
         
     def aktiviraj_paket(self):
-        username=self.entryID.get()[0]
-        queries.aktiviraj_paket(username,self.switchPaket().get())
+        username = self.entryID.get().split(",")[0].strip()
+        paket=self.switchPaket.get()
+        queries.aktiviraj_paket(username,paket)
         self.popuni_tabelu(self.table)
         self.trenutni_window.destroy()
         
