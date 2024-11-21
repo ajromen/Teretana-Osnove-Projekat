@@ -3,13 +3,11 @@ import sys
 from tkinter import *
 import customtkinter as ctk
 import helperFunctions
-import queries
-import os
-import ctypes
 sys.path.append('./MainProzori')
 import winProgrami
 import winTrening
 import winClanovi
+import winAdmin
 import widgets as wid
 
 class MainWindow:
@@ -61,13 +59,14 @@ class MainWindow:
         }
         buttons = {
             "btnVrsteTreninga": lambda i: self.create_button("src/img/Main/btnVrsteTreninga.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnVrsteTreninga clicked")),
-            "btnTreninzi": lambda i: self.create_button("src/img/Main/btnTreninzi.png", x=0, y=63*i, width=230, height=63, command=lambda:self.prebaci_win("trening")),
+            "btnTreninzi": lambda i: self.create_button("src/img/Main/btnTreninzi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("trening")),
             "btnIzvestaji": lambda i: self.create_button("src/img/Main/btnIzvestaji.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnIzvestaji clicked")),
-            "btnAdmin": lambda i: self.create_button("src/img/Main/btnAdmin.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnAdmin clicked")),
+            "btnAdmin": lambda i: self.create_button("src/img/Main/btnAdmin.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("admin")),
             "btnClanovi": lambda i: self.create_button("src/img/Main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("clanovi")),
             "btnTermini": lambda i: self.create_button("src/img/Main/btnTermini.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnTermini clicked")),
             "btnRezervacije": lambda i: self.create_button("src/img/Main/btnRezervacije.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnRezervacije clicked")),
             "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=lambda:self.prebaci_win("programi")),
+            
             "btnRegistrujSe": lambda i: self.create_button("src/img/Main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.registrujSe()),
             "btnOdjaviSe": lambda i: self.create_button("src/img/Main/btnOdjaviSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("login"))
         }
@@ -143,8 +142,13 @@ class MainWindow:
         self.trenutni_window = winClanovi.ClanoviWindow(self.window, self,self.uloga)
         self.trenutni_window.start()
         
+    def napravi_win_admin(self):
+        self.trenutni_window = winAdmin.AdminWindow(self.window, self)
+        self.trenutni_window.start()
+        
     def prebaci_win(self,win):
         self.unisti_trenutni_win()
         if win=="programi": self.napravi_win_programi()
         elif win=="trening": self.napravi_win_trening()
         elif win=="clanovi": self.napravi_win_clanovi()
+        elif win=="admin": self.napravi_win_admin()

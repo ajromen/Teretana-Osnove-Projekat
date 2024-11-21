@@ -48,13 +48,15 @@ class TreningWindow:
                 
         podaci=self.izlistaj()
         
+        i=0
         for podatak in podaci:
             podatak=list(podatak)
             sifra_sale=podatak[6]
             sifra_programa=podatak[7]
             podatak[1]=str(sifra_sale)+" "+podatak[1]
             podatak[5]=str(sifra_programa)+" "+podatak[5]
-            tabela.insert("", "end", values=podatak)
+            tabela.insert("", "end", values=podatak,tags=str(i%2))
+            i+=1
 
     def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
@@ -71,13 +73,15 @@ class TreningWindow:
         
         podaci=self.izlistaj(pretraga=pretraga,kriterijum=kriterijum)
         
+        i=0
         for podatak in podaci:
             podatak=list(podatak)
             sifra_sale=podatak[6]
             sifra_programa=podatak[7]
             podatak[1]=str(sifra_sale)+" "+podatak[1]
             podatak[5]=str(sifra_programa)+" "+podatak[5]
-            self.table.insert("", "end", values=podatak)
+            self.table.insert("", "end", values=podatak,tags=str(i%2))
+            i+=1
 
     def izlistaj(self,kriterijum='id_treninga',pretraga=""):              
         return queries.izlistaj_trening(pretraga,kriterijum)

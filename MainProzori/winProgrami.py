@@ -60,8 +60,10 @@ class ProgramiWindow:
                 
         podaci=self.izlistaj_programe()
         
+        i=0
         for podatak in podaci:
-            tabela.insert("", "end", values=podatak)
+            tabela.insert("", "end", values=podatak,tags=str(i%2))
+            i+=1
 
     def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
@@ -85,8 +87,10 @@ class ProgramiWindow:
 
         podaci=self.izlistaj_programe(pretraga=pretraga,kriterijum=kriterijum)
         
+        i=0
         for podatak in podaci:
-            self.table.insert("", "end", values=podatak)
+            self.table.insert("", "end", values=podatak,tags=str(i%2))
+            i+=1
 
     def winProgramiFilteri(self):
         self.trenutni_window = ctk.CTkToplevel(fg_color='#000000')

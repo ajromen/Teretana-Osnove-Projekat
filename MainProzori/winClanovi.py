@@ -59,6 +59,7 @@ class ClanoviWindow:
                 
         podaci=self.izlistaj()
         
+        i=0
         for podatak in podaci:
             podatak=list(podatak)
             username=podatak[0]
@@ -66,7 +67,8 @@ class ClanoviWindow:
             podatak.append(broj_rezervacija)
             if(broj_rezervacija>=self.broj_rezervacija_za_nagradjivanje):
                 tabela.insert("", "end", values=podatak,tags="za_aktivaciju")
-            else: tabela.insert("", "end", values=podatak)
+            else: tabela.insert("", "end", values=podatak,tags=str(i%2))
+            i+=1
 
     def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
@@ -94,6 +96,7 @@ class ClanoviWindow:
         
         podaci=self.izlistaj(pretraga=pretraga,kriterijum=kriterijum)
         
+        i=0
         for podatak in podaci:
             podatak=list(podatak)
             username=podatak[0]
@@ -101,7 +104,8 @@ class ClanoviWindow:
             podatak.append(broj_rezervacija)
             if(broj_rezervacija>=self.broj_rezervacija_za_nagradjivanje):
                 self.table.insert("", "end", values=podatak,tags="za_aktivaciju")
-            else: self.table.insert("", "end", values=podatak)
+            else: self.table.insert("", "end", values=podatak,tags=str(i%2))
+            i+=1
 
     def izlistaj(self,kriterijum='username',pretraga=""):              
         return queries.izlistaj_korisnike(pretraga,kriterijum)
@@ -129,8 +133,8 @@ class ClanoviWindow:
             wid.create_label(self.trenutni_window,"Broj realizovanih rezervacija u proteklih",34,52)
             wid.create_label(self.trenutni_window,"mesec dana:",126,70)
             self.entryBrDana=wid.create_entry(self.trenutni_window,151,96,width=41,height=23,placeholder=slctd_br_rez,justify="center",belo=True,state="disabled")
-            za_aktivaciju=slctd_data.get("tags")
-            if(za_aktivaciju):
+            za_aktivaciju=slctd_data.get("tags")[0]
+            if(za_aktivaciju=='za_aktivaciju'):
                 fg_color="#3DA928"
                 btnSacuvaj = ctk.CTkButton(self.trenutni_window,width=166,height=27,text_color="#FFFFFF", text="Nagradi lojalnost",font=("Inter", 15),fg_color=fg_color,hover_color="#87E175", command=self.nagradi_lojalnost)
                 btnSacuvaj.place(x=89,y=132)

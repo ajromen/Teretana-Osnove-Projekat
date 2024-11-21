@@ -281,6 +281,29 @@ def izlistaj_korisnike(pretraga,kriterijum):
     
     return cursor.fetchall()
 
+def izlistaj_instruktore_admine(pretraga,kriterijum):
+    pretraga=str(pretraga)
+    kriterijum = kriterijum.strip()
+    pretraga = pretraga.strip()
+
+    komanda=''' SELECT 
+                    username,
+                    ime,
+                    prezime,
+                    CASE 
+                        WHEN uloga = 1 THEN 'Instruktor' 
+                        ELSE 'Administrator' 
+                    END AS uloga,
+                    datum_registracije
+                FROM 
+                    Korisnici
+                WHERE uloga>0 AND '''
+       
+    komanda += f'''{kriterijum} LIKE ?;'''
+    cursor.execute(komanda, ('%' + str(pretraga) + '%',))
+    
+    return cursor.fetchall()
+
 def broj_rezervacija_za_mesec(username):
     username=str(username)
     username.strip()
