@@ -96,30 +96,27 @@ class AdminWindow:
     
     
     def winAdmin_Dodaj(self):
-        slctd_item = self.table.selection()
-        if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijednog korisnika.")
-            return
+        self.trenutni_window=helperFunctions.napravi_toplevel(height=341,title="Dodaj administrarota")
         
-        self.trenutni_window=helperFunctions.napravi_toplevel(height=193,title="Izmeni trening")
+        wid.create_label(self.trenutni_window,"Korisničko ime:",23,31)
+        wid.create_label(self.trenutni_window,"Ime:",62,76)
+        wid.create_label(self.trenutni_window,"Prezime:",46,120)
+        wid.create_label(self.trenutni_window,"Lozinka:",47,164)
+        wid.create_label(self.trenutni_window,"Administrator:",27,218)
         
-        slctd_data = self.table.item(slctd_item)
-        slctd_username = slctd_data["values"][0]
-        slctd_ime=slctd_data["values"][1]
-        slctd_prezime=slctd_data["values"][2]
+        self.entryUsername=wid.create_entry(self.trenutni_window,141,30,width=179,height=23,manual_fin_fon=(True,"Polje"))
+        self.entryIme=wid.create_entry(self.trenutni_window,141,74,width=179,height=23,manual_fin_fon=(True,"Polje"))
+        self.entryPrezime=wid.create_entry(self.trenutni_window,141,118,width=179,height=23,manual_fin_fon=(True,"Polje"))
+        self.entryLozinka=wid.create_entry(self.trenutni_window,141,162,width=179,height=23,manual_fin_fon=(True,"Lozinka"))
         
-        self.entryBrDana=wid.create_entry(self.trenutni_window,151,96,width=41,height=23,placeholder=slctd_ime,justify="center",belo=True,state="disabled")
-        za_aktivaciju=slctd_data.get("tags")
-        if(za_aktivaciju):
-            fg_color="#3DA928"
-            btnSacuvaj = ctk.CTkButton(self.trenutni_window,width=166,height=27,text_color="#FFFFFF", text="Nagradi lojalnost",font=("Inter", 15),fg_color=fg_color,hover_color="#87E175", command=self.nagradi_lojalnost)
-            btnSacuvaj.place(x=89,y=132)
-           
-        wid.create_label(self.trenutni_window,"Premium paket:",22,93)
-        self.entryStatus=wid.create_entry(self.trenutni_window,197,52,width=124,height=23,placeholder=slctd_ime,justify="center",belo=True,state="disabled")
         self.switchPaket=ctk.CTkSwitch(self.trenutni_window,width=43,height=24,text='')
-        self.switchPaket.place(x=272,y=90)
-        if (slctd_ime=="Premium"): self.switchPaket.select() 
-        else: self.switchPaket.deselect()
-            
+        self.switchPaket.place(x=272,y=215)
+
+        btnSacuvaj = ctk.CTkButton(self.trenutni_window,width=166,height=27,text_color="#FFFFFF", text="Napravi nalog",font=("Inter", 15),command=self.napravi_nalog)
+        btnSacuvaj.place(x=88,y=268)
+        wid.create_button(self.trenutni_window,"./src/img/Widget/btnOtkazi.png",x=136,y=303,width=72,height=17,command=self.trenutni_window.destroy)
+
+        
+    def napravi_nalog(self):
+        pass
         

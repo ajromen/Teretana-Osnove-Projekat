@@ -62,9 +62,7 @@ def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=
     listaSifre=queries.cursor.fetchall()
     lista=[] if specificni else ["SVE"]
     for sifra in listaSifre:
-        tekst=""
-        for i in range(0,broj_kolona):
-            tekst+=str(sifra[i])+" "
+        tekst = " ".join(str(sifra[i]) for i in range(broj_kolona))  # No extra trailing space
         lista.append(tekst)
     cmbbx=create_comboBox(canvas, values=lista,x=comboX,y=comboY)
     return cmbbx
@@ -81,6 +79,7 @@ def create_comboBox(canvas,values,x,y):
         button_color="#0D1026",
         state="readonly")
     combo.place(x=x,y=y)
+    combo.set(values[0])
     return combo
 
 def create_entry_search(canvas,pretrazi):
@@ -131,11 +130,13 @@ def create_table(canvas,popuni_tabelu,kolone,x=31,y=112,width=787,height=401):
     table.place(x=x, y=y, width=width, height=height)
     return table
 
-def selektuj_vrednost_comboBox(komboBox,kriterijum):
-    vrednosti=komboBox.cget('values')
+def selektuj_vrednost_comboBox(komboBox, kriterijum):
+    vrednosti = komboBox.cget('values')
     for vrednost in vrednosti:
-        if kriterijum.strip() == vrednost.strip():
+        if kriterijum.strip() in vrednost.strip():
             komboBox.set(vrednost)
+            return
+    
             
 def create_label(window,text,x,y,font_size=15):
     labela = ctk.CTkLabel(window, text=text, font=("Inter",font_size * -1),anchor='nw')
