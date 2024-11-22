@@ -1,3 +1,5 @@
+from datetime import date
+import re
 from tkinter import *
 import customtkinter as ctk
 import queries
@@ -10,7 +12,6 @@ class AdminWindow:
         self.window = window
         self.main_window=main_window
         self.current_canvas = None
-        
 
     def start(self):
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
@@ -18,7 +19,8 @@ class AdminWindow:
         
         wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,lambda: self.main_window.unisti_trenutni_win())# EXit dugme
         wid.create_button(self.current_canvas,"./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnDodaj.png",300,541,252,40,self.winAdmin_Dodaj) # delete
+        wid.create_button(self.current_canvas,"./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winAdmin_Dodaj()) # Dodaj Dugme
+        wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi) # Obrisi Dugme
         
         self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/searchPozadina.png",23,53)
         self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
@@ -66,6 +68,8 @@ class AdminWindow:
         for red in self.table.get_children():
             self.table.delete(red)
             
+        pretraga=pretraga.lower()
+            
         if pretraga =="" or pretraga=="pretraži":
             pretraga=""
         else:
@@ -94,7 +98,6 @@ class AdminWindow:
     def izlistaj(self,kriterijum='username',pretraga=""):              
         return queries.izlistaj_instruktore_admine(pretraga,kriterijum)
     
-    
     def winAdmin_Dodaj(self):
         self.trenutni_window=helperFunctions.napravi_toplevel(height=341,title="Dodaj administrarota")
         
@@ -107,7 +110,7 @@ class AdminWindow:
         self.entryUsername=wid.create_entry(self.trenutni_window,141,30,width=179,height=23,manual_fin_fon=(True,"Polje"))
         self.entryIme=wid.create_entry(self.trenutni_window,141,74,width=179,height=23,manual_fin_fon=(True,"Polje"))
         self.entryPrezime=wid.create_entry(self.trenutni_window,141,118,width=179,height=23,manual_fin_fon=(True,"Polje"))
-        self.entryLozinka=wid.create_entry(self.trenutni_window,141,162,width=179,height=23,manual_fin_fon=(True,"Lozinka"))
+        self.entryLozinka=wid.create_entry(self.trenutni_window,141,162,width=179,height=23,manual_fin_fon=(True,"Lozinka"),placeholder="Lozinka")
         
         self.switchPaket=ctk.CTkSwitch(self.trenutni_window,width=43,height=24,text='')
         self.switchPaket.place(x=272,y=215)
@@ -118,5 +121,45 @@ class AdminWindow:
 
         
     def napravi_nalog(self):
-        pass
+        username=self.entryUsername.get().strip()
+        ime=self.entryIme.get().strip()
+        prezime=self.entryPrezime.get().strip()
+        lozinka=self.entryLozinka.get()
+        admin=self.switchPaket.get()
+        
+        if(username=="" or ime=="" or prezime==""):
+            helperFunctions.obavestenje("Sva polja moraju biti popunjena")
+            return 
+        if(len(lozinka)<6):
+            helperFunctions.obavestenje("Lozinka mora da sadrži više od 6 karaktera")
+            return 
+        
+        
+        admin+=1
+        datum_registracije=date.today().strftime("%Y-%m-%d")
+        queries.napraviNalog(username, lozinka, ime, prezime, admin, 0, 0, datum_registracije, "")
+        
+        self.popuni_tabelu(self.table)
+        self.trenutni_window.destroy()
+        
+    def obrisi(self):
+        slctd_item = self.table.selection()
+        if not slctd_item:
+            helperFunctions.obavestenje(poruka="Niste odabrali nijednog korisnika.")
+            return
+        
+        pitaj = helperFunctions.pitaj(title="Potvrda brisanja", poruka="Da li ste sigurni da želite da obiršete odabranog korisnika?")
+        if not pitaj:
+            return
+
+        slctd_data = self.table.item(slctd_item)
+        username = slctd_data["values"][0]
+
+        komanda = "DELETE FROM Korisnici WHERE username = ?"
+        queries.cursor.execute(komanda, (username,))
+        queries.connection.commit()
+
+        self.table.delete(slctd_item)
+        helperFunctions.obavestenje(title="Brisanje", poruka="Korisnik je uspešno obrisan.")
+            
         

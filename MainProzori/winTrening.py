@@ -98,17 +98,15 @@ class TreningWindow:
 
         slctd_data = self.table.item(slctd_item)
         trening_id = slctd_data["values"][0]  
+  
+        komanda = "DELETE FROM Trening WHERE id_treninga = ?"
+        queries.cursor.execute(komanda, (trening_id,))
+        queries.connection.commit()
 
-        try:
-            komanda = "DELETE FROM Trening WHERE id_treninga = ?"
-            queries.cursor.execute(komanda, (trening_id,))
-            queries.connection.commit()
+        self.table.delete(slctd_item)
+        helperFunctions.obavestenje(title="Brisanje", poruka="Trening je uspešno obrisan.")
 
-            self.table.delete(slctd_item)
-            helperFunctions.obavestenje(title="Brisanje", poruka="Trening je uspešno obrisan.")
-
-        except Exception as e:
-            helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja trenigna: {e}")
+        helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja trenigna: {e}")
             
                 
     def winTrening_Izmeni(self):

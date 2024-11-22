@@ -168,18 +168,16 @@ class ClanoviWindow:
 
         slctd_data = self.table.item(slctd_item)
         username = slctd_data["values"][0]
+        
+        komanda = "DELETE FROM Korisnici WHERE username = ?"
+        queries.cursor.execute(komanda, (username,))
+        queries.connection.commit()
 
-        try:
-            komanda = "DELETE FROM Korisnici WHERE username = ?"
-            queries.cursor.execute(komanda, (username,))
-            queries.connection.commit()
-
-            self.table.delete(slctd_item)
-            helperFunctions.obavestenje(title="Brisanje", poruka="Korisnik je uspešno obrisan.")
-
-        except Exception as e:
-            helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja korisnika: {e}")
-        pass
+        self.table.delete(slctd_item)
+        helperFunctions.obavestenje(title="Brisanje", poruka="Korisnik je uspešno obrisan.")
+        
+        helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja korisnika: {e}")
+        
     
     def nagradi_lojalnost(self):
         username = self.entryID.get().split(",")[0].strip()

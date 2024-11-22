@@ -228,17 +228,15 @@ class ProgramiWindow:
 
         slctd_data = self.table.item(slctd_item)
         program_id = slctd_data["values"][0]  
+        
+        komanda = "DELETE FROM Program WHERE id_programa = ?"
+        queries.cursor.execute(komanda, (program_id,))
+        queries.connection.commit()
 
-        try:
-            komanda = "DELETE FROM Program WHERE id_programa = ?"
-            queries.cursor.execute(komanda, (program_id,))
-            queries.connection.commit()
+        self.table.delete(slctd_item)
+        helperFunctions.obavestenje(title="Brisanje", poruka="Program je uspešno obrisan.")
 
-            self.table.delete(slctd_item)
-            helperFunctions.obavestenje(title="Brisanje", poruka="Program je uspešno obrisan.")
-
-        except Exception as e:
-            helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja programa: {e}")
+        helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja programa: {e}")
                 
     def winProgrami_Izmeni(self):
         slctd_item = self.table.selection()
