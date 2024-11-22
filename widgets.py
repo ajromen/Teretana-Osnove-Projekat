@@ -147,3 +147,7 @@ def create_canvas_image(canvas,image_path,x,y):
     image=PhotoImage(file=image_path)
     canvas.create_image(x, y, image=image,anchor='nw')
     return image
+
+# ne radi posle nagradjivanja jer odmah postaje premium
+# popraviti tako sto ostavis da nije nagradjen js al mu je promenjn datum i ako se naidje na nekome kome je datum danas 
+# da mu se dodeli koji treba da dobije

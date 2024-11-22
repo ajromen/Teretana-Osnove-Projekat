@@ -10,7 +10,7 @@ class ClanoviWindow:
         self.window = window
         self.main_window=main_window
         self.current_canvas = None
-        self.broj_rezervacija_za_nagradjivanje=2
+        self.broj_rezervacija_za_nagradjivanje=27
         self.uloga=uloga
         
 
@@ -50,8 +50,18 @@ class ClanoviWindow:
         self.table.column("Datum registracije", width=100)
         self.table.column("Članarina obnovljena", width=120)    
         
+        wid.create_label(self.current_canvas,"Zahtev za nagradu",421,64,12)
+        self.entryBrojNagrada=wid.create_entry(self.current_canvas,540,60,width=59,height=23,belo=True,justify="center",placeholder=self.broj_rezervacija_za_nagradjivanje)
+        self.entryBrojNagrada.bind("<Return>",command=lambda event: self.promeni_broj_rezervacija())
         
-    
+        
+    def promeni_broj_rezervacija(self):
+        brdana=self.entryBrojNagrada.get().strip()
+        if(brdana=="" or int(brdana)==0 or not brdana.isdigit()): 
+            helperFunctions.obavestenje("Zahtev mora biti broj veći od 0.")
+            return
+        self.broj_rezervacija_za_nagradjivanje=int(brdana)
+        self.popuni_tabelu(self.table)
 
     def popuni_tabelu(self,tabela):
         for red in tabela.get_children():
