@@ -10,7 +10,9 @@ class ClanoviWindow:
         self.window = window
         self.main_window=main_window
         self.current_canvas = None
-        self.broj_rezervacija_za_nagradjivanje=27
+        self.fSetup = open("src/setup.txt", "r+")
+        broj_rez=self.fSetup.readline()
+        self.broj_rezervacija_za_nagradjivanje=int(broj_rez.split(" ")[1])
         self.uloga=uloga
         
 
@@ -61,6 +63,8 @@ class ClanoviWindow:
             helperFunctions.obavestenje("Zahtev mora biti broj veći od 0.")
             return
         self.broj_rezervacija_za_nagradjivanje=int(brdana)
+        open('src/setup.txt', 'w').close()
+        self.fSetup.write("potreban_broj_za_rezervacije: "+str(brdana))
         self.popuni_tabelu(self.table)
 
     def popuni_tabelu(self,tabela):
@@ -185,8 +189,6 @@ class ClanoviWindow:
 
         self.table.delete(slctd_item)
         helperFunctions.obavestenje(title="Brisanje", poruka="Korisnik je uspešno obrisan.")
-        
-        helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja korisnika: {e}")
         
     
     def nagradi_lojalnost(self):

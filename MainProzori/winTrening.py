@@ -10,7 +10,15 @@ class TreningWindow:
         self.window = window
         self.main_window=main_window
         self.current_canvas = None
-        self.switch_dani("")
+        self.dani_dict = {
+            "Pon": False,
+            "Uto": False,
+            "Sre": False,
+            "Čet": False,
+            "Pet": False,
+            "Sub": False,
+            "Ned": False,
+        }
 
     def start(self):
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
