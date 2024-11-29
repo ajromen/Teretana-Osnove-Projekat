@@ -10,6 +10,7 @@ class TreningWindow:
         self.window = window
         self.main_window=main_window
         self.current_canvas = None
+        self.switch_dani("")
 
     def start(self):
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
@@ -205,6 +206,9 @@ class TreningWindow:
         
         if(id=="" or (not id.isdigit())):
             helperFunctions.obavestenje("Šifra ne sme biti prazna ili sadržati slova.")
+            return
+        if(id[0]=="0"):
+            helperFunctions.obavestenje("Šifra ne sme počinjati sa 0.")
             return
         if(len(id)!=4):
             helperFunctions.obavestenje("Šifra mora imati tačno 4 cifre.")

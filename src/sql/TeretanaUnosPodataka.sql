@@ -45,7 +45,7 @@ INSERT INTO Trening(id_treninga, id_sale, vreme_pocetka, vreme_kraja, dani_nedel
 	VALUES  ("1111",3,"12:45","14:15","Pon,Uto,Sre,Čet,Pet,Sub,Ned",1),
 			("1245",5,"08:00","08:30","Pon,Uto,Sre,Čet,Pet,Sub",3),
 			("6421",6,"22:00","22:45","Pon,Uto,Sre,Čet,Pet,Sub,Ned",4),
-			("0909",1,"09:00","10:00","Pon,Sre,Pet,Sub",2),
+			("9909",1,"09:00","10:00","Pon,Sre,Pet,Sub",2),
 			("9435",2,"18:00","18:45","Uto,Čet,Sub",5),
 			("1112",4,"18:00","19:30","Uto,Čet,Pet,Ned",1);
 
@@ -53,14 +53,14 @@ INSERT INTO Termin(id_termina, datum_odrzavanja, id_treninga)
 	VALUES  ("1111AA",'2024-01-06',"1111"),
 			("1112CZ",'2024-01-07',"1112"),
 			("6421KM",'2024-01-01',"6421"),
-			("0909PJ",'2024-01-09',"0909"),
+			("9909PJ",'2024-01-09',"9909"),
 			("1245MK",'2024-01-10',"1245");
 
 INSERT INTO Rezervacija(id_rezervacije, id_korisnika, id_termina, oznaka_reda_kolone, datum)
 	VALUES  (1,'aqua',"1111AA",9,'2024-11-11'),
 			(6,'aqua',"1111AA",9,'2024-11-11'),
 			(2,'rolex',"6421KM",1,'2024-01-01'),
-			(3,'dragan',"0909PJ",3,'2024-01-09'),
+			(3,'dragan',"9909PJ",3,'2024-01-09'),
 			(4,'nekoime',"1245MK",4,'2024-01-10'),
 			(5,'gost',"1245MK",4,'2020-01-10');
 
