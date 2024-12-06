@@ -235,8 +235,6 @@ class ProgramiWindow:
 
         self.table.delete(slctd_item)
         helperFunctions.obavestenje(title="Brisanje", poruka="Program je uspešno obrisan.")
-
-        helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja programa: {e}")
                 
     def winProgrami_Izmeni(self):
         slctd_item = self.table.selection()

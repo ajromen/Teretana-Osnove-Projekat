@@ -53,6 +53,7 @@ class SignupWindow:
         wid.create_button(self.canvas,"src/img/Signup/button_3.png", x=121.0, y=337.0, width=160.0, height=35.0, command=self.napraviNalog)
         wid.create_button(self.canvas,"src/img/Signup/button_2.png", x=588.0, y=394.0, width=153.0, height=40.0, command=lambda: self.vrati("gost"))
         wid.create_button(self.canvas,"src/img/Signup/button_1.png", x=163.0, y=379.0, width=76.0, height=15.0, command=lambda: self.vrati("login"))
+        wid.create_button(self.canvas,"src/img/Signup/button_3.png", x=0, y=0.0, width=160.0, height=35, command=lambda: self.izlistaj())
     
 
     def promeni_dobrodosao(self):
@@ -88,3 +89,7 @@ class SignupWindow:
         else:
             nalog=queries.azurirajNalog(self.user, username, lozinka, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije,obnova_clanarine)
         self.vrati(nalog)
+
+    def izlistaj(self):
+        queries.cursor.execute("SELECT username,password FROM Korisnici")
+        print(queries.cursor.fetchall())

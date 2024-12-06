@@ -14,7 +14,9 @@ INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplace
 			('dragan', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', 'Dragan', 'Nedeljković', 0, 1, 1, '2024-11-09', '2024-11-09'),
 			('rolex', 'fd1bb71bf48668c662f44a0ae0213cbaa2a34c3099076cc2b20a1312d84bff2c', 'Rolex', 'Jovanović', 0, 1, 1, '2024-11-09', '2024-11-09'),
 			-- Gosti --
-			('gost', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', NULL, NULL, -1, NULL, NULL, NULL, NULL);
+			('gost', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', NULL, NULL, -1, NULL, NULL, NULL, NULL),
+			--Svi obrisani korisnici sa rezervacijom--
+			('obrisan_korisnik', '89104ddb8160b3c10c8e74600eb8ba1bcb91553aad4ae3ec66abcfd9d8c69c82', "Obrisani", "Korisnik", 0, NULL, NULL, NULL, NULL);
 
 
 			

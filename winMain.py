@@ -44,7 +44,8 @@ class MainWindow:
 
         self.text_id_user = self.canvas.create_text(64,25, anchor="nw", text=self.username, fill="#FFFFFF", font=("Inter Medium", 12 * -1))
         self.text_id_date_time = self.canvas.create_text(475,313, anchor="nw", text="19:49 / Saturday /  01.11.2024", fill="#DFDFDF", font=("Inter", 24 * -1))
-        self.rect=self.canvas.create_rectangle(218.0, 0, 230.0, 63, fill="#FFFFFF",outline="")
+        self.rect=self.canvas.create_rectangle(218.0, 0, 230.0, 63, fill="#FFFFFF",outline="", tags="rect")
+        
 
     def create_widgets(self):
         self.napravi_dugmad_po_ulozi()
@@ -52,30 +53,35 @@ class MainWindow:
         self.vreme()
     
     def napravi_dugmad_po_ulozi(self):
-        role_buttons = {
-            "gost": ["btnProgrami","btnTermini","btnRezervacije","btnRegistrujSe"],
-            "admin": ["btnVrsteTreninga", "btnTreninzi", "btnProgrami", "btnClanovi", "btnIzvestaji", "btnAdmin","btnOdjaviSe"],
-            "instruktor": ["btnRezervacije","btnClanovi", "btnOdjaviSe"],
-            "korisnik": ["btnProgrami","btnTermini","btnRezervacije","btnOdjaviSe"]
+        self.dugmad_pozicije = {} 
+
+        imena_dugmadi_po_ulozi = {
+            "gost": ["btnProgrami", "btnTermini", "btnRezervacije", "btnRegistrujSe"],
+            "admin": ["btnVrsteTreninga", "btnTreninzi", "btnProgrami", "btnClanovi", "btnIzvestaji", "btnAdmin", "btnOdjaviSe"],
+            "instruktor": ["btnRezervacije", "btnClanovi", "btnOdjaviSe"],
+            "korisnik": ["btnProgrami", "btnTermini", "btnRezervacije", "btnOdjaviSe"]
         }
-        buttons = {
-            "btnVrsteTreninga": lambda i: self.create_button("src/img/Main/btnVrsteTreninga.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("vrste_treninga")),#
-            "btnTreninzi": lambda i: self.create_button("src/img/Main/btnTreninzi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("trening")),#
+
+        dugmad = {
+            "btnVrsteTreninga": lambda i: self.create_button("src/img/Main/btnVrsteTreninga.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("vrste_treninga")),
+            "btnTreninzi": lambda i: self.create_button("src/img/Main/btnTreninzi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("trening")),
             "btnIzvestaji": lambda i: self.create_button("src/img/Main/btnIzvestaji.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnIzvestaji clicked")),
-            "btnAdmin": lambda i: self.create_button("src/img/Main/btnAdmin.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("admin")),#
-            "btnClanovi": lambda i: self.create_button("src/img/Main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("clanovi")),#
+            "btnAdmin": lambda i: self.create_button("src/img/Main/btnAdmin.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("admin")),
+            "btnClanovi": lambda i: self.create_button("src/img/Main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("clanovi")),
             "btnTermini": lambda i: self.create_button("src/img/Main/btnTermini.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnTermini clicked")),
             "btnRezervacije": lambda i: self.create_button("src/img/Main/btnRezervacije.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnRezervacije clicked")),
-            "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=lambda:self.prebaci_win("programi")),#
-            
-            "btnRegistrujSe": lambda i: self.create_button("src/img/Main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.registrujSe()),#
-            "btnOdjaviSe": lambda i: self.create_button("src/img/Main/btnOdjaviSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("login"))#
+            "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("programi")),
+            "btnRegistrujSe": lambda i: self.create_button("src/img/Main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.registrujSe()),
+            "btnOdjaviSe": lambda i: self.create_button("src/img/Main/btnOdjaviSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("login"))
         }
 
         i = 1
-        for btn_name in role_buttons.get(self.uloga, []):
-            buttons[btn_name](i)
+        for btn_ime in imena_dugmadi_po_ulozi.get(self.uloga, []):
+            y_position = 63 * i if "RegistrujSe" not in btn_ime and "OdjaviSe" not in btn_ime else 559.0
+            self.dugmad_pozicije[btn_ime] = y_position 
+            dugmad[btn_ime](i) 
             i += 1
+
             
     def vrati(self,text):
         self.return_value=text
@@ -150,7 +156,7 @@ class MainWindow:
     def napravi_win_vrste_treninga(self):
         self.trenutni_window= winVrsteTreninga.VrsteTreningaWindow(self.window,self)
         self.trenutni_window.start()
-        
+    
     def prebaci_win(self,win):
         self.unisti_trenutni_win()
         if win=="programi": self.napravi_win_programi()

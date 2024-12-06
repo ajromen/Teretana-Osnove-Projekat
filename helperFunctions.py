@@ -4,15 +4,17 @@ import os
 import customtkinter as ctk
 from tkinter import *
 
+SETUP_PATH="src/setup.txt"
+
 def hashPassword(password):
    password_bytes = password.encode('utf-8')
    hash_object = hashlib.sha256(password_bytes)
    return hash_object.hexdigest()
 
-def obavestenje(poruka,title="Greška"):
+def obavestenje(poruka,title="Greška",sirina=350):
    error_window = ctk.CTkToplevel(fg_color='#000000')
    error_window.title(title)
-   error_window.geometry("350x150")
+   error_window.geometry(f"{sirina}x150")
    error_window.resizable(False, False)
    centerWindow(error_window)
 
@@ -74,3 +76,32 @@ def napravi_toplevel(width=343,height=485,title=""):
    trenutni_window.resizable(False,False)
    centerWindow(trenutni_window)
    return trenutni_window
+
+def ucitaj_iz_setup(text):
+   if os.path.exists(SETUP_PATH):
+      with open(SETUP_PATH,'r',encoding='utf-8') as file:
+         for line in file.readlines():
+            if line.strip() and line.strip().split(": ")[0]==text:
+               return line.strip().split(": ")[1]
+   else:
+      obavestenje(f"Nije pronađen setup.txt na lokaciji: {os.getcwd().replace("\\","/")}/{SETUP_PATH}", sirina=1000)
+      
+def azuriraj_setup(kljuc, nova_vrednost):
+   if os.path.exists(SETUP_PATH):
+      postoji = False
+      updated_lines = []
+
+      with open(SETUP_PATH, 'r', encoding='utf-8') as file:
+         for line in file:
+            if line.strip() and line.strip().split(": ")[0] == kljuc:
+               updated_lines.append(f"{kljuc}: {nova_vrednost}\n")
+               postoji = True
+            else:
+               updated_lines.append(line)
+
+      if not postoji:
+         updated_lines.append(f"{kljuc}: {nova_vrednost}\n")
+      with open(SETUP_PATH, 'w', encoding='utf-8') as file:
+         file.writelines(updated_lines)
+   else:
+      obavestenje(f"Nije pronađen setup.txt na lokaciji: {os.getcwd().replace('\\', '/')}/{SETUP_PATH}", sirina=1000)

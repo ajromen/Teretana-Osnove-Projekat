@@ -10,9 +10,10 @@ class ClanoviWindow:
         self.window = window
         self.main_window=main_window
         self.current_canvas = None
-        self.fSetup = open("src/setup.txt", "r+")
-        broj_rez=self.fSetup.readline()
-        self.broj_rezervacija_za_nagradjivanje=int(broj_rez.split(" ")[1])
+        self.broj_rez_kluc="potreban_broj_za_rezervacije"
+        broj_rez=helperFunctions.ucitaj_iz_setup(self.broj_rez_kluc)
+        self.broj_rezervacija_za_nagradjivanje=int(broj_rez) if broj_rez else 27
+        
         self.uloga=uloga
         
 
@@ -63,8 +64,7 @@ class ClanoviWindow:
             helperFunctions.obavestenje("Zahtev mora biti broj veći od 0.")
             return
         self.broj_rezervacija_za_nagradjivanje=int(brdana)
-        open('src/setup.txt', 'w').close()
-        self.fSetup.write("potreban_broj_za_rezervacije: "+str(brdana))
+        helperFunctions.azuriraj_setup(self.broj_rez_kluc, str(brdana))
         self.popuni_tabelu(self.table)
 
     def popuni_tabelu(self,tabela):

@@ -114,8 +114,6 @@ class TreningWindow:
 
         self.table.delete(slctd_item)
         helperFunctions.obavestenje(title="Brisanje", poruka="Trening je uspešno obrisan.")
-
-        helperFunctions.obavestenje(title="Greška", poruka=f"Došlo je do greške prilikom brisanja trenigna: {e}")
             
                 
     def winTrening_Izmeni(self):

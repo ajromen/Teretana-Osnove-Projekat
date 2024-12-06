@@ -11,7 +11,8 @@ CREATE TABLE Korisnici
 	  status_clanstva BOOLEAN,
 	  uplacen_paket BOOLEAN,
 	  datum_registracije DATE,
-	  obnova_clanarine DATE
+	  obnova_clanarine DATE,
+	  obrisan BOOLEAN
 	  );
 
 DROP TABLE IF EXISTS Trening;
@@ -21,7 +22,8 @@ CREATE TABLE Trening
 	  vreme_pocetka TIME,
 	  vreme_kraja TIME,
 	  dani_nedelje CHAR(28),
-	  id_programa INTEGER, 
+	  id_programa INTEGER,
+	  obrisan BOOLEAN,
 	  FOREIGN KEY (id_sale) REFERENCES Sala(id_sale)
 	  FOREIGN KEY (id_programa) REFERENCES Program(id_programa)
 	  );
@@ -31,7 +33,8 @@ CREATE TABLE Sala
 	( id_sale INTEGER PRIMARY KEY NOT NULL,
 	  naziv CHAR(15),
 	  broj_redova SMALLINT,
-	  oznaka_mesta CHAR(15)
+	  oznaka_mesta CHAR(15),
+	  obrisana BOOLEAN
 	);
 	
 DROP TABLE IF EXISTS Program;
@@ -43,6 +46,7 @@ CREATE TABLE Program
 	  id_instruktora CHAR(25),--
 	  potreban_paket BOOLEAN,
 	  opis BLOB,
+	  obrisan BOOLEAN,
 	  FOREIGN KEY (id_vrste_treninga) REFERENCES Vrste_treninga(id_vrste_treninga),
 	  FOREIGN KEY (id_instruktora) REFERENCES Korisnici(username)
 	  );
@@ -50,7 +54,8 @@ CREATE TABLE Program
 DROP TABLE IF EXISTS Vrste_treninga;--OPCIONALNO OBRISI AKO SE PREDOMISLIS
 CREATE TABLE Vrste_treninga 
 	( id_vrste_treninga INTEGER PRIMARY KEY NOT NULL,
-	  naziv BLOB
+	  naziv BLOB,
+	  obrisan BOOLEAN
 	  );
 
 DROP TABLE IF EXISTS Termin;
@@ -58,6 +63,7 @@ CREATE TABLE Termin
 	( id_termina CHAR(6) PRIMARY KEY NOT NULL,
 	  datum_odrzavanja DATE,
 	  id_treninga CHAR(4),--
+	  obrisan BOOLEAN,
 	  FOREIGN KEY (id_treninga) REFERENCES Trening(id_treninga)
 	  );
 
