@@ -51,11 +51,11 @@ class TreningWindow:
         self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,tuple(self.kriterijumi))
 
 
-    def popuni_tabelu(self,tabela):
+    def popuni_tabelu(self,tabela,kriterijum='id_treninga',pretraga=""):
         for red in tabela.get_children():
             tabela.delete(red)
                 
-        podaci=self.izlistaj()
+        podaci=self.izlistaj(kriterijum,pretraga)
         
         i=0
         for podatak in podaci:
@@ -80,17 +80,8 @@ class TreningWindow:
         if pretraga =="" or pretraga=="pretraži":
             pretraga=""
         
-        podaci=self.izlistaj(pretraga=pretraga,kriterijum=kriterijum)
+        self.popuni_tabelu(self.table,pretraga=pretraga,kriterijum=kriterijum)
         
-        i=0
-        for podatak in podaci:
-            podatak=list(podatak)
-            sifra_sale=podatak[6]
-            sifra_programa=podatak[7]
-            podatak[1]=str(sifra_sale)+" "+podatak[1]
-            podatak[5]=str(sifra_programa)+" "+podatak[5]
-            self.table.insert("", "end", values=podatak,tags=str(i%2))
-            i+=1
 
     def izlistaj(self,kriterijum='id_treninga',pretraga=""):              
         return queries.izlistaj_trening(pretraga,kriterijum)

@@ -54,15 +54,17 @@ class ProgramiWindow:
         self.table.column("Opis",width=100)
            
 
-    def popuni_tabelu(self,tabela):
+    def popuni_tabelu(self,tabela,kriterijum='id_programa',pretraga=''):
         for red in tabela.get_children():
             tabela.delete(red)
                 
-        podaci=self.izlistaj_programe()
+        podaci=self.izlistaj_programe(kriterijum,pretraga)
         
         i=0
         for podatak in podaci:
-            tabela.insert("", "end", values=podatak,tags=str(i%2))
+            if(podatak[7]==1): 
+                if(self.uloga=="admin"): tabela.insert("", "end", values=podatak[:-1],tags="obrisano"+str(i%2))
+            else: tabela.insert("", "end", values=podatak[:-1],tags=str(i%2))
             i+=1
 
     def pretrazi(self):
@@ -85,12 +87,7 @@ class ProgramiWindow:
             else:
                 pass
 
-        podaci=self.izlistaj_programe(pretraga=pretraga,kriterijum=kriterijum)
-        
-        i=0
-        for podatak in podaci:
-            self.table.insert("", "end", values=podatak,tags=str(i%2))
-            i+=1
+        self.popuni_tabelu(self.table,pretraga=pretraga,kriterijum=kriterijum)
 
     def winProgramiFilteri(self):
         self.trenutni_window = ctk.CTkToplevel(fg_color='#000000')
@@ -229,8 +226,7 @@ class ProgramiWindow:
         slctd_data = self.table.item(slctd_item)
         program_id = slctd_data["values"][0]  
         
-        komanda = "DELETE FROM Program WHERE id_programa = ?"
-        queries.cursor.execute(komanda, (program_id,))
+        queries.obrisi_program(id_programa=program_id)
         queries.connection.commit()
 
         self.table.delete(slctd_item)

@@ -62,15 +62,41 @@ def restartuj_bazu():
     print("Baza uspesno resetovana")
     
 
-def obrisiKorisnika(username):
-    if(username==""): return
+def obrisi_korisnika(username,instruktor=False):
+    if(username==""): return False
+    elif username.strip()=='obrisan_korisnik': 
+        helperFunctions.obavestenje("Obrisani korisnik sluzi za evidenciju i nije ga dozvoljeno birsati.")
+        return False
+    
+    #brisanje iz rezervacija ako je nekad u buducnosti
+    danas = datetime.date.today().strftime("%Y-%m-%d")
+    cursor.execute("DELETE FROM Rezervacija WHERE datum > ? AND id_korisnika=?", (danas,username))
+    #brisanje instrkuktora iz rezervacija
+    cursor.execute("UPDATE Rezervacija SET id_korisnika='obrisan_korisnik' WHERE id_korisnika=?", (username,))
+    
+    #brisanje programa ako je insktruktor
+    if instruktor:
+        cursor.execute("SELECT id_programa FROM Program WHERE id_instruktora=?",(username,))
+        id_programa=cursor.fetchall()
+        cursor.execute("UPDATE Program SET obrisan=TRUE, id_instruktora='obrisan_korisnik' WHERE id_instruktora = ?", (username,))
+        for program in id_programa:
+            obrisi_program(program[0])
+
+    connection.commit()
+    #brisanje iz baze
     cursor.execute("DELETE FROM Korisnici WHERE username=?", (username,))
     connection.commit()
+    return True
 
-def obrisi_rezervaciju(id_rezervacije):
-    if(id_rezervacije==None): return
-    cursor.execute("DELETE FROM Rezervacija WHERE id_rezervacije=?", (id_rezervacije,))
+def obrisi_program(id_programa):
+    #print(type(id_programa),id_programa)
+    #oznaci program kao obrisan
+    cursor.execute("UPDATE Program SET obrisan=TRUE WHERE id_programa = ?",(id_programa,))
+        
+    #cursor.execute("SELECT ",(id_programa,))
+    
     connection.commit()
+    
 
 def azurirajNalog(stariUsername,username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine):
     cursor.execute("SELECT * FROM Korisnici WHERE username=?",(stariUsername,))
@@ -115,7 +141,8 @@ def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_
                             WHEN Program.potreban_paket = 0 THEN 'Standard'
                             WHEN Program.potreban_paket = 1 THEN 'Premium'
                         END AS potreban_paket,
-                        Program.opis
+                        Program.opis,
+                        Program.obrisan AS Obrisan
                     FROM 
                         Program
                     JOIN 
@@ -151,8 +178,7 @@ def obrisi_goste():
     usernames=cursor.fetchall()
     
     for gost in usernames:
-        obrisi_rezervaciju(gost[0])
-        obrisiKorisnika(gost[1])
+        obrisi_korisnika(gost[1])
     
     cursor.execute('''SELECT 
                             Korisnici.username
@@ -166,7 +192,7 @@ def obrisi_goste():
     gosti_bez_rezervacije = cursor.fetchall()
 
     for gost in gosti_bez_rezervacije:
-        obrisiKorisnika(gost[0])
+        obrisi_korisnika(gost[0])
         
 def azuriraj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
     cursor.execute("SELECT * FROM Vrste_treninga WHERE id_vrste_treninga=?",(vrsta_treninga,))

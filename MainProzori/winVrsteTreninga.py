@@ -40,11 +40,11 @@ class VrsteTreningaWindow:
         self.table.column("Naziv", width=720)
         
 
-    def popuni_tabelu(self,tabela):
+    def popuni_tabelu(self,tabela,kriterijum='id_vrste_treninga',pretraga=""):
         for red in tabela.get_children():
             tabela.delete(red)
                 
-        podaci=self.izlistaj()
+        podaci=self.izlistaj(kriterijum,pretraga)
         i=0
         for podatak in podaci:
             tabela.insert("", "end", values=podatak,tags=str(i%2))
@@ -65,12 +65,7 @@ class VrsteTreningaWindow:
         if pretraga =="" or pretraga=="pretraži":
             pretraga=""
 
-        podaci=self.izlistaj(pretraga=pretraga,kriterijum=kriterijum)
-        
-        i=0
-        for podatak in podaci:
-            self.table.insert("", "end", values=podatak,tags=str(i%2))
-            i+=1
+        self.popuni_tabelu(self.table,pretraga=pretraga,kriterijum=kriterijum)
 
     def izlistaj(self,kriterijum='id_vrste_treninga',pretraga=""):              
         return queries.izlistaj_vrste_treninga(pretraga,kriterijum)

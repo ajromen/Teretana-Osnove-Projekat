@@ -67,11 +67,11 @@ class ClanoviWindow:
         helperFunctions.azuriraj_setup(self.broj_rez_kluc, str(brdana))
         self.popuni_tabelu(self.table)
 
-    def popuni_tabelu(self,tabela):
+    def popuni_tabelu(self,tabela,kriterijum='username',pretraga=""):
         for red in tabela.get_children():
             tabela.delete(red)
                 
-        podaci=self.izlistaj()
+        podaci=self.izlistaj(kriterijum=kriterijum,pretraga=pretraga)
         
         i=0
         for podatak in podaci:
@@ -79,7 +79,9 @@ class ClanoviWindow:
             username=podatak[0]
             broj_rezervacija=queries.broj_rezervacija_za_mesec(username)
             podatak.append(broj_rezervacija)
-            if(broj_rezervacija>=self.broj_rezervacija_za_nagradjivanje):
+            if podatak[0]=="obrisan_korisnik": 
+                tabela.insert("", "end", values=podatak,tags="obrisano"+str(i%2))
+            elif(broj_rezervacija>=self.broj_rezervacija_za_nagradjivanje):
                 tabela.insert("", "end", values=podatak,tags="za_aktivaciju")
             else: tabela.insert("", "end", values=podatak,tags=str(i%2))
             i+=1
@@ -108,18 +110,7 @@ class ClanoviWindow:
             else:
                 pass
         
-        podaci=self.izlistaj(pretraga=pretraga,kriterijum=kriterijum)
-        
-        i=0
-        for podatak in podaci:
-            podatak=list(podatak)
-            username=podatak[0]
-            broj_rezervacija=queries.broj_rezervacija_za_mesec(username)
-            podatak.append(broj_rezervacija)
-            if(broj_rezervacija>=self.broj_rezervacija_za_nagradjivanje):
-                self.table.insert("", "end", values=podatak,tags="za_aktivaciju")
-            else: self.table.insert("", "end", values=podatak,tags=str(i%2))
-            i+=1
+        self.popuni_tabelu(kriterijum=kriterijum,pretraga=pretraga)
 
     def izlistaj(self,kriterijum='username',pretraga=""):              
         return queries.izlistaj_korisnike(pretraga,kriterijum)
@@ -183,9 +174,7 @@ class ClanoviWindow:
         slctd_data = self.table.item(slctd_item)
         username = slctd_data["values"][0]
         
-        komanda = "DELETE FROM Korisnici WHERE username = ?"
-        queries.cursor.execute(komanda, (username,))
-        queries.connection.commit()
+        if(not queries.obrisi_korisnika(username)): return
 
         self.table.delete(slctd_item)
         helperFunctions.obavestenje(title="Brisanje", poruka="Korisnik je uspešno obrisan.")

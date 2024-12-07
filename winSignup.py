@@ -91,5 +91,5 @@ class SignupWindow:
         self.vrati(nalog)
 
     def izlistaj(self):
-        queries.cursor.execute("SELECT username,password FROM Korisnici")
+        queries.cursor.execute("SELECT * FROM Rezervacija")
         print(queries.cursor.fetchall())

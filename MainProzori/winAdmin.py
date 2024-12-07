@@ -155,11 +155,9 @@ class AdminWindow:
         slctd_data = self.table.item(slctd_item)
         username = slctd_data["values"][0]
 
-        komanda = "DELETE FROM Korisnici WHERE username = ?"
-        queries.cursor.execute(komanda, (username,))
-        queries.connection.commit()
+        queries.obrisi_korisnika(username,True)
 
-        self.table.delete(slctd_item)
+        self.popuni_tabelu(self.table)
         helperFunctions.obavestenje(title="Brisanje", poruka="Korisnik je uspešno obrisan.")
             
         
