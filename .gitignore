@@ -1,4 +1,4 @@
 tempCodeRunnerFile.py
-.vscode
-__pycache__
-.idea
+.vscode/
+.idea/
+**/__pycache__/

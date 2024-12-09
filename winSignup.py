@@ -3,7 +3,7 @@ import ctypes
 import re
 from tkinter import *
 import customtkinter as ctk
-import queries
+import Queries.queries as queries
 from datetime import date
 import helperFunctions
 import widgets as wid

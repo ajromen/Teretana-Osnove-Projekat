@@ -6,7 +6,7 @@ import customtkinter as ctk
 import sqlite3
 import os
 import ctypes
-import queries
+import Queries.queries as queries
 import helperFunctions
 from ctk_rangeslider import *
 

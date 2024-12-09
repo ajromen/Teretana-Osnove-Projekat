@@ -1,5 +1,5 @@
 from tkinter import *
-import queries
+import Queries.queries as queries
 import helperFunctions
 import widgets as wid
 

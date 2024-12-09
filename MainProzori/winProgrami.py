@@ -1,6 +1,6 @@
 from tkinter import *
 import customtkinter as ctk
-import queries
+import Queries.queries as queries
 import helperFunctions
 from ctk_rangeslider import *
 import widgets as wid
@@ -227,8 +227,7 @@ class ProgramiWindow:
         program_id = slctd_data["values"][0]  
         
         queries.obrisi_program(id_programa=program_id)
-        queries.connection.commit()
-
+        
         self.table.delete(slctd_item)
         helperFunctions.obavestenje(title="Brisanje", poruka="Program je uspešno obrisan.")
                 

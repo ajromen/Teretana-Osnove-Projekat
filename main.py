@@ -1,6 +1,7 @@
 from customtkinter import *
-import queries
+import Queries.queries as queries
 sys.path.append('./MainProzori')
+sys.path.append('./Queries')
 import winLogin
 import winSignup
 import winMain

@@ -2,7 +2,7 @@ from datetime import date
 import re
 from tkinter import *
 import customtkinter as ctk
-import queries
+import Queries.queries as queries
 import helperFunctions
 import widgets as wid
 
