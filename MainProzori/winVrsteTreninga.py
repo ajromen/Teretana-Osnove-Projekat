@@ -1,11 +1,4 @@
-from datetime import date
-import re
-from tkinter import *
-import customtkinter as ctk
-import Queries.queries as queries
-import helperFunctions
-import widgets as wid
-
+from imports import *
 
 class VrsteTreningaWindow:
     def __init__(self, window, main_window):

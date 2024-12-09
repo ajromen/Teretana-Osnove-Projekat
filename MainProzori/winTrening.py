@@ -1,9 +1,4 @@
-from tkinter import *
-import customtkinter as ctk
-import Queries.queries as queries
-import helperFunctions
-import widgets as wid
-
+from imports import *
 
 class TreningWindow:
     def __init__(self, window, main_window):

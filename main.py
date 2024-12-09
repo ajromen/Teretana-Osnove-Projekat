@@ -1,10 +1,6 @@
-from customtkinter import *
-import Queries.queries as queries
-sys.path.append('./MainProzori')
-sys.path.append('./Queries')
-import winLogin
-import winSignup
-import winMain
+import sys
+sys.path.append('./Mics')
+from imports import *
 
 #queries.restartuj_bazu()
 
@@ -29,7 +25,7 @@ def vozi(ekran,user=''):
     return winMain.start(return_value[0][0],return_value[0][1])
 
 if __name__ == '__main__':
-    window=CTk()
+    window=ctk.CTk()
     
     winLogin=winLogin.LoginWindow(window)
     winSignup=winSignup.SignupWindow(window)

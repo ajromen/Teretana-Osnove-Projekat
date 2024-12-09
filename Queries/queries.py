@@ -1,9 +1,4 @@
-import datetime
-import os
-import random
-import sqlite3
-import helperFunctions
-import re
+from imports import *
 
 connection=sqlite3.connect("Teretana.db")
 cursor=connection.cursor()
@@ -45,10 +40,8 @@ def napraviGosta():
 
 def restartuj_bazu():
     global connection, cursor
-    try:
-        connection.close()
-    except e:
-        pass
+    try: connection.close()
+    except: pass
 
     if os.path.exists("Teretana.db"):
         os.remove("Teretana.db")

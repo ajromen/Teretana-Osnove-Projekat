@@ -1,9 +1,5 @@
-from tkinter import *
-import customtkinter as ctk
-import Queries.queries as queries
-import helperFunctions
+from imports import *
 from ctk_rangeslider import *
-import widgets as wid
 
 
 class ProgramiWindow:

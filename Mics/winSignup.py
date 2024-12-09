@@ -1,12 +1,4 @@
-import os
-import ctypes
-import re
-from tkinter import *
-import customtkinter as ctk
-import Queries.queries as queries
-from datetime import date
-import helperFunctions
-import widgets as wid
+from imports import *
 
 class SignupWindow:
     def __init__(self,window):
@@ -82,7 +74,7 @@ class SignupWindow:
         uloga=0
         status_clanstva=1
         uplacen_paket=0
-        datum_registracije=date.today().strftime("%Y-%m-%d")
+        datum_registracije=datetime.date.today().strftime("%Y-%m-%d")
         obnova_clanarine=datum_registracije
         if(not self.guest):
             nalog=queries.napraviNalog(username, lozinka, ime, prezime, uloga,status_clanstva, uplacen_paket,datum_registracije,obnova_clanarine)

@@ -1,7 +1,4 @@
-from tkinter import *
-import Queries.queries as queries
-import helperFunctions
-import widgets as wid
+from imports import *
 
 class LoginWindow:
     def __init__(self,window):

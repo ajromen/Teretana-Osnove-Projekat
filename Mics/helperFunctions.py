@@ -1,8 +1,5 @@
-import ctypes
 import hashlib
-import os
-import customtkinter as ctk
-from tkinter import *
+from imports import *
 
 SETUP_PATH="src/setup.txt"
 

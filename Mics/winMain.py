@@ -1,15 +1,9 @@
-import datetime
-import sys
-from tkinter import *
-import customtkinter as ctk
-import helperFunctions
-sys.path.append('./MainProzori')
+from imports import *
 import winProgrami
 import winTrening
+import winVrsteTreninga
 import winClanovi
 import winAdmin
-import widgets as wid
-import winVrsteTreninga
 
 class MainWindow:
     def __init__(self,window):

@@ -1,14 +1,4 @@
-import datetime
-import sys
-from tkinter import *
-from tkinter import ttk
-import customtkinter as ctk
-import sqlite3
-import os
-import ctypes
-import Queries.queries as queries
-import helperFunctions
-from ctk_rangeslider import *
+from imports import *
 
 def create_button(canvas,image_path, x, y, width, height, command):
     image = PhotoImage(file=image_path)
