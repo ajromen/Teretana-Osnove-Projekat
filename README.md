@@ -1,4 +1,4 @@
 # Teretana Osnove Programiranja Projekat
  Teretana aplikacija sa CustomTkinter-om i SQLite-om
-# Pre pokretanja:
+## Pre pokretanja:
 ```pip install -r .\requirements.txt```
