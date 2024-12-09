@@ -1,6 +1,6 @@
 PRAGMA foreign_keys = ON;
 
--- RESTARTOVANJE TABELA --
+ RESTARTOVANJE TABELA 
 DROP TABLE IF EXISTS Korisnici;
 CREATE TABLE Korisnici 
 	( username CHAR(25) PRIMARY KEY NOT NULL,
@@ -41,9 +41,9 @@ DROP TABLE IF EXISTS Program;
 CREATE TABLE Program 
 	( id_programa INTEGER PRIMARY KEY NOT NULL,
 	  naziv CHAR(30),
-	  id_vrste_treninga INTEGER,--
+	  id_vrste_treninga INTEGER,
 	  trajanje SMALLINT,
-	  id_instruktora CHAR(25),--
+	  id_instruktora CHAR(25),
 	  potreban_paket BOOLEAN,
 	  opis BLOB,
 	  obrisan BOOLEAN,
@@ -51,7 +51,7 @@ CREATE TABLE Program
 	  FOREIGN KEY (id_instruktora) REFERENCES Korisnici(username)
 	  );
 
-DROP TABLE IF EXISTS Vrste_treninga;--OPCIONALNO OBRISI AKO SE PREDOMISLIS
+DROP TABLE IF EXISTS Vrste_treninga;
 CREATE TABLE Vrste_treninga 
 	( id_vrste_treninga INTEGER PRIMARY KEY NOT NULL,
 	  naziv BLOB,
@@ -62,7 +62,7 @@ DROP TABLE IF EXISTS Termin;
 CREATE TABLE Termin 
 	( id_termina CHAR(6) PRIMARY KEY NOT NULL,
 	  datum_odrzavanja DATE,
-	  id_treninga CHAR(4),--
+	  id_treninga CHAR(4),
 	  obrisan BOOLEAN,
 	  FOREIGN KEY (id_treninga) REFERENCES Trening(id_treninga)
 	  );
@@ -70,8 +70,8 @@ CREATE TABLE Termin
 DROP TABLE IF EXISTS Rezervacija;
 CREATE TABLE Rezervacija 
 	( id_rezervacije INTEGER PRIMARY KEY NOT NULL,
-	  id_korisnika CHAR(25),--
-	  id_termina CHAR(6),--
+	  id_korisnika CHAR(25),
+	  id_termina CHAR(6),
 	  oznaka_reda_kolone INTEGER,
 	  datum DATE,
 	  FOREIGN KEY (id_korisnika) REFERENCES Korisnici(username)

@@ -14,14 +14,6 @@ FOREIGN KEY (id_vrste_treninga) REFERENCES Vrste_treninga(id_vrste_treninga),
 FOREIGN KEY (id_instruktora) REFERENCES Korisnici(username)
 '''
 
-def obrisi_program(id_programa):
-    #oznaci program kao obrisan
-    cursor.execute("UPDATE Program SET obrisan=TRUE WHERE id_programa = ?",(id_programa,))
-        
-    #cursor.execute("SELECT ",(id_programa,))
-    
-    connection.commit()
-
 def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_vrste_treninga,trajanjeOd,trajanjeDo,instruktor):
     kriterijum=str(kriterijum)
     pretraga=str(pretraga)
@@ -112,3 +104,11 @@ def get_trajanje_range():
     if(len(rez)==2):
         return rez[0], rez[1]
     return 0, 0
+
+def obrisi_program(id_programa):
+    #oznaci program kao obrisan
+    cursor.execute("UPDATE Program SET obrisan=TRUE WHERE id_programa = ?",(id_programa,))
+        
+    #cursor.execute("SELECT ",(id_programa,))
+    
+    connection.commit()

@@ -37,32 +37,6 @@ def dodaj_gosta():
         dodaj_korisnika(username,"","","",-1,0,0,datum,None)
     return username
 
-def obrisi_korisnika(username,instruktor=False):
-    if(username==""): return False
-    elif username.strip()=='obrisan_korisnik': 
-        helperFunctions.obavestenje("Obrisani korisnik sluzi za evidenciju i nije ga dozvoljeno birsati.")
-        return False
-    
-    #brisanje iz rezervacija ako je nekad u buducnosti
-    danas = datetime.date.today().strftime("%Y-%m-%d")
-    cursor.execute("DELETE FROM Rezervacija WHERE datum > ? AND id_korisnika=?", (danas,username))
-    #brisanje instrkuktora iz rezervacija
-    cursor.execute("UPDATE Rezervacija SET id_korisnika='obrisan_korisnik' WHERE id_korisnika=?", (username,))
-    
-    #brisanje programa ako je insktruktor
-    if instruktor:
-        cursor.execute("SELECT id_programa FROM Program WHERE id_instruktora=?",(username,))
-        id_programa=cursor.fetchall()
-        cursor.execute("UPDATE Program SET obrisan=TRUE, id_instruktora='obrisan_korisnik' WHERE id_instruktora = ?", (username,))
-        for program in id_programa:
-            obrisi_program(program[0])
-
-    connection.commit()
-    #brisanje iz baze
-    cursor.execute("DELETE FROM Korisnici WHERE username=?", (username,))
-    connection.commit()
-    return True
-
 def azuriraj_korisnika(stariUsername,username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine):
     cursor.execute("SELECT * FROM Korisnici WHERE username=?",(stariUsername,))
     if(len(cursor.fetchall())>0):
@@ -223,3 +197,29 @@ def aktiviraj_paket(username,paket):
     
     cursor.execute(komanda, (paket,username,))
     connection.commit()
+
+def obrisi_korisnika(username,instruktor=False):
+    if(username==""): return False
+    elif username.strip()=='obrisan_korisnik': 
+        helperFunctions.obavestenje("Obrisani korisnik sluzi za evidenciju i nije ga dozvoljeno birsati.")
+        return False
+    
+    #brisanje iz rezervacija ako je nekad u buducnosti
+    danas = datetime.date.today().strftime("%Y-%m-%d")
+    cursor.execute("DELETE FROM Rezervacija WHERE datum > ? AND id_korisnika=?", (danas,username,))
+    #brisanje instrkuktora iz rezervacija
+    cursor.execute("UPDATE Rezervacija SET id_korisnika='obrisan_korisnik' WHERE id_korisnika=?", (username,))
+    
+    #brisanje programa ako je insktruktor
+    if instruktor:
+        cursor.execute("SELECT id_programa FROM Program WHERE id_instruktora=?",(username,))
+        id_programa=cursor.fetchall()
+        cursor.execute("UPDATE Program SET obrisan=TRUE, id_instruktora='obrisan_korisnik' WHERE id_instruktora = ?", (username,))
+        for program in id_programa:
+            obrisi_program(program[0])
+
+
+    #brisanje iz baze
+    cursor.execute("DELETE FROM Korisnici WHERE username=?", (username,))
+    connection.commit()
+    return True
