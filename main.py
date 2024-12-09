@@ -1,8 +1,13 @@
 import sys
 sys.path.append('./Mics')
 from imports import *
+import winLogin
+import winSignup
+import winMain
+import bp_korisnici
+import baza_podataka
 
-#queries.restartuj_bazu()
+#baza_podataka.restartuj_bazu()
 
 def login_startup_loop(ekran,user=''):
     return_value=ekran
@@ -19,7 +24,7 @@ def vozi(ekran,user=''):
     return_value=login_startup_loop(ekran,user)
     
     if(return_value=="gost"):
-        username=queries.napraviGosta()
+        username=bp_korisnici.dodaj_gosta()
         return_value=[[username,-1]]
     if(return_value==0): return
     return winMain.start(return_value[0][0],return_value[0][1])
@@ -43,6 +48,6 @@ if __name__ == '__main__':
             user=staDaRadim[1]
             staDaRadim=staDaRadim[0]
         
-    queries.proveri_status_korisnika()
-    queries.obrisi_goste()
-    queries.connection.commit()
+    bp_korisnici.proveri_status_korisnika()
+    bp_korisnici.obrisi_goste()
+    baza_podataka.connection.commit()

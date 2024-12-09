@@ -1,3 +1,5 @@
+import baza_podataka
+import bp_programi
 from imports import *
 from ctk_rangeslider import *
 
@@ -112,8 +114,8 @@ class ProgramiWindow:
         self.filt_switchPaket.place(x=252,y=278)
         
         
-        queries.cursor.execute("SELECT MIN(trajanje), MAX(trajanje) FROM Program")
-        rez=queries.cursor.fetchall()[0]
+        baza_podataka.cursor.execute("SELECT MIN(trajanje), MAX(trajanje) FROM Program")
+        rez=baza_podataka.cursor.fetchall()[0]
         min=rez[0]
         max=rez[1]
         wid.create_label(self.trenutni_window, text="Trajanje od do:",x=124,y=167)
@@ -177,11 +179,11 @@ class ProgramiWindow:
         self.popuni_tabelu(self.table)
 
     def izlistaj_programe(self,kriterijum='id_programa',pretraga=""):              
-        return queries.izlistaj_programe(pretraga,kriterijum,self.potrebanPaket,self.id_programa,self.naziv,self.naziv_vrste_treninga,self.trajanjeOd,self.trajanjeDo,self.instruktor)
+        return bp_programi.izlistaj_programe(pretraga,kriterijum,self.potrebanPaket,self.id_programa,self.naziv,self.naziv_vrste_treninga,self.trajanjeOd,self.trajanjeDo,self.instruktor)
     
     def promenljive_filteri(self):
-        queries.cursor.execute("SELECT MIN(trajanje), MAX(trajanje) FROM Program")
-        rez=queries.cursor.fetchall()[0]
+        baza_podataka.cursor.execute("SELECT MIN(trajanje), MAX(trajanje) FROM Program")
+        rez=baza_podataka.cursor.fetchall()[0]
         self.trajanjeOd=rez[0]
         self.trajanjeDo=rez[1]
         self.potrebanPaket=1
@@ -222,7 +224,7 @@ class ProgramiWindow:
         slctd_data = self.table.item(slctd_item)
         program_id = slctd_data["values"][0]  
         
-        queries.obrisi_program(id_programa=program_id)
+        bp_programi.obrisi_program(id_programa=program_id)
         
         self.table.delete(slctd_item)
         helperFunctions.obavestenje(title="Brisanje", poruka="Program je uspešno obrisan.")
@@ -334,12 +336,12 @@ class ProgramiWindow:
         instruktor=instruktor.split(" ")[0]
 
         if(mode):
-            if(queries.azuriraj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
+            if(bp_programi.azuriraj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
             helperFunctions.obavestenje(title="Izmena programa", poruka="Uspešno izmenjen program.")
         else:
-            if(queries.dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
+            if(bp_programi.dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
             helperFunctions.obavestenje(title="Dodaj program", poruka="Uspešno dodat program.")
-        queries.connection.commit()
+        
         self.popuni_tabelu(self.table)
         
         self.trenutni_window.destroy()

@@ -1,4 +1,6 @@
+import baza_podataka
 from imports import *
+from tkinter import ttk
 
 def create_button(canvas,image_path, x, y, width, height, command):
     image = PhotoImage(file=image_path)
@@ -48,8 +50,8 @@ def on_entry_out(entry, placeholder, color_inactive="gray",show=''):
 def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=1,specificni=False):
     lblSifra = ctk.CTkLabel(canvas, text=text, font=("Inter",15 * -1),anchor='nw')
     lblSifra.place(x=labelX,y=labelY)
-    queries.cursor.execute(query)
-    listaSifre=queries.cursor.fetchall()
+    baza_podataka.cursor.execute(query)
+    listaSifre=baza_podataka.cursor.fetchall()
     lista=[] if specificni else ["SVE"]
     for sifra in listaSifre:
         tekst = " ".join(str(sifra[i]) for i in range(broj_kolona))  # No extra trailing space

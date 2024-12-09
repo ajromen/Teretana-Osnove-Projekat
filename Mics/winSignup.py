@@ -1,4 +1,6 @@
+import baza_podataka
 from imports import *
+import re
 
 class SignupWindow:
     def __init__(self,window):
@@ -40,9 +42,9 @@ class SignupWindow:
             self.entyUsername.configure(text_color="white")
 
         self.entryPassword = wid.create_entry(self.canvas,x=41.0, y=293.0,width=312,corner_radius=0,back_color="#1A1B20", placeholder="Lozinka", manual_fin_fon=(True,"Lozinka"))
-        self.entryPassword.bind("<Return>", lambda event: self.napraviNalog())
+        self.entryPassword.bind("<Return>", lambda event: self.dodaj_korisnika())
 
-        wid.create_button(self.canvas,"src/img/Signup/button_3.png", x=121.0, y=337.0, width=160.0, height=35.0, command=self.napraviNalog)
+        wid.create_button(self.canvas,"src/img/Signup/button_3.png", x=121.0, y=337.0, width=160.0, height=35.0, command=self.dodaj_korisnika)
         wid.create_button(self.canvas,"src/img/Signup/button_2.png", x=588.0, y=394.0, width=153.0, height=40.0, command=lambda: self.vrati("gost"))
         wid.create_button(self.canvas,"src/img/Signup/button_1.png", x=163.0, y=379.0, width=76.0, height=15.0, command=lambda: self.vrati("login"))
         wid.create_button(self.canvas,"src/img/Signup/button_3.png", x=0, y=0.0, width=160.0, height=35, command=lambda: self.izlistaj())
@@ -56,7 +58,7 @@ class SignupWindow:
         self.return_value=text
         self.window.quit()
     
-    def napraviNalog(self):
+    def dodaj_korisnika(self):
         username=self.entyUsername.get()
         imeIPrezime=self.entryName.get().split(" ")
         if(len(imeIPrezime)!=2):
@@ -77,11 +79,11 @@ class SignupWindow:
         datum_registracije=datetime.date.today().strftime("%Y-%m-%d")
         obnova_clanarine=datum_registracije
         if(not self.guest):
-            nalog=queries.napraviNalog(username, lozinka, ime, prezime, uloga,status_clanstva, uplacen_paket,datum_registracije,obnova_clanarine)
+            nalog=baza_podataka.dodaj_korisnika(username, lozinka, ime, prezime, uloga,status_clanstva, uplacen_paket,datum_registracije,obnova_clanarine)
         else:
-            nalog=queries.azurirajNalog(self.user, username, lozinka, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije,obnova_clanarine)
+            nalog=baza_podataka.azuriraj_korisnika(self.user, username, lozinka, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije,obnova_clanarine)
         self.vrati(nalog)
 
     def izlistaj(self):
-        queries.cursor.execute("SELECT * FROM Rezervacija")
-        print(queries.cursor.fetchall())
+        baza_podataka.cursor.execute("SELECT * FROM Rezervacija")
+        print(baza_podataka.cursor.fetchall())

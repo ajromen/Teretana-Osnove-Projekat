@@ -1,4 +1,7 @@
 from imports import *
+import re
+import bp_korisnici
+
 
 class AdminWindow:
     def __init__(self, window, main_window):
@@ -89,7 +92,7 @@ class AdminWindow:
             i+=1
 
     def izlistaj(self,kriterijum='username',pretraga=""):              
-        return queries.izlistaj_instruktore_admine(pretraga,kriterijum)
+        return bp_korisnici.izlistaj_instruktore_admine(pretraga,kriterijum)
     
     def winAdmin_Dodaj(self):
         self.trenutni_window=helperFunctions.napravi_toplevel(height=341,title="Dodaj administrarota")
@@ -126,11 +129,13 @@ class AdminWindow:
         if(len(lozinka)<6):
             helperFunctions.obavestenje("Lozinka mora da sadrži više od 6 karaktera")
             return 
-        
+        if(not re.search(r'\d', lozinka)):
+            helperFunctions.obavestenje("Lozinka mora sadržati bar jednu cifru")
+            return 
         
         admin+=1
-        datum_registracije=date.today().strftime("%Y-%m-%d")
-        queries.napraviNalog(username, lozinka, ime, prezime, admin, 0, 0, datum_registracije, "")
+        datum_registracije=datetime.date.today().strftime("%Y-%m-%d")
+        bp_korisnici.dodaj_korisnika(username, lozinka, ime, prezime, admin, 0, 0, datum_registracije, "")
         
         self.popuni_tabelu(self.table)
         self.trenutni_window.destroy()
@@ -148,7 +153,7 @@ class AdminWindow:
         slctd_data = self.table.item(slctd_item)
         username = slctd_data["values"][0]
 
-        queries.obrisi_korisnika(username,True)
+        bp_korisnici.obrisi_korisnika(username,True)
 
         self.popuni_tabelu(self.table)
         helperFunctions.obavestenje(title="Brisanje", poruka="Korisnik je uspešno obrisan.")

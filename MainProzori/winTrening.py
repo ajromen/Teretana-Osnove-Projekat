@@ -1,3 +1,5 @@
+import baza_podataka
+import bp_trening
 from imports import *
 
 class TreningWindow:
@@ -79,7 +81,7 @@ class TreningWindow:
         
 
     def izlistaj(self,kriterijum='id_treninga',pretraga=""):              
-        return queries.izlistaj_trening(pretraga,kriterijum)
+        return bp_trening.izlistaj_trening(pretraga,kriterijum)
     
     def obrisi_trening(self):
         slctd_item = self.table.selection()
@@ -95,8 +97,8 @@ class TreningWindow:
         trening_id = slctd_data["values"][0]  
   
         komanda = "DELETE FROM Trening WHERE id_treninga = ?"
-        queries.cursor.execute(komanda, (trening_id,))
-        queries.connection.commit()
+        baza_podataka.cursor.execute(komanda, (trening_id,))
+        baza_podataka.connection.commit()
 
         self.table.delete(slctd_item)
         helperFunctions.obavestenje(title="Brisanje", poruka="Trening je uspešno obrisan.")
@@ -246,13 +248,12 @@ class TreningWindow:
         
 
         if(mode):
-            if(queries.azuriraj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani, id_programa)): return
+            if(bp_trening.azuriraj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani, id_programa)): return
             helperFunctions.obavestenje(title="Izmena programa", poruka="Uspešno izmenjen program.")
         else:
-            if(queries.dodaj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani, id_programa)): return
+            if(bp_trening.dodaj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani, id_programa)): return
             helperFunctions.obavestenje(title="Dodaj program", poruka="Uspešno dodat program.")
         
-        queries.connection.commit()
         self.popuni_tabelu(self.table)
 
         self.entryPocetakSati=None

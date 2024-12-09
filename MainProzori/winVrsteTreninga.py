@@ -1,3 +1,5 @@
+import baza_podataka
+import bp_vrste_treninga
 from imports import *
 
 class VrsteTreningaWindow:
@@ -61,7 +63,7 @@ class VrsteTreningaWindow:
         self.popuni_tabelu(self.table,pretraga=pretraga,kriterijum=kriterijum)
 
     def izlistaj(self,kriterijum='id_vrste_treninga',pretraga=""):              
-        return queries.izlistaj_vrste_treninga(pretraga,kriterijum)
+        return bp_vrste_treninga.izlistaj_vrste_treninga(pretraga,kriterijum)
     
     def winVrste_dodaj(self):
         self.trenutni_window=helperFunctions.napravi_toplevel(height=267,title="Dodaj vrstu treninga")
@@ -87,10 +89,10 @@ class VrsteTreningaWindow:
             helperFunctions.obavestenje("Šifra vrste treninga mora biti broj")
             return 
         
-        if(queries.napravi_vrstu_treninga(sifra,naziv)):return
+        if(bp_vrste_treninga.dodaj_vrstu_treninga(sifra,naziv)):return
         helperFunctions.obavestenje(title="Dodaj program", poruka="Uspešno dodat program.")
         self.txtbxOpis=None
-        queries.connection.commit()
+        
         self.popuni_tabelu(self.table)
         self.trenutni_window.destroy()
         
@@ -108,8 +110,8 @@ class VrsteTreningaWindow:
         id_vrste_treninga = slctd_data["values"][0]
 
         komanda = "DELETE FROM Vrste_treninga WHERE id_vrste_treninga = ?"
-        queries.cursor.execute(komanda, (id_vrste_treninga,))
-        queries.connection.commit()
+        baza_podataka.cursor.execute(komanda, (id_vrste_treninga,))
+        baza_podataka.connection.commit()
 
         self.table.delete(slctd_item)
         helperFunctions.obavestenje(title="Brisanje", poruka="Vrsta treninga je uspešno obrisana.")

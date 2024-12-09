@@ -1,4 +1,5 @@
 from imports import *
+import bp_korisnici
 
 class ClanoviWindow:
     def __init__(self, window, main_window,uloga):
@@ -72,7 +73,7 @@ class ClanoviWindow:
         for podatak in podaci:
             podatak=list(podatak)
             username=podatak[0]
-            broj_rezervacija=queries.broj_rezervacija_za_mesec(username)
+            broj_rezervacija=bp_korisnici.broj_rezervacija_za_mesec(username)
             podatak.append(broj_rezervacija)
             if podatak[0]=="obrisan_korisnik": 
                 tabela.insert("", "end", values=podatak,tags="obrisano"+str(i%2))
@@ -108,7 +109,7 @@ class ClanoviWindow:
         self.popuni_tabelu(kriterijum=kriterijum,pretraga=pretraga)
 
     def izlistaj(self,kriterijum='username',pretraga=""):              
-        return queries.izlistaj_korisnike(pretraga,kriterijum)
+        return bp_korisnici.izlistaj_korisnike(pretraga,kriterijum)
     
     
     def winClan_Izmeni(self,mode="Nagradi"):# ili Aktiviraj
@@ -169,7 +170,7 @@ class ClanoviWindow:
         slctd_data = self.table.item(slctd_item)
         username = slctd_data["values"][0]
         
-        if(not queries.obrisi_korisnika(username)): return
+        if(not bp_korisnici.obrisi_korisnika(username)): return
 
         self.table.delete(slctd_item)
         helperFunctions.obavestenje(title="Brisanje", poruka="Korisnik je uspešno obrisan.")
@@ -177,14 +178,14 @@ class ClanoviWindow:
     
     def nagradi_lojalnost(self):
         username = self.entryID.get().split(",")[0].strip()
-        queries.nagradi_lojalnost(username)
+        bp_korisnici.nagradi_lojalnost(username)
         self.popuni_tabelu(self.table)
         self.trenutni_window.destroy()
         
     def aktiviraj_paket(self):
         username = self.entryID.get().split(",")[0].strip()
         paket=self.switchPaket.get()
-        queries.aktiviraj_paket(username,paket)
+        bp_korisnici.aktiviraj_paket(username,paket)
         self.popuni_tabelu(self.table)
         self.trenutni_window.destroy()
         
