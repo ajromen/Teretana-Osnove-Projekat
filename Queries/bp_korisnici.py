@@ -116,6 +116,8 @@ def obrisi_goste():
 
     for gost in gosti_bez_rezervacije:
         obrisi_korisnika(gost[0])
+        
+    connection.commit()
 
 def izlistaj_korisnike(pretraga,kriterijum):
     pretraga=str(pretraga)
@@ -194,7 +196,7 @@ def proveri_status_korisnika():
     korisnici=cursor.fetchall()
     if(len(korisnici)==0): return
     for korisnik in korisnici:
-        komanda="UPDATE Korisnici SET status_clanstva=0,uplacen_paket=0,obnova_clanarine='1970-01-01' WHERE username=?"
+        komanda="UPDATE Korisnici SET status_clanstva=0,uplacen_paket=0 WHERE username=?"
         cursor.execute(komanda,(korisnik[0],))
         
 def nagradi_lojalnost(username):

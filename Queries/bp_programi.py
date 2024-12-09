@@ -104,3 +104,11 @@ def dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
 	                  VALUES(?,?,?,?,?,?,?)''',(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis,))
     connection.commit()
     return False
+
+def get_trajanje_range():
+    cursor.execute("SELECT MIN(trajanje), MAX(trajanje) FROM Program")
+    rez=cursor.fetchall()
+    if(len(rez)!=0):rez=rez[0]
+    if(len(rez)==2):
+        return rez[0], rez[1]
+    return 0, 0

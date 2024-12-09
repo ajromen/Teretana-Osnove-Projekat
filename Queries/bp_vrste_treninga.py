@@ -27,3 +27,7 @@ def dodaj_vrstu_treninga(sifra,naziv):
 	        VALUES	(?,?);'''
     cursor.execute(komanda, (sifra,naziv,))
     
+def obrisi_vrste_treninga(id_vrste_treninga):
+    komanda = "DELETE FROM Vrste_treninga WHERE id_vrste_treninga = ?"
+    cursor.execute(komanda,(id_vrste_treninga,))
+    connection.commit()

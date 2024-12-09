@@ -1,6 +1,5 @@
-import baza_podataka
-import bp_vrste_treninga
 from imports import *
+import bp_vrste_treninga
 
 class VrsteTreningaWindow:
     def __init__(self, window, main_window):
@@ -108,10 +107,8 @@ class VrsteTreningaWindow:
 
         slctd_data = self.table.item(slctd_item)
         id_vrste_treninga = slctd_data["values"][0]
-
-        komanda = "DELETE FROM Vrste_treninga WHERE id_vrste_treninga = ?"
-        baza_podataka.cursor.execute(komanda, (id_vrste_treninga,))
-        baza_podataka.connection.commit()
+        
+        bp_vrste_treninga.obrisi_vrste_treninga(id_vrste_treninga)
 
         self.table.delete(slctd_item)
         helperFunctions.obavestenje(title="Brisanje", poruka="Vrsta treninga je uspešno obrisana.")

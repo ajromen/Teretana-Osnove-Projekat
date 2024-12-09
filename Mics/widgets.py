@@ -50,8 +50,13 @@ def on_entry_out(entry, placeholder, color_inactive="gray",show=''):
 def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=1,specificni=False):
     lblSifra = ctk.CTkLabel(canvas, text=text, font=("Inter",15 * -1),anchor='nw')
     lblSifra.place(x=labelX,y=labelY)
-    baza_podataka.cursor.execute(query)
-    listaSifre=baza_podataka.cursor.fetchall()
+    listaSifre=[]
+    try:
+        baza_podataka.cursor.execute(query)
+        listaSifre=baza_podataka.cursor.fetchall()
+    except Exception:
+        helperFunctions.obavestenje(str(Exception))
+        
     lista=[] if specificni else ["SVE"]
     for sifra in listaSifre:
         tekst = " ".join(str(sifra[i]) for i in range(broj_kolona))  # No extra trailing space

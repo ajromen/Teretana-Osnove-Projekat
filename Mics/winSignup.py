@@ -1,4 +1,5 @@
 import baza_podataka
+import bp_korisnici
 from imports import *
 import re
 
@@ -79,9 +80,9 @@ class SignupWindow:
         datum_registracije=datetime.date.today().strftime("%Y-%m-%d")
         obnova_clanarine=datum_registracije
         if(not self.guest):
-            nalog=baza_podataka.dodaj_korisnika(username, lozinka, ime, prezime, uloga,status_clanstva, uplacen_paket,datum_registracije,obnova_clanarine)
+            nalog=bp_korisnici.dodaj_korisnika(username, lozinka, ime, prezime, uloga,status_clanstva, uplacen_paket,datum_registracije,obnova_clanarine)
         else:
-            nalog=baza_podataka.azuriraj_korisnika(self.user, username, lozinka, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije,obnova_clanarine)
+            nalog=bp_korisnici.azuriraj_korisnika(self.user, username, lozinka, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije,obnova_clanarine)
         self.vrati(nalog)
 
     def izlistaj(self):

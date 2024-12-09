@@ -61,3 +61,8 @@ def azuriraj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_p
                         WHERE id_treninga=?''',(id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa,id,))
     connection.commit()
     return False
+
+def obrisi_trening(id_treninga):
+    komanda = "DELETE FROM Trening WHERE id_treninga = ?"
+    cursor.execute(komanda,(id_treninga,))
+    connection.commit()

@@ -1,8 +1,6 @@
-import baza_podataka
-import bp_programi
 from imports import *
 from ctk_rangeslider import *
-
+import bp_programi
 
 class ProgramiWindow:
     def __init__(self, window, main_window,uloga):
@@ -114,10 +112,7 @@ class ProgramiWindow:
         self.filt_switchPaket.place(x=252,y=278)
         
         
-        baza_podataka.cursor.execute("SELECT MIN(trajanje), MAX(trajanje) FROM Program")
-        rez=baza_podataka.cursor.fetchall()[0]
-        min=rez[0]
-        max=rez[1]
+        min,max=bp_programi.get_trajanje_range()
         wid.create_label(self.trenutni_window, text="Trajanje od do:",x=124,y=167)
 
         self.slajder=CTkRangeSlider(self.trenutni_window,height=16,width=288,from_=min, to=max,command=self.update_trajanje)
@@ -182,10 +177,7 @@ class ProgramiWindow:
         return bp_programi.izlistaj_programe(pretraga,kriterijum,self.potrebanPaket,self.id_programa,self.naziv,self.naziv_vrste_treninga,self.trajanjeOd,self.trajanjeDo,self.instruktor)
     
     def promenljive_filteri(self):
-        baza_podataka.cursor.execute("SELECT MIN(trajanje), MAX(trajanje) FROM Program")
-        rez=baza_podataka.cursor.fetchall()[0]
-        self.trajanjeOd=rez[0]
-        self.trajanjeDo=rez[1]
+        self.trajanjeOd, self.trajanjeDo=bp_programi.get_trajanje_range()
         self.potrebanPaket=1
         self.id_programa=''
         self.naziv=''
