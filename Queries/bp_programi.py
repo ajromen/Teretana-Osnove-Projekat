@@ -1,4 +1,5 @@
 from bp_import import *
+from bp_trening import obrisi_trening
 
 '''Program
 id_programa         INTEGER PRIMARY KEY NOT NULL,
@@ -15,14 +16,9 @@ FOREIGN KEY (id_instruktora) REFERENCES Korisnici(username)
 '''
 
 def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_vrste_treninga,trajanjeOd,trajanjeDo,instruktor):
-    kriterijum=str(kriterijum)
-    pretraga=str(pretraga)
-    kriterijum = kriterijum.strip()
-    pretraga = pretraga.strip()
-    id_programa = id_programa.strip()
-    naziv = naziv.strip()
-    naziv_vrste_treninga = naziv_vrste_treninga.strip()
-    instruktor = instruktor.strip()
+    pretraga, kriterijum, id_programa, naziv, naziv_vrste_treninga, instruktor = helperFunctions.ocisti_string(
+        pretraga, kriterijum, id_programa, naziv, naziv_vrste_treninga, instruktor
+    )
 
     komanda=''' SELECT 
                         Program.id_programa,
@@ -52,7 +48,7 @@ def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_
                         AND instruktor_ime LIKE ?'''
     if(potrebanPaket==0):
         komanda += "AND potreban_paket = 0"
-    cursor.execute(komanda, ('%' + str(pretraga) + '%','%' + str(id_programa) + '%','%' + str(naziv) + '%','%' + str(naziv_vrste_treninga) + '%', trajanjeOd,trajanjeDo,'%' + str(instruktor) + '%',))
+    cursor.execute(komanda, (f'%{pretraga}%',f'%{id_programa}%',f'%{naziv}%',f'%{naziv_vrste_treninga}%',trajanjeOd,trajanjeDo,f'%{instruktor}%',))
 
     return cursor.fetchall()
 
@@ -106,9 +102,13 @@ def get_trajanje_range():
     return 0, 0
 
 def obrisi_program(id_programa):
-    #oznaci program kao obrisan
+    #oznaci trening kao obrisan
     cursor.execute("UPDATE Program SET obrisan=TRUE WHERE id_programa = ?",(id_programa,))
-        
-    #cursor.execute("SELECT ",(id_programa,))
+    
+    #logicko brisanje svih treninga
+    cursor.execute("SELECT id_treninga FROM Trening WHERE id_programa=?",(id_programa,))
+    id_treninga=cursor.fetchall()
+    for trening in id_treninga:
+        obrisi_trening(trening[0])
     
     connection.commit()

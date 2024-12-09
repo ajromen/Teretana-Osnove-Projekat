@@ -207,7 +207,7 @@ def obrisi_korisnika(username,instruktor=False):
     #brisanje iz rezervacija ako je nekad u buducnosti
     danas = datetime.date.today().strftime("%Y-%m-%d")
     cursor.execute("DELETE FROM Rezervacija WHERE datum > ? AND id_korisnika=?", (danas,username,))
-    #brisanje instrkuktora iz rezervacija
+    #logicko brisanje korisnika iz rezervacija
     cursor.execute("UPDATE Rezervacija SET id_korisnika='obrisan_korisnik' WHERE id_korisnika=?", (username,))
     
     #brisanje programa ako je insktruktor

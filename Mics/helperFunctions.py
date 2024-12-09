@@ -104,3 +104,6 @@ def azuriraj_setup(kljuc, nova_vrednost):
          file.writelines(updated_lines)
    else:
       obavestenje(f"Nije pronađen setup.txt na lokaciji: {os.getcwd().replace('\\', '/')}/{SETUP_PATH}", sirina=1000)
+      
+def ocisti_string(*args):
+   return tuple(str(arg).strip() for arg in args)

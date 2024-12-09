@@ -1,4 +1,5 @@
 from bp_import import *
+from bp_termini import obrisi_termin
 
 '''Trening
 id_treninga   CHAR(4) PRIMARY KEY NOT NULL,
@@ -63,6 +64,13 @@ def azuriraj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_p
     return False
 
 def obrisi_trening(id_treninga):
-    komanda = "DELETE FROM Trening WHERE id_treninga = ?"
-    cursor.execute(komanda,(id_treninga,))
+    #oznaci termin kao obrisan
+    cursor.execute("UPDATE Trening SET obrisan=TRUE WHERE id_treninga = ?",(id_treninga,))
+    
+    #logicko brisanje svih termina
+    cursor.execute("SELECT id_termina FROM Termin WHERE id_treninga=?",(id_treninga,))
+    id_termina=cursor.fetchall()
+    for termin in id_termina:
+        obrisi_termin(termin[0])
+    
     connection.commit()
