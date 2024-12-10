@@ -2,10 +2,11 @@ from imports import *
 import bp_vrste_treninga
 
 class VrsteTreningaWindow:
-    def __init__(self, window, main_window):
+    def __init__(self, window, main_window,uloga):
         self.window = window
         self.main_window=main_window
         self.current_canvas = None
+        self.uloga=uloga
 
     def start(self):
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
@@ -41,7 +42,9 @@ class VrsteTreningaWindow:
         podaci=self.izlistaj(kriterijum,pretraga)
         i=0
         for podatak in podaci:
-            tabela.insert("", "end", values=podatak,tags=str(i%2))
+            if(podatak[2]==1): 
+                if(self.uloga=="admin"): tabela.insert("", "end", values=podatak,tags="obrisano"+str(i%2))
+            else: tabela.insert("", "end", values=podatak,tags=str(i%2))
             i+=1
 
     def pretrazi(self):
@@ -110,7 +113,7 @@ class VrsteTreningaWindow:
         
         bp_vrste_treninga.obrisi_vrste_treninga(id_vrste_treninga)
 
-        self.table.delete(slctd_item)
+        self.popuni_tabelu(self.table)
         helperFunctions.obavestenje(title="Brisanje", poruka="Vrsta treninga je uspešno obrisana.")
             
         

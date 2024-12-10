@@ -1,4 +1,5 @@
 from bp_import import *
+from bp_programi import obrisi_program
 
 '''Vrste_treninga 
 id_vrste_treninga   INTEGER PRIMARY KEY NOT NULL,
@@ -30,6 +31,12 @@ def dodaj_vrstu_treninga(sifra,naziv):
     
 def obrisi_vrste_treninga(id_vrste_treninga):
     cursor=BazaPodataka.get_cursor()
-    komanda = "DELETE FROM Vrste_treninga WHERE id_vrste_treninga = ?"
-    cursor.execute(komanda,(id_vrste_treninga,))
+    cursor.execute("UPDATE Vrste_treninga SET obrisan=TRUE WHERE id_vrste_treninga = ?",(id_vrste_treninga,))
+    
+    #logicko brisanje svih termina
+    cursor.execute("SELECT id_vrste_treninga FROM Program WHERE id_vrste_treninga=?",(id_vrste_treninga,))
+    id_programa=cursor.fetchall()
+    for program in id_programa:
+        obrisi_program(program[0])
+    
     BazaPodataka.commit()

@@ -120,16 +120,17 @@ def create_table(canvas,popuni_tabelu,kolone,x=31,y=112,width=787,height=401):
 
     popuni_tabelu(table)
     
-    #menjanje sirina kolona
-    max_sirina = 200 
-    for kolona in table["columns"]:
-        max_sirina_kolone = len(table.heading(kolona, "text"))+2
-        
-        for item in table.get_children():
-            deo_text = str(table.item(item, "values")[table["columns"].index(kolona)])
-            finalna_sirina = max(max_sirina_kolone, len(deo_text))
-        
-        table.column(kolona, width=min(finalna_sirina * 8 , max_sirina))
+    if len(table.get_children())!=0:
+        #menjanje sirina kolona
+        max_sirina = 200 
+        for kolona in table["columns"]:
+            max_sirina_kolone = len(table.heading(kolona, "text"))+2
+            
+            for item in table.get_children():
+                deo_text = str(table.item(item, "values")[table["columns"].index(kolona)])
+                finalna_sirina = max(max_sirina_kolone, len(deo_text))
+            
+            table.column(kolona, width=min(finalna_sirina * 8 , max_sirina))
 
     table.place(x=x, y=y, width=width, height=height)
     return table

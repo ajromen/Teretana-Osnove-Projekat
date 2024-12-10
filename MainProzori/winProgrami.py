@@ -92,10 +92,10 @@ class ProgramiWindow:
         self.trenutni_window.resizable(False,False)
         helperFunctions.centerWindow(self.trenutni_window)
 
-        self.cmbbxSifre=wid.napravi_sql_cmbbx(self.trenutni_window,"Šifra:",64,39,172,31,"SELECT id_programa FROM Program") #Kombo box za id
-        self.cmbbxNaziv=wid.napravi_sql_cmbbx(self.trenutni_window,"Naziv:",56,78,172,72,"SELECT DISTINCT naziv FROM Program") #Kombo box za naziv
-        self.filt_cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT DISTINCT Vrste_treninga.naziv FROM Program JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga") #Kombo box za naziv
-        self.filt_cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,233,172,225,"SELECT DISTINCT Korisnici.ime FROM Program JOIN Korisnici ON Program.id_instruktora = Korisnici.username") #Kombo box za naziv
+        self.cmbbxSifre=wid.napravi_sql_cmbbx(self.trenutni_window,"Šifra:",64,39,172,31,"SELECT id_programa FROM Program WHERE obrisan IS NOT TRUE") #Kombo box za id
+        self.cmbbxNaziv=wid.napravi_sql_cmbbx(self.trenutni_window,"Naziv:",56,78,172,72,"SELECT DISTINCT naziv FROM Program WHERE obrisan IS NOT TRUE") #Kombo box za naziv
+        self.filt_cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT DISTINCT Vrste_treninga.naziv FROM Program JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga WHERE Vrste_treninga.obrisan IS NOT TRUE") #Kombo box za naziv
+        self.filt_cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,233,172,225,"SELECT DISTINCT Korisnici.ime FROM Program JOIN Korisnici ON Program.id_instruktora = Korisnici.username WHERE Korisnici.username IS NOT 'obrisan_korisnik'") #Kombo box za naziv
         
         naziv = self.naziv if self.naziv != "" else "SVE"
         self.cmbbxNaziv.set(naziv)
@@ -243,8 +243,8 @@ class ProgramiWindow:
         slctd_opis=slctd_data["values"][6]
         
         #Izmeni specificniwidgeti
-        self.cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga",2,True) #Kombo box za naziv
-        self.cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1",3,True) #Kombo box za naziv
+        self.cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
+        self.cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1 AND username IS NOT 'obrisan_korisnik'",3,True) #Kombo box za naziv
         
         wid.selektuj_vrednost_comboBox(self.cmbbxVrsteTreninga,slctd_vrsta_treninga)
         wid.selektuj_vrednost_comboBox(self.cmbbxInstruktor,slctd_instruktor)
@@ -256,8 +256,8 @@ class ProgramiWindow:
     def winProgrami_Dodaj(self):
         self.napravi_dodaj_izmeni_prozor()
         
-        self.cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga",2,True) #Kombo box za naziv
-        self.cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1",3,True) #Kombo box za naziv
+        self.cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
+        self.cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1 AND username IS NOT 'obrisan_korisnik'",3,True) #Kombo box za naziv
         
         self.entrySifra = wid.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True)
         
@@ -334,8 +334,6 @@ class ProgramiWindow:
             if(bp_programi.dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis)): return
             helperFunctions.obavestenje(title="Dodaj program", poruka="Uspešno dodat program.")
         
-        self.popuni_tabelu(self.table)
-        
         self.trenutni_window.destroy()
         self.trenutni_window=None
         
@@ -344,6 +342,8 @@ class ProgramiWindow:
         self.entrySifra=None
         self.cmbbxInstruktor=None
         self.cmbbxVrsteTreninga=None
+        
+        self.popuni_tabelu(self.table)
         
     def napravi_dodaj_izmeni_prozor(self):
         self.trenutni_window = ctk.CTkToplevel(fg_color='#000000')

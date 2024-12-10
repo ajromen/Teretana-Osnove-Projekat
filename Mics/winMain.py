@@ -148,7 +148,7 @@ class MainWindow:
         self.trenutni_window.start()
 
     def napravi_win_vrste_treninga(self):
-        self.trenutni_window= winVrsteTreninga.VrsteTreningaWindow(self.window,self)
+        self.trenutni_window= winVrsteTreninga.VrsteTreningaWindow(self.window,self,self.uloga)
         self.trenutni_window.start()
     
     def prebaci_win(self,win):
