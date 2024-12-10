@@ -116,3 +116,9 @@ def obrisi_program(id_programa):
         obrisi_trening(trening[0])
     
     BazaPodataka.commit()
+    
+def get_trajanje(id_programa: str)->int:
+    cursor=BazaPodataka.get_cursor()
+    cursor.execute("SELECT trajanje FROM Program WHERE id_programa=?",(id_programa,))
+    vrati=cursor.fetchone()
+    return vrati[0]

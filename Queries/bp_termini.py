@@ -39,3 +39,4 @@ def obrisi_termin(id_termina):
             cursor.execute("DELETE FROM Termin WHERE id_termina=?", (id_termina,))
     
     BazaPodataka.commit()
+

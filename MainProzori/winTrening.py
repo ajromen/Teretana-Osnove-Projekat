@@ -1,3 +1,5 @@
+from datetime import timedelta
+import bp_programi
 from imports import *
 import bp_trening
 
@@ -165,10 +167,10 @@ class TreningWindow:
         kraj_sati=vreme_kraja[0]
         kraj_minuti=vreme_kraja[1]
         
-        self.entryPocetakSati = wid.create_entry(self.trenutni_window,156,119,width=42,height=23,belo=True,placeholder=pocetak_sati)
-        self.entryPocetakMinuti = wid.create_entry(self.trenutni_window,241,119,width=42,height=23,belo=True,placeholder=pocetak_minuti)
-        self.entryKrajSati = wid.create_entry(self.trenutni_window,156,160,width=42,height=23,belo=True,placeholder=kraj_sati)
-        self.entryKrajMinuti = wid.create_entry(self.trenutni_window,242,160,width=42,height=23,belo=True,placeholder=kraj_minuti)
+        self.entryPocetakSati = wid.create_entry(self.trenutni_window,156,119,width=42,height=23,belo=True,placeholder=pocetak_sati,on_focus_out=lambda *args: self.sredi_sate("pocetak"))
+        self.entryPocetakMinuti = wid.create_entry(self.trenutni_window,241,119,width=42,height=23,belo=True,placeholder=pocetak_minuti,on_focus_out=lambda *args: self.sredi_sate("pocetak"))
+        self.entryKrajSati = wid.create_entry(self.trenutni_window,156,160,width=42,height=23,belo=True,placeholder=kraj_sati,on_focus_out=lambda *args: self.sredi_sate("kraj"))
+        self.entryKrajMinuti = wid.create_entry(self.trenutni_window,242,160,width=42,height=23,belo=True,placeholder=kraj_minuti,on_focus_out=lambda *args: self.sredi_sate("kraj"))
         
         #Kreiranje dugmadi za dane
         self.btnPon=self.button_dani("Pon",self.trenutni_window,16,272)
@@ -184,16 +186,77 @@ class TreningWindow:
         #dugme za otkazivanje
         wid.create_button(self.trenutni_window,"./src/img/Widget/btnOtkazi.png",x=136,y=362,width=72,height=17,command=self.trenutni_window.destroy)
         
+    def sredi_sate(self,vreme: str)-> None:
+        id_programa=self.cmbbxProgram.get()
+        id_programa,=helperFunctions.ocisti_string(id_programa.split(' ')[0])
+        trajanje=bp_programi.get_trajanje(id_programa)
+        vreme_pocetka,vreme_kraja=self.proveri_entry_vreme()
+        
+        if vreme=="pocetak":
+            vreme_pocetka = datetime.datetime.strptime(vreme_pocetka, "%H:%M")
+            vreme_kraja = vreme_pocetka + timedelta(minutes=trajanje)
+            self.entryKrajSati.delete(0, ctk.END)  
+            self.entryKrajSati.insert(0, vreme_kraja.strftime("%H"))
+            self.entryKrajMinuti.delete(0, ctk.END)  
+            self.entryKrajMinuti.insert(0, vreme_kraja.strftime("%M"))
+            
+        elif vreme=="kraj":
+            vreme_kraja = datetime.datetime.strptime(vreme_kraja, "%H:%M")
+            vreme_pocetka = vreme_kraja - timedelta(minutes=trajanje)
+            self.entryPocetakSati.delete(0, ctk.END)  
+            self.entryPocetakSati.insert(0, vreme_pocetka.strftime("%H"))
+            self.entryPocetakMinuti.delete(0, ctk.END)  
+            self.entryPocetakMinuti.insert(0, vreme_pocetka.strftime("%M"))
+
+        
+        
+    def proveri_entry_vreme(self):
+        #provera unosa za vreme
+        vreme_pocetak_sat=self.entryPocetakSati.get()
+        vreme_pocetak_minuti=self.entryPocetakMinuti.get()
+        vreme_kraj_sat=self.entryKrajSati.get()
+        vreme_kraj_minuti=self.entryKrajMinuti.get()
+        ret_val=(None,None)
+        
+        if(len(vreme_pocetak_sat)!=2 or (not vreme_pocetak_sat.isdigit())):
+            helperFunctions.obavestenje("Polje vreme pocetka/sat mora sadržati tačno dve cifre.")
+            return ret_val
+        if(len(vreme_pocetak_minuti)!=2 or (not vreme_pocetak_minuti.isdigit())):
+            helperFunctions.obavestenje("Polje vreme pocetka/minuti mora sadržati tačno dve cifre.")
+            return ret_val
+        if(len(vreme_kraj_sat)!=2 or (not vreme_kraj_sat.isdigit())):
+            helperFunctions.obavestenje("Polje vreme kraja/sat mora sadržati tačno dve cifre.")
+            return ret_val
+        if(len(vreme_kraj_minuti)!=2 or (not vreme_kraj_minuti.isdigit())):
+            helperFunctions.obavestenje("Polje vreme kraja/minuti mora sadržati tačno dve cifre.")
+            return ret_val
+        
+        #proveravanje da li je uneti broj u opsegu
+        if(int(vreme_pocetak_sat)>23):
+            helperFunctions.obavestenje("Polje vreme početka/sat mora biti u opsegu od 0-24.")
+            return ret_val
+        if(int(vreme_pocetak_minuti)>59):
+            helperFunctions.obavestenje("Polje vreme početka/minuti mora biti u opsegu od 0-60.")
+            return ret_val
+        if(int(vreme_kraj_sat)>23):
+            helperFunctions.obavestenje("Polje vreme kraja/sat mora biti u opsegu od 0-24.")
+            return ret_val
+        if(int(vreme_kraj_minuti)>59):
+            helperFunctions.obavestenje("Polje vreme kraja/minuti mora biti u opsegu od 0-60.")
+            return ret_val
+        
+        vreme_pocetka=str(vreme_pocetak_sat)+":"+str(vreme_pocetak_minuti)
+        vreme_kraja=str(vreme_kraj_sat)+":"+str(vreme_kraj_minuti)
+        
+        return vreme_pocetka,vreme_kraja
+        
     def dodaj_izmeni(self,mode=0):
         if(mode==1): 
             if(not helperFunctions.pitaj(title="Izmeni program",poruka="Da li ste sigurni da želite da izmenite program?")):return
         id=self.entrySifra.get()
         id_sale=self.cmbbxSala.get()
         #vreme
-        vreme_pocetak_sat=self.entryPocetakSati.get()
-        vreme_pocetak_minuti=self.entryPocetakMinuti.get()
-        vreme_kraj_sat=self.entryKrajSati.get()
-        vreme_kraj_minuti=self.entryKrajMinuti.get()
+        
         dani=self.switch_dani_toStr()
         
         id_programa=self.cmbbxProgram.get()
@@ -216,37 +279,10 @@ class TreningWindow:
         id_sale=id_sale.split(" ")[0]
         id_programa=id_programa.split(" ")[0]
         
-        #provera unosa za vreme
-        if(len(vreme_pocetak_sat)!=2 or (not vreme_pocetak_sat.isdigit())):
-            helperFunctions.obavestenje("Polje vreme pocetka/sat mora sadržati tačno dve cifre.")
-            return
-        if(len(vreme_pocetak_minuti)!=2 or (not vreme_pocetak_minuti.isdigit())):
-            helperFunctions.obavestenje("Polje vreme pocetka/minuti mora sadržati tačno dve cifre.")
-            return
-        if(len(vreme_kraj_sat)!=2 or (not vreme_kraj_sat.isdigit())):
-            helperFunctions.obavestenje("Polje vreme kraja/sat mora sadržati tačno dve cifre.")
-            return
-        if(len(vreme_kraj_minuti)!=2 or (not vreme_kraj_minuti.isdigit())):
-            helperFunctions.obavestenje("Polje vreme kraja/minuti mora sadržati tačno dve cifre.")
-            return
         
-        #proveravanje da li je uneti broj u opsegu
-        if(int(vreme_pocetak_sat)>23):
-            helperFunctions.obavestenje("Polje vreme početka/sat mora biti u opsegu od 0-24.")
-            return
-        if(int(vreme_pocetak_minuti)>59):
-            helperFunctions.obavestenje("Polje vreme početka/minuti mora biti u opsegu od 0-60.")
-            return
-        if(int(vreme_kraj_sat)>23):
-            helperFunctions.obavestenje("Polje vreme kraja/sat mora biti u opsegu od 0-24.")
-            return
-        if(int(vreme_kraj_minuti)>59):
-            helperFunctions.obavestenje("Polje vreme kraja/minuti mora biti u opsegu od 0-60.")
-            return
-        vreme_pocetka=str(vreme_pocetak_sat)+":"+str(vreme_pocetak_minuti)
-        vreme_kraja=str(vreme_kraj_sat)+":"+str(vreme_kraj_minuti)
+        vreme_pocetka,vreme_kraja= self.proveri_entry_vreme()
+        if vreme_pocetka==None: return
         
-
         if(mode):
             if(bp_trening.azuriraj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani, id_programa)): return
             helperFunctions.obavestenje(title="Izmena programa", poruka="Uspešno izmenjen program.")

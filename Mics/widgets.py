@@ -31,6 +31,7 @@ def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder=
     else:
         entry.bind("<FocusIn>", command=on_focus_in)
         entry.bind("<FocusOut>", command=on_focus_out)
+        entry.bind("<Return>",command=on_focus_out)
     return entry
 
 def on_entry_click(entry, placeholder, color_active="white",show=''):

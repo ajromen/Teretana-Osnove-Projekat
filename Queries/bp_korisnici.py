@@ -148,7 +148,7 @@ def izlistaj_instruktore_admine(pretraga,kriterijum):
     
     return cursor.fetchall()
 
-def broj_rezervacija_za_mesec(username):
+def broj_rezervacija_za_mesec(username):#promeniti da se gleda vreme termina a ne vreme reyervacije(datum)
     if not obrisan_korisnik(username,False): return
     cursor=BazaPodataka.get_cursor()
     username,=helperFunctions.ocisti_string(username)

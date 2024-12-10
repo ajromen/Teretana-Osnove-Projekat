@@ -24,4 +24,4 @@ def obrisi_rezervaciju(id_rezervacije):
     danas = datetime.date.today().strftime("%Y-%m-%d")
     cursor.execute("DELETE FROM Rezervacija WHERE datum>? AND id_rezervacije=?",(danas,id_rezervacije,))
     BazaPodataka.commit()
-    
+    #dodati brisanje po terminu
