@@ -2,10 +2,11 @@ from imports import *
 import bp_trening
 
 class TreningWindow:
-    def __init__(self, window, main_window):
+    def __init__(self, window, main_window,uloga):
         self.window = window
         self.main_window=main_window
         self.current_canvas = None
+        self.uloga=uloga
         self.dani_dict = {
             "Pon": False,
             "Uto": False,
@@ -60,7 +61,9 @@ class TreningWindow:
             sifra_programa=podatak[7]
             podatak[1]=str(sifra_sale)+" "+podatak[1]
             podatak[5]=str(sifra_programa)+" "+podatak[5]
-            tabela.insert("", "end", values=podatak,tags=str(i%2))
+            if(podatak[8]==1): 
+                if(self.uloga=="admin"): tabela.insert("", "end", values=podatak,tags="obrisano"+str(i%2))
+            else: tabela.insert("", "end", values=podatak,tags=str(i%2))
             i+=1
 
     def pretrazi(self):
@@ -122,8 +125,8 @@ class TreningWindow:
         # sifra
         self.entrySifra = wid.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True,placeholder=slctd_id,state="disabled")
         
-        self.cmbbxSala=wid.napravi_sql_cmbbx(self.trenutni_window,"Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala",2,True) #Kombo box za naziv
-        self.cmbbxProgram=wid.napravi_sql_cmbbx(self.trenutni_window,"Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program",2,True) #Kombo box za naziv
+        self.cmbbxSala=wid.napravi_sql_cmbbx(self.trenutni_window,"Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala WHERE obrisana IS NOT TRUE",2,True) #Kombo box za naziv
+        self.cmbbxProgram=wid.napravi_sql_cmbbx(self.trenutni_window,"Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
         wid.selektuj_vrednost_comboBox(self.cmbbxSala,slctd_sala)
         wid.selektuj_vrednost_comboBox(self.cmbbxProgram,slctd_program)
         
@@ -132,8 +135,8 @@ class TreningWindow:
     def winTrening_Dodaj(self):
         self.trenutni_window=helperFunctions.napravi_toplevel(height=390,title="Dodaj trening")
         
-        self.cmbbxSala=wid.napravi_sql_cmbbx(self.trenutni_window,"Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala",2,True) #Kombo box za naziv
-        self.cmbbxProgram=wid.napravi_sql_cmbbx(self.trenutni_window,"Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program",2,True) #Kombo box za naziv
+        self.cmbbxSala=wid.napravi_sql_cmbbx(self.trenutni_window,"Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala WHERE obrisana IS NOT TRUE",2,True) #Kombo box za naziv
+        self.cmbbxProgram=wid.napravi_sql_cmbbx(self.trenutni_window,"Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
         
         self.entrySifra = wid.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True)
         

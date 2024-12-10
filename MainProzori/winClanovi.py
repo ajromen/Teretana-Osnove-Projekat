@@ -76,7 +76,7 @@ class ClanoviWindow:
             broj_rezervacija=bp_korisnici.broj_rezervacija_za_mesec(username)
             podatak.append(broj_rezervacija)
             if podatak[0]=="obrisan_korisnik": 
-                tabela.insert("", "end", values=podatak,tags="obrisano"+str(i%2))
+                continue
             elif(broj_rezervacija>=self.broj_rezervacija_za_nagradjivanje):
                 tabela.insert("", "end", values=podatak,tags="za_aktivaciju")
             else: tabela.insert("", "end", values=podatak,tags=str(i%2))

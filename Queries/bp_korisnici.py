@@ -149,9 +149,9 @@ def izlistaj_instruktore_admine(pretraga,kriterijum):
     return cursor.fetchall()
 
 def broj_rezervacija_za_mesec(username):
-    if not obrisan_korisnik(username): return
+    if not obrisan_korisnik(username,False): return
     cursor=BazaPodataka.get_cursor()
-    username=helperFunctions.ocisti_string(username)
+    username,=helperFunctions.ocisti_string(username)
     komanda = """
         SELECT COUNT(*) FROM 
             Rezervacija
@@ -234,9 +234,9 @@ def obrisi_korisnika(username,instruktor=False):
     BazaPodataka.commit()
     return True
 
-def obrisan_korisnik(username):
+def obrisan_korisnik(username,obavesti=True):
     if(username==""): return False
     elif username.strip()=='obrisan_korisnik': 
-        helperFunctions.obavestenje("Obrisani korisnik sluzi za evidenciju i nije ga dozvoljeno menjati.")
+        obavesti and helperFunctions.obavestenje("Obrisani korisnik sluzi za evidenciju i nije ga dozvoljeno menjati.")
         return False
     return True

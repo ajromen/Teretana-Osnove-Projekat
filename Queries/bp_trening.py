@@ -26,7 +26,8 @@ def izlistaj_trening(pretraga,kriterijum):
                     Trening.dani_nedelje AS dani,
                     Program.naziv AS naziv_programa,
                     Sala.id_sale AS sifra_sale,
-                    Program.id_programa AS sifra_programa
+                    Program.id_programa AS sifra_programa,
+                    Trening.obrisan AS Obrisan
                 FROM 
                     Trening
                 JOIN 

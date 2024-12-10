@@ -136,7 +136,7 @@ class MainWindow:
         self.trenutni_window.start()
         
     def napravi_win_trening(self):
-        self.trenutni_window = winTrening.TreningWindow(self.window, self)
+        self.trenutni_window = winTrening.TreningWindow(self.window, self,self.uloga)
         self.trenutni_window.start()
         
     def napravi_win_clanovi(self):
