@@ -15,9 +15,8 @@ FOREIGN KEY (id_programa) REFERENCES Program(id_programa)
 '''
 
 def izlistaj_trening(pretraga,kriterijum):
-    pretraga=str(pretraga)
-    kriterijum = kriterijum.strip()
-    pretraga = pretraga.strip()
+    cursor=BazaPodataka.get_cursor()
+    pretraga,kriterijum=helperFunctions.ocisti_string(pretraga,kriterijum)
 
     komanda=''' SELECT 
                     Trening.id_treninga AS id_treninga,
@@ -41,6 +40,7 @@ def izlistaj_trening(pretraga,kriterijum):
     return cursor.fetchall()
 
 def dodaj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa):
+    cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT * FROM Trening WHERE id_treninga=?",(id,))
     if(len(cursor.fetchall())>0): 
         helperFunctions.obavestenje("Već postoji trening sa datom šifrom.")
@@ -48,10 +48,11 @@ def dodaj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_prog
     
     cursor.execute('''INSERT INTO Trening(id_treninga, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa)
 	                  VALUES(?,?,?,?,?,?)''',(id,id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa,))
-    connection.commit()
+    BazaPodataka.commit()
     return False
 
 def azuriraj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa):
+    cursor=BazaPodataka.get_cursor()
     cursor.execute('''UPDATE trening 
                         SET 
                             id_sale=?,
@@ -60,10 +61,11 @@ def azuriraj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_p
                             dani_nedelje==?,
                             id_programa=?
                         WHERE id_treninga=?''',(id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa,id,))
-    connection.commit()
+    BazaPodataka.commit()
     return False
 
 def obrisi_trening(id_treninga):
+    cursor=BazaPodataka.get_cursor()
     #oznaci termin kao obrisan
     cursor.execute("UPDATE Trening SET obrisan=TRUE WHERE id_treninga = ?",(id_treninga,))
     
@@ -73,4 +75,4 @@ def obrisi_trening(id_treninga):
     for termin in id_termina:
         obrisi_termin(termin[0])
     
-    connection.commit()
+    BazaPodataka.commit()

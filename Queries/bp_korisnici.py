@@ -16,6 +16,7 @@ obrisan             BOOLEAN
 
 
 def dodaj_korisnika(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine):
+    cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT * FROM Korisnici WHERE username=?",(username,))
     if(len(cursor.fetchall())>0):
         helperFunctions.obavestenje("Nalog sa korisničkim imenom već postoji")
@@ -31,6 +32,7 @@ def dodaj_korisnika(username,password,ime,prezime,uloga,status_clanstva,uplacen_
 def dodaj_gosta():
     random_id = random.randint(10000000, 99999999)
     username = f"guest_{random_id}"
+    cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT username FROM Korisnici where username=?", (username,))
     if(cursor.fetchone() is None):
         datum=datetime.datetime.now().strftime("%Y-%m-%d")
@@ -38,6 +40,8 @@ def dodaj_gosta():
     return username
 
 def azuriraj_korisnika(stariUsername,username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine):
+    if not obrisan_korisnik(stariUsername): return
+    cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT * FROM Korisnici WHERE username=?",(stariUsername,))
     if(len(cursor.fetchall())>0):
         password=helperFunctions.hashPassword(password)
@@ -62,6 +66,7 @@ def azuriraj_korisnika(stariUsername,username,password,ime,prezime,uloga,status_
 
 def obrisi_goste():
     danas = datetime.date.today().strftime("%Y-%m-%d")
+    cursor=BazaPodataka.get_cursor()
     cursor.execute('''SELECT 
                             Rezervacija.id_rezervacije,
                             Korisnici.username
@@ -91,12 +96,11 @@ def obrisi_goste():
     for gost in gosti_bez_rezervacije:
         obrisi_korisnika(gost[0])
         
-    connection.commit()
+    BazaPodataka.commit()
 
 def izlistaj_korisnike(pretraga,kriterijum):
-    pretraga=str(pretraga)
-    kriterijum = kriterijum.strip()
-    pretraga = pretraga.strip()
+    pretraga,kriterijum=helperFunctions.ocisti_string(pretraga,kriterijum)
+    cursor=BazaPodataka.get_cursor()
 
     komanda=''' SELECT 
                     username,
@@ -122,9 +126,9 @@ def izlistaj_korisnike(pretraga,kriterijum):
     return cursor.fetchall()
 
 def izlistaj_instruktore_admine(pretraga,kriterijum):
-    pretraga=str(pretraga)
-    kriterijum = kriterijum.strip()
-    pretraga = pretraga.strip()
+    pretraga,kriterijum=helperFunctions.ocisti_string(pretraga,kriterijum)
+
+    cursor=BazaPodataka.get_cursor()
 
     komanda=''' SELECT 
                     username,
@@ -145,8 +149,9 @@ def izlistaj_instruktore_admine(pretraga,kriterijum):
     return cursor.fetchall()
 
 def broj_rezervacija_za_mesec(username):
-    username=str(username)
-    username.strip()
+    if not obrisan_korisnik(username): return
+    cursor=BazaPodataka.get_cursor()
+    username=helperFunctions.ocisti_string(username)
     komanda = """
         SELECT COUNT(*) FROM 
             Rezervacija
@@ -165,6 +170,7 @@ def broj_rezervacija_za_mesec(username):
     return vrati[0]
 
 def proveri_status_korisnika():
+    cursor=BazaPodataka.get_cursor()
     komanda="SELECT * FROM Korisnici WHERE uloga=0 AND obnova_clanarine<DATE('now', '-1 month')"
     cursor.execute(komanda)
     korisnici=cursor.fetchall()
@@ -174,6 +180,9 @@ def proveri_status_korisnika():
         cursor.execute(komanda,(korisnik[0],))
         
 def nagradi_lojalnost(username):
+    if not obrisan_korisnik(username): return
+    cursor=BazaPodataka.get_cursor()
+    
     komanda='''UPDATE Korisnici
                 SET 
                     status_clanstva = 1,
@@ -185,9 +194,12 @@ def nagradi_lojalnost(username):
                     END
                 WHERE username = ?;'''
     cursor.execute(komanda,(username,))
-    connection.commit()
+    BazaPodataka.commit()
 
 def aktiviraj_paket(username,paket):
+    if not obrisan_korisnik(username): return
+    cursor=BazaPodataka.get_cursor()
+    
     komanda='''UPDATE Korisnici
                 SET 
                     status_clanstva = 1,
@@ -196,13 +208,11 @@ def aktiviraj_paket(username,paket):
                 WHERE username = ?;'''
     
     cursor.execute(komanda, (paket,username,))
-    connection.commit()
+    BazaPodataka.commit()
 
 def obrisi_korisnika(username,instruktor=False):
-    if(username==""): return False
-    elif username.strip()=='obrisan_korisnik': 
-        helperFunctions.obavestenje("Obrisani korisnik sluzi za evidenciju i nije ga dozvoljeno birsati.")
-        return False
+    if not obrisan_korisnik(username): return
+    cursor=BazaPodataka.get_cursor()
     
     #brisanje iz rezervacija ako je nekad u buducnosti
     danas = datetime.date.today().strftime("%Y-%m-%d")
@@ -214,12 +224,19 @@ def obrisi_korisnika(username,instruktor=False):
     if instruktor:
         cursor.execute("SELECT id_programa FROM Program WHERE id_instruktora=?",(username,))
         id_programa=cursor.fetchall()
-        cursor.execute("UPDATE Program SET obrisan=TRUE, id_instruktora='obrisan_korisnik' WHERE id_instruktora = ?", (username,))
+        cursor.execute("UPDATE Program SET id_instruktora='obrisan_korisnik' WHERE id_instruktora = ?", (username,))
         for program in id_programa:
             obrisi_program(program[0])
 
 
     #brisanje iz baze
     cursor.execute("DELETE FROM Korisnici WHERE username=?", (username,))
-    connection.commit()
+    BazaPodataka.commit()
+    return True
+
+def obrisan_korisnik(username):
+    if(username==""): return False
+    elif username.strip()=='obrisan_korisnik': 
+        helperFunctions.obavestenje("Obrisani korisnik sluzi za evidenciju i nije ga dozvoljeno menjati.")
+        return False
     return True

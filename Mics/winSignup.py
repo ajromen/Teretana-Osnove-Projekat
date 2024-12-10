@@ -1,4 +1,4 @@
-import baza_podataka
+from baza_podataka import BazaPodataka
 import bp_korisnici
 from imports import *
 import re
@@ -86,5 +86,6 @@ class SignupWindow:
         self.vrati(nalog)
 
     def izlistaj(self):
-        baza_podataka.cursor.execute("SELECT * FROM Rezervacija")
-        print(baza_podataka.cursor.fetchall())
+        cursor=BazaPodataka.get_cursor()
+        cursor.execute("SELECT * FROM Rezervacija")
+        print(cursor.fetchall())

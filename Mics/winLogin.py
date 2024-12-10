@@ -1,4 +1,4 @@
-import baza_podataka
+from baza_podataka import BazaPodataka
 from imports import *
 
 class LoginWindow:
@@ -48,8 +48,9 @@ class LoginWindow:
     def prijavi_se(self):
         korIme=str(self.entryUsername.get())
         loz=helperFunctions.hashPassword(str(self.entryPassword.get()))
-        baza_podataka.cursor.execute("SELECT username, uloga FROM Korisnici WHERE username='"+str(korIme)+"' AND password='"+str(loz)+"'")
-        ima=baza_podataka.cursor.fetchall()
+        cursor=BazaPodataka.get_cursor()
+        cursor.execute("SELECT username, uloga FROM Korisnici WHERE username='"+str(korIme)+"' AND password='"+str(loz)+"'")
+        ima=cursor.fetchall()
         if(len(ima)!=0):
             self.vrati(ima)
         else:

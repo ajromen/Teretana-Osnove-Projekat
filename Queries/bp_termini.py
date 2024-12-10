@@ -17,6 +17,7 @@ def izmeni_termin(id_termina,datum_odrzavanja=None,id_treninga=None,obrisan=None
     pass
 
 def obrisi_termin(id_termina):
+    cursor=BazaPodataka.get_cursor()
     danas = datetime.date.today().strftime("%Y-%m-%d")
     #oznaci termin kao obrisan
     cursor.execute("UPDATE Termin SET obrisan=TRUE WHERE id_termina = ?",(id_termina,))
@@ -34,7 +35,7 @@ def obrisi_termin(id_termina):
     termin = cursor.fetchone()
     if termin:
         datum_odrzavanja = datetime.datetime.strptime(termin[0], "%Y-%m-%d").date()
-        if(danas<datum_odrzavanja):
+        if(datetime.date.today()<datum_odrzavanja):
             cursor.execute("DELETE FROM Termin WHERE id_termina=?", (id_termina,))
     
-    connection.commit()
+    BazaPodataka.commit()

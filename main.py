@@ -5,9 +5,9 @@ import winLogin
 import winSignup
 import winMain
 import bp_korisnici
-import baza_podataka
+from baza_podataka import BazaPodataka
 
-#baza_podataka.restartuj_bazu()
+BazaPodataka.restart()
 
 def login_startup_loop(ekran,user=''):
     return_value=ekran
@@ -50,4 +50,4 @@ if __name__ == '__main__':
         
     bp_korisnici.proveri_status_korisnika()
     bp_korisnici.obrisi_goste()
-    baza_podataka.connection.commit()
+    BazaPodataka.commit()

@@ -19,7 +19,7 @@ def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_
     pretraga, kriterijum, id_programa, naziv, naziv_vrste_treninga, instruktor = helperFunctions.ocisti_string(
         pretraga, kriterijum, id_programa, naziv, naziv_vrste_treninga, instruktor
     )
-
+    cursor=BazaPodataka.get_cursor()
     komanda=''' SELECT 
                         Program.id_programa,
                         Program.naziv AS naziv_programa,
@@ -53,6 +53,7 @@ def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_
     return cursor.fetchall()
 
 def azuriraj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
+    cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT * FROM Vrste_treninga WHERE id_vrste_treninga=?",(vrsta_treninga,))
     if(len(cursor.fetchall())==0): 
         helperFunctions.obavestenje("Ne postoji odabrana vrsta treninga.")
@@ -71,10 +72,11 @@ def azuriraj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
                             potreban_paket=?,
                             opis=?
                         WHERE id_programa=?''',(naziv,vrsta_treninga,trajanje,instruktor,paket,opis,id))
-    connection.commit()
+    BazaPodataka.commit()
     return False
     
 def dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
+    cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT * FROM Vrste_treninga WHERE id_vrste_treninga=?",(vrsta_treninga,))
     if(len(cursor.fetchall())==0): 
         helperFunctions.obavestenje("Ne postoji odabrana vrsta treninga.")
@@ -90,10 +92,11 @@ def dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
     
     cursor.execute('''INSERT INTO Program(id_programa, naziv, id_vrste_treninga, trajanje, id_instruktora, potreban_paket, opis)
 	                  VALUES(?,?,?,?,?,?,?)''',(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis,))
-    connection.commit()
+    BazaPodataka.commit()
     return False
 
 def get_trajanje_range():
+    cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT MIN(trajanje), MAX(trajanje) FROM Program")
     rez=cursor.fetchall()
     if(len(rez)!=0):rez=rez[0]
@@ -102,6 +105,7 @@ def get_trajanje_range():
     return 0, 0
 
 def obrisi_program(id_programa):
+    cursor=BazaPodataka.get_cursor()
     #oznaci trening kao obrisan
     cursor.execute("UPDATE Program SET obrisan=TRUE WHERE id_programa = ?",(id_programa,))
     
@@ -111,4 +115,4 @@ def obrisi_program(id_programa):
     for trening in id_treninga:
         obrisi_trening(trening[0])
     
-    connection.commit()
+    BazaPodataka.commit()

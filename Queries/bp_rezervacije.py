@@ -19,7 +19,9 @@ def azuriraj_rezervaciju(id_rezervacije,id_korisnika=None,id_termina=None,oznaka
     pass
 
 def obrisi_rezervaciju(id_rezervacije):
+    cursor=BazaPodataka.get_cursor()
     #rezeracije se ne brisu sem ako su u buducnosti
     danas = datetime.date.today().strftime("%Y-%m-%d")
     cursor.execute("DELETE FROM Rezervacija WHERE datum>? AND id_rezervacije=?",(danas,id_rezervacije,))
-    connection.commit()
+    BazaPodataka.commit()
+    

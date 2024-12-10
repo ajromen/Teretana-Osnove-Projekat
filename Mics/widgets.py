@@ -1,4 +1,4 @@
-import baza_podataka
+from baza_podataka import BazaPodataka
 from imports import *
 from tkinter import ttk
 
@@ -52,8 +52,9 @@ def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=
     lblSifra.place(x=labelX,y=labelY)
     listaSifre=[]
     try:
-        baza_podataka.cursor.execute(query)
-        listaSifre=baza_podataka.cursor.fetchall()
+        cursor=BazaPodataka.get_cursor()
+        cursor.execute(query)
+        listaSifre=cursor.fetchall()
     except Exception:
         helperFunctions.obavestenje(str(Exception))
         
