@@ -1,7 +1,7 @@
 import sys
 sys.path.append('MainProzori')
 sys.path.append('Queries')
-sys.path.append('Mics')
+sys.path.append('Misc')
 
 
 from tkinter import *
