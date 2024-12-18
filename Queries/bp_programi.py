@@ -129,3 +129,8 @@ def query_koriscene_vrste_treninga():
                     FROM Program 
                     JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga 
                     WHERE Vrste_treninga.obrisan IS NOT TRUE'''
+    
+def query_nazivi_neobrisanih():
+    return  '''SELECT DISTINCT Program.naziv 
+                    FROM Program 
+                    WHERE Program.obrisan IS NOT TRUE'''

@@ -94,7 +94,7 @@ class ProgramiWindow:
         helperFunctions.centerWindow(self.trenutni_window)
 
         self.cmbbxSifre=wid.napravi_sql_cmbbx(self.trenutni_window,"Šifra:",64,39,172,31,bp_korisnici.query_neobrisani_korisnici()) #Kombo box za id
-        self.cmbbxNaziv=wid.napravi_sql_cmbbx(self.trenutni_window,"Naziv:",56,78,172,72,"SELECT DISTINCT naziv FROM Program WHERE obrisan IS NOT TRUE") #Kombo box za naziv
+        self.cmbbxNaziv=wid.napravi_sql_cmbbx(self.trenutni_window,"Naziv:",56,78,172,72,bp_programi.query_nazivi_neobrisanih()) #Kombo box za naziv
         self.filt_cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,bp_programi.query_koriscene_vrste_treninga()) #Kombo box za naziv
         self.filt_cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,233,172,225,"SELECT DISTINCT Korisnici.ime FROM Program JOIN Korisnici ON Program.id_instruktora = Korisnici.username WHERE Korisnici.username IS NOT 'obrisan_korisnik'") #Kombo box za naziv
         

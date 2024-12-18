@@ -10,6 +10,11 @@ obrisan             BOOLEAN,
 FOREIGN KEY (id_treninga) REFERENCES Trening(id_treninga)
 '''
 
+def izlistaj_termini(pretraga="", kriterijum='id_termina'):
+    cursor=BazaPodataka.get_cursor()
+    cursor.execute("SELECT * FROM Termin WHERE "+kriterijum+" LIKE ?", ('%'+pretraga+'%',))
+    return cursor.fetchall()
+
 def dodaj_termin(id_termina,datum_odrzavanja,id_treninga,obrisan):
     pass
 
