@@ -10,10 +10,44 @@ obrisan             BOOLEAN,
 FOREIGN KEY (id_treninga) REFERENCES Trening(id_treninga)
 '''
 
-def izlistaj_termini(pretraga="", kriterijum='id_termina'):
+def izlistaj_termini(pretraga="", kriterijum="Termin.id_termina",start_date=None, end_date=None):
     cursor=BazaPodataka.get_cursor()
-    cursor.execute("SELECT * FROM Termin WHERE "+kriterijum+" LIKE ?", ('%'+pretraga+'%',))
+
+    pretraga,kriterijum = helperFunctions.ocisti_string(pretraga, kriterijum)
+
+    komanda = f"""SELECT 
+        Termin.id_termina, 
+        Program.naziv, 
+        Vrste_treninga.naziv, 
+        Sala.naziv, 
+        Termin.datum_odrzavanja, 
+        Trening.vreme_pocetka, 
+        Trening.vreme_kraja, 
+        program.potreban_paket, 
+        Termin.obrisan
+    FROM 
+        Termin
+    JOIN 
+        Trening ON Termin.id_treninga = Trening.id_treninga
+    JOIN 
+        Program ON Trening.id_programa = Program.id_programa
+    JOIN 
+        Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
+    JOIN 
+        Sala ON Trening.id_sale = Sala.id_sale
+    WHERE 
+        {kriterijum} LIKE ?
+    """
+    
+    parametri=[f'%{pretraga}%']
+    
+    if start_date and end_date:
+        komanda += " AND Termin.datum_odrzavanja BETWEEN ? AND ?"
+        parametri.extend([start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')])
+
+    cursor.execute(komanda, tuple(parametri))
     return cursor.fetchall()
+    
 
 def dodaj_termin(id_termina,datum_odrzavanja,id_treninga,obrisan):
     pass

@@ -52,7 +52,7 @@ class MainWindow:
 
         imena_dugmadi_po_ulozi = {
             "gost": ["btnProgrami", "btnTermini", "btnRezervacije", "btnRegistrujSe"],
-            "admin": ["btnVrsteTreninga", "btnTreninzi", "btnProgrami", "btnClanovi", "btnIzvestaji", "btnAdmin", "btnOdjaviSe"],
+            "admin": ["btnVrsteTreninga", "btnTreninzi", "btnProgrami", "btnClanovi", "btnTermini", "btnIzvestaji", "btnAdmin", "btnOdjaviSe"],
             "instruktor": ["btnRezervacije", "btnClanovi", "btnOdjaviSe"],
             "korisnik": ["btnProgrami", "btnTermini", "btnRezervacije", "btnOdjaviSe"]
         }

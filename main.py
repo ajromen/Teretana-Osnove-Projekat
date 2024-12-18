@@ -7,7 +7,7 @@ import winMain
 import bp_korisnici
 from baza_podataka import BazaPodataka
 
-BazaPodataka.restart()
+#BazaPodataka.restart()
 
 def login_startup_loop(ekran,user=''):
     return_value=ekran

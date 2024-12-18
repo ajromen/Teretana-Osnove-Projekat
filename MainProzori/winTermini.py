@@ -1,3 +1,4 @@
+from datetime import timedelta
 from imports import *
 import bp_termini
 
@@ -12,22 +13,37 @@ class TerminiWindow:
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
         self.current_canvas.place(x=230, y=0)
 
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnExit.png", 812, 9, 33, 33, lambda: self.main_window.unisti_trenutni_win())  # Exit button
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnSearch.png", 358, 53, 33, 33, self.pretrazi)  # Search button
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnDodaj.png", 23, 543, 252, 40, lambda: self.winTermini_Dodaj())  # Add button
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnIzmeni.png", 300, 543, 252, 40, lambda: self.winTermini_Izmeni())  # Edit button
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnObrisi.png", 577, 543, 252, 40, self.obrisi_termin)  # Delete button
-
+        wid.create_button(self.current_canvas, "./src/img/Widget/btnExit.png", 812, 9, 33, 33, lambda: self.main_window.unisti_trenutni_win())
+        wid.create_button(self.current_canvas, "./src/img/Widget/btnSearch.png", 358, 53, 33, 33, self.pretrazi)
+        
         self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/searchPozadina.png", 23, 53)
-        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/tabelaPozadina.png", 23, 102)
-
-        self.kriterijumi = ["Šifra", "Datum održavanja", "Trening", "Obrisan"]
+        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina_duza.png",23,102)
+        
+        self.kriterijumi=["Šifra","Naziv programa","Vrsta treninga","Sala","Datum održavanja","Vreme početka","Vreme kraja","Potreban paket"]
+        self.kriterijumiMap = {
+            "Šifra": "Termin.id_termina",
+            "Naziv programa": "Program.naziv",
+            "Vrsta treninga": "Vrste_treninga.naziv",
+            "Sala": "Sala.naziv",
+            "Datum održavanja": "Termin.datum_odrzavanja",
+            "Vreme početka": "Trening.vreme_pocetka",
+            "Vreme kraja": "Trening.vreme_kraja",
+            "Potreban paket": "Program.potreban_paket"
+        }
+        
         self.entrySearch = wid.create_entry_search(self.current_canvas, self.pretrazi)
 
         self.current_canvas.create_text(610, 65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
         self.cmbbxSearch = wid.create_comboBox(self.current_canvas, self.kriterijumi, x=681, y=53)
-
-        self.table = wid.create_table(self.current_canvas, self.popuni_tabelu, tuple(self.kriterijumi))
+        
+        self.current_canvas.create_text(610, 100, anchor="nw", text="Izaberi nedelju:", fill="#FFFFFF", font=("Inter", 12 * -1))
+        self.cmbbxWeek = wid.create_comboBox(self.current_canvas, ["Ova nedelja", "Sledeća nedelja"], x=681, y=90)
+        
+        
+        tabela_hieight=462
+        self.table = wid.create_table(self.current_canvas, self.popuni_tabelu, tuple(self.kriterijumi),height=tabela_hieight)
+        self.table.column("Vrsta treninga", width=100)
+        self.table.column("Naziv programa", width=100)
 
     def popuni_tabelu(self, tabela, kriterijum='id_termina', pretraga=""):
         for red in tabela.get_children():
@@ -36,7 +52,7 @@ class TerminiWindow:
         podaci = self.izlistaj(kriterijum, pretraga)
         i = 0
         for podatak in podaci:
-            if podatak[3] == 1:
+            if podatak[8] == 1:
                 if self.uloga == "admin":
                     tabela.insert("", "end", values=podatak, tags="obrisano" + str(i % 2))
             else:
@@ -59,36 +75,17 @@ class TerminiWindow:
         self.popuni_tabelu(self.table, pretraga=pretraga, kriterijum=kriterijum)
 
     def izlistaj(self, kriterijum='id_termina', pretraga=""):
-        return bp_termini.izlistaj_termini(pretraga, kriterijum)
+        week_filter = self.cmbbxWeek.get()
+        today = datetime.date.today()
+        start_date = today
+        end_date = today
 
-    def obrisi_termin(self):
-        slctd_item = self.table.selection()
-        if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijedan termin za brisanje.")
-            return
+        if week_filter == "Ova nedelja":
+            start_date = today - timedelta(days=today.weekday())
+            end_date = start_date + timedelta(days=6)
+        elif week_filter == "Sledeća nedelja":
+            start_date = today + timedelta(days=(7 - today.weekday()))
+            end_date = start_date + timedelta(days=6)
 
-        pitaj = helperFunctions.pitaj(title="Potvrda brisanja", poruka="Da li ste sigurni da želite da obiršete odabrani termin?")
-        if not pitaj:
-            return
+        return bp_termini.izlistaj_termini(pretraga, kriterijum, start_date, end_date)
 
-        slctd_data = self.table.item(slctd_item)
-        termin_id = slctd_data["values"][0]
-
-        bp_termini.obrisi_termin(termin_id)
-
-        self.table.delete(slctd_item)
-        helperFunctions.obavestenje(title="Brisanje", poruka="Termin je uspešno obrisan.")
-
-    def winTermini_Dodaj(self):
-        self.trenutni_window = helperFunctions.napravi_toplevel(height=390, title="Dodaj termin")
-        # Add widgets for adding a new termin
-        # ...
-
-    def winTermini_Izmeni(self):
-        slctd_item = self.table.selection()
-        if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijedan termin za izmenu.")
-            return
-
-        self.trenutni_window = helperFunctions.napravi_toplevel(height=390, title="Izmeni termin")
-        # Add widgets for editing a selected termin
