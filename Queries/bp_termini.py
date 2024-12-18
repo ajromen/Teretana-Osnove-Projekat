@@ -24,7 +24,7 @@ def obrisi_termin(id_termina):
     
     cursor.execute("SELECT datum_odrzavanja FROM Termin WHERE id_termina=?", (id_termina,))
     datum_termina = cursor.fetchone()
-    datum_odrzavanja = datetime.datetime.strptime(datum_termina, "%Y-%m-%d").date()
+    datum_odrzavanja = datetime.datetime.strptime(datum_termina[0], "%Y-%m-%d").date()
     
     if(datum_odrzavanja>datetime.date.today()):
         cursor.execute("SELECT id_rezervacije FROM Rezervacija WHERE id_termina=?",(id_termina,))

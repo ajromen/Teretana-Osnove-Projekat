@@ -122,3 +122,10 @@ def get_trajanje(id_programa: str)->int:
     cursor.execute("SELECT trajanje FROM Program WHERE id_programa=?",(id_programa,))
     vrati=cursor.fetchone()
     return vrati[0]
+
+
+def query_koriscene_vrste_treninga():
+    return  '''SELECT DISTINCT Vrste_treninga.naziv 
+                    FROM Program 
+                    JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga 
+                    WHERE Vrste_treninga.obrisan IS NOT TRUE'''
