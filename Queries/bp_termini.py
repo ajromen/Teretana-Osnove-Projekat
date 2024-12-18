@@ -22,21 +22,21 @@ def obrisi_termin(id_termina):
     #oznaci termin kao obrisan
     cursor.execute("UPDATE Termin SET obrisan=TRUE WHERE id_termina = ?",(id_termina,))
     
-    #logicko brisanje svih rezervacija za termin
-    cursor.execute("SELECT id_rezervacije,datum FROM Rezervacija WHERE id_termina=?",(id_termina,))
-    id_rezervacije=cursor.fetchall()
-    for rezervacija in id_rezervacije:
-        datum_odrzavanja = datetime.datetime.strptime(rezervacija[1], "%Y-%m-%d").date()
-        if(datum_odrzavanja>datetime.date.today()):
-            cursor.execute("DELETE FROM Rezervacija WHERE id_rezervacije=?",(rezervacija[0],))
-        obrisi_rezervaciju(rezervacija[0])
-        
     cursor.execute("SELECT datum_odrzavanja FROM Termin WHERE id_termina=?", (id_termina,))
-    termin = cursor.fetchone()
-    if termin:
-        datum_odrzavanja = datetime.datetime.strptime(termin[0], "%Y-%m-%d").date()
-        if(datetime.date.today()<datum_odrzavanja):
-            cursor.execute("DELETE FROM Termin WHERE id_termina=?", (id_termina,))
+    datum_termina = cursor.fetchone()
+    datum_odrzavanja = datetime.datetime.strptime(datum_termina, "%Y-%m-%d").date()
+    
+    if(datum_odrzavanja>datetime.date.today()):
+        cursor.execute("SELECT id_rezervacije FROM Rezervacija WHERE id_termina=?",(id_termina,))
+        rezervacije=cursor.fetchall()
+        for rezervacija in rezervacije:
+            obrisi_rezervaciju(rezervacija[0])
+        cursor.execute("DELETE FROM Termin WHERE id_termina=?", (id_termina,))
+        
+    
+    #ako se obrise termin u buducnosti onda treba da se obrise i rezervacija za taj termin
+    #ako je termin iz proslosti on ne treba da se obrise ali ne treba ni rezervacija
+    
     
     BazaPodataka.commit()
 
