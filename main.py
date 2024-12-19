@@ -5,6 +5,7 @@ import winLogin
 import winSignup
 import winMain
 import bp_korisnici
+import bp_termini
 from baza_podataka import BazaPodataka
 
 #BazaPodataka.restart()
@@ -30,6 +31,7 @@ def vozi(ekran,user=''):
     return winMain.start(return_value[0][0],return_value[0][1])
 
 if __name__ == '__main__':
+    bp_termini.generisi_termine()
     window=ctk.CTk()
     
     winLogin=winLogin.LoginWindow(window)

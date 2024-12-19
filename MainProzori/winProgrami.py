@@ -45,7 +45,7 @@ class ProgramiWindow:
         self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,524,55)
         
         if self.uloga=="admin":tabela_hieight=401
-        else: tabela_hieight=462
+        else: tabela_hieight=470
         self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,self.kriterijumi,height=tabela_hieight)
         self.table.column("Potreban paket",width=100)
         self.table.column("Opis",width=100)

@@ -34,16 +34,15 @@ class TerminiWindow:
         self.entrySearch = wid.create_entry_search(self.current_canvas, self.pretrazi)
 
         self.current_canvas.create_text(610, 65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch = wid.create_comboBox(self.current_canvas, self.kriterijumi, x=681, y=53)
+        self.cmbbxSearch = wid.create_comboBox(self.current_canvas, self.kriterijumi, x=681, y=53)  
         
-        self.current_canvas.create_text(610, 100, anchor="nw", text="Izaberi nedelju:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxWeek = wid.create_comboBox(self.current_canvas, ["Ova nedelja", "Sledeća nedelja"], x=681, y=90)
+        self.cmbbxSedmica = wid.create_comboBox(self.current_canvas, ["Ova nedelja", "Sledeća nedelja"], x=423, y=53)
         
-        
-        tabela_hieight=462
+        tabela_hieight=470
         self.table = wid.create_table(self.current_canvas, self.popuni_tabelu, tuple(self.kriterijumi),height=tabela_hieight)
         self.table.column("Vrsta treninga", width=100)
         self.table.column("Naziv programa", width=100)
+        
 
     def popuni_tabelu(self, tabela, kriterijum='id_termina', pretraga=""):
         for red in tabela.get_children():
@@ -52,6 +51,12 @@ class TerminiWindow:
         podaci = self.izlistaj(kriterijum, pretraga)
         i = 0
         for podatak in podaci:
+            podatak=list(podatak)
+            if(podatak[7]):
+                podatak[7]="Premium"
+            else:
+                podatak[7]="Standard"
+                
             if podatak[8] == 1:
                 if self.uloga == "admin":
                     tabela.insert("", "end", values=podatak, tags="obrisano" + str(i % 2))
@@ -69,23 +74,30 @@ class TerminiWindow:
         for red in self.table.get_children():
             self.table.delete(red)
 
-        if pretraga == "" or pretraga == "pretraži":
-            pretraga = ""
+        if pretraga =="" or pretraga=="pretraži":
+            pretraga=""
+        else:
+            if pretraga in "premium":
+                pretraga = 1
+            elif pretraga in "standard":
+                pretraga = 0  
+            else:
+                pass
 
         self.popuni_tabelu(self.table, pretraga=pretraga, kriterijum=kriterijum)
 
     def izlistaj(self, kriterijum='id_termina', pretraga=""):
-        week_filter = self.cmbbxWeek.get()
-        today = datetime.date.today()
-        start_date = today
-        end_date = today
+        sedmica = self.cmbbxSedmica.get()
+        danas = datetime.date.today()
+        pocetni_datum = danas
+        krajnji_datum = danas
 
-        if week_filter == "Ova nedelja":
-            start_date = today - timedelta(days=today.weekday())
-            end_date = start_date + timedelta(days=6)
-        elif week_filter == "Sledeća nedelja":
-            start_date = today + timedelta(days=(7 - today.weekday()))
-            end_date = start_date + timedelta(days=6)
+        if sedmica == "Ova nedelja":
+            pocetni_datum = danas
+            krajnji_datum = pocetni_datum + timedelta(days=6)
+        elif sedmica == "Sledeća nedelja":
+            pocetni_datum = danas + timedelta(days=7)
+            krajnji_datum = pocetni_datum + timedelta(days=6)
 
-        return bp_termini.izlistaj_termini(pretraga, kriterijum, start_date, end_date)
+        return bp_termini.izlistaj_termini(pretraga, kriterijum, pocetni_datum, krajnji_datum)
 
