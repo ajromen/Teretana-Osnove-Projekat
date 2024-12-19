@@ -119,6 +119,8 @@ def generisi_termine(za_naredne_sedmice=2):
                         id_termina = generisi_random_id(trening)
                         cursor.execute("INSERT INTO Termin (id_termina, id_treninga, datum_odrzavanja) VALUES (?, ?, ?)", (id_termina, trening, trenutni_datum.strftime('%Y-%m-%d')))
                         trenutni_datum += timedelta(days=7)
+                        
+    BazaPodataka.commit()
 
 def generisi_random_id(trening):# nece raditi zbog postavke zadatka...
     cursor=BazaPodataka.get_cursor()

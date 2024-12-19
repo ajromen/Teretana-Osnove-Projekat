@@ -1,5 +1,6 @@
 from bp_import import *
 from bp_termini import obrisi_termin
+import bp_termini
 
 '''Trening
 id_treninga   CHAR(4) PRIMARY KEY NOT NULL,
@@ -49,6 +50,7 @@ def dodaj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_prog
     
     cursor.execute('''INSERT INTO Trening(id_treninga, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa)
 	                  VALUES(?,?,?,?,?,?)''',(id,id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa,))
+    bp_termini.generisi_termine()
     BazaPodataka.commit()
     return False
 

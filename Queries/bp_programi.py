@@ -125,12 +125,16 @@ def get_trajanje(id_programa: str)->int:
 
 
 def query_koriscene_vrste_treninga():
-    return  '''SELECT DISTINCT Vrste_treninga.naziv 
-                    FROM Program 
-                    JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga 
-                    WHERE Vrste_treninga.obrisan IS NOT TRUE'''
+    return  '''SELECT DISTINCT Vrste_treninga.naziv FROM Program JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga WHERE Vrste_treninga.obrisan IS NOT TRUE'''
     
 def query_nazivi_neobrisanih():
-    return  '''SELECT DISTINCT Program.naziv 
-                    FROM Program 
-                    WHERE Program.obrisan IS NOT TRUE'''
+    return  '''SELECT DISTINCT Program.naziv FROM Program WHERE Program.obrisan IS NOT TRUE'''
+                    
+def query_razliciti_instruktori():
+    return """SELECT DISTINCT Korisnici.ime 
+                FROM Program 
+                JOIN Korisnici ON Program.id_instruktora = Korisnici.username 
+                WHERE Korisnici.username IS NOT 'obrisan_korisnik'"""
+                
+def query_neobrisani_korisnici():
+    return "SELECT id_programa FROM Program WHERE obrisan IS NOT TRUE"

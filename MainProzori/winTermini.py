@@ -36,7 +36,7 @@ class TerminiWindow:
         self.current_canvas.create_text(610, 65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
         self.cmbbxSearch = wid.create_comboBox(self.current_canvas, self.kriterijumi, x=681, y=53)  
         
-        self.cmbbxSedmica = wid.create_comboBox(self.current_canvas, ["Ova nedelja", "Sledeća nedelja"], x=423, y=53)
+        self.cmbbxSedmica = wid.create_comboBox(self.current_canvas, ["Ova nedelja", "Sledeća nedelja","SVE"], x=423, y=53)
         
         tabela_hieight=470
         self.table = wid.create_table(self.current_canvas, self.popuni_tabelu, tuple(self.kriterijumi),height=tabela_hieight)
@@ -89,8 +89,8 @@ class TerminiWindow:
     def izlistaj(self, kriterijum='id_termina', pretraga=""):
         sedmica = self.cmbbxSedmica.get()
         danas = datetime.date.today()
-        pocetni_datum = danas
-        krajnji_datum = danas
+        pocetni_datum = None
+        krajnji_datum = None
 
         if sedmica == "Ova nedelja":
             pocetni_datum = danas

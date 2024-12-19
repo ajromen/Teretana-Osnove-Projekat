@@ -240,6 +240,3 @@ def obrisan_korisnik(username,obavesti=True):
         obavesti and helperFunctions.obavestenje("Obrisani korisnik sluzi za evidenciju i nije ga dozvoljeno menjati.")
         return False
     return True
-
-def query_neobrisani_korisnici():
-    return "SELECT id_programa FROM Program WHERE obrisan IS NOT TRUE"

@@ -40,3 +40,4 @@ def obrisi_vrste_treninga(id_vrste_treninga):
         obrisi_program(program[0])
     
     BazaPodataka.commit()
+    
