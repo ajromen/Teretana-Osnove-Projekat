@@ -45,6 +45,7 @@ class TerminiWindow:
 
         self.current_canvas.create_text(610, 65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
         self.cmbbxSearch = wid.create_comboBox(self.current_canvas, self.kriterijumi, x=681, y=53)  
+        self.cmbbxSearch.configure(values=[kriterijum for kriterijum in self.kriterijumi if kriterijum != "Dan"])
         
         self.cmbbxSedmica = wid.create_comboBox(self.current_canvas, ["Ova nedelja", "Sledeća nedelja","SVE"], x=423, y=53)
         
@@ -53,6 +54,8 @@ class TerminiWindow:
         self.table.column("Vrsta treninga", width=100)
         self.table.column("Naziv programa", width=100)
         self.table.column("Dan", width=70)
+        self.table.column("Vreme kraja", width=70)
+        self.table.column("Vreme početka", width=90)
         
 
     def popuni_tabelu(self, tabela, kriterijum='id_termina', pretraga=""):

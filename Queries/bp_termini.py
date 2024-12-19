@@ -104,7 +104,7 @@ def generisi_termine(za_naredne_sedmice=2):
     
     for trening in treninzi:
         trening=trening[0]
-        cursor.execute("SELECT dani_nedelje FROM Trening WHERE id_treninga=?",(trening,))
+        cursor.execute("SELECT dani_nedelje FROM Trening WHERE id_treninga=? AND obrisan IS NOT NULL",(trening,))
         dani=cursor.fetchone()
         if dani:
             dani=dani[0].strip().split(",")
