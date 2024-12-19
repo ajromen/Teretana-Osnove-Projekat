@@ -347,8 +347,4 @@ class ProgramiWindow:
         self.popuni_tabelu(self.table)
         
     def napravi_dodaj_izmeni_prozor(self):
-        self.trenutni_window = ctk.CTkToplevel(fg_color='#000000')
-        self.trenutni_window.title("Program")
-        self.trenutni_window.geometry("343x485")
-        self.trenutni_window.resizable(False,False)
-        helperFunctions.centerWindow(self.trenutni_window) # Pravi se novi prozor za dodaj/izmeni
+        self.trenutni_window = helperFunctions.napravi_toplevel(height=485,title="Program")

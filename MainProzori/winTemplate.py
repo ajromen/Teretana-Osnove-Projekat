@@ -1,4 +1,5 @@
 # MainProzori/winTemplate.py
+import os
 from imports import *
 
 class winTemplate:
@@ -15,13 +16,13 @@ class winTemplate:
     def create_exit_button(self):
         wid.create_button(self.current_canvas, "./src/img/Widget/btnExit.png", 812, 9, 33, 33, lambda: self.main_window.unisti_trenutni_win())
 
-    def create_search_button(self, search_command):
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnSearch.png", 358, 53, 33, 33, search_command)
+    def create_search_button(self, command):
+        wid.create_button(self.current_canvas, "./src/img/Widget/btnSearch.png", 358, 53, 33, 33, command)
 
     def create_table(self, columns, velika=False):
         if velika: 
             self.tabelaPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/tabelaPozadina_duza.png", 23, 102)
-            height = 480
+            height = 470
         else: 
             self.tabelaPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/tabelaPozadina.png", 23, 102)
             height = 400
@@ -31,6 +32,7 @@ class winTemplate:
             self.table.column(column, width=100)
 
     def create_cmbbxSearch(self, values, x=681, y=53):
+        self.create_label("Pretraži po:", x-71, 62)
         self.cmbbxSearch = self.create_comboBox(values, x, y)
 
     def create_comboBox(self, values, x, y):
@@ -41,16 +43,16 @@ class winTemplate:
         self.entrySearch = wid.create_entry_search(self.current_canvas, command)
 
     def create_label(self, text, x, y, font_size=12):
-        wid.create_label(self.current_canvas, text, x, y, font=("Inter", font_size * -1))
+        wid.create_label(self.current_canvas, text, x, y, font_size)
 
     def create_button(self, image_path, x, y, width, height, command):
         wid.create_button(self.current_canvas, image_path, x, y, width, height, command)
-
-    def popuni_tabelu(self, tabela, kriterijum='', pretraga=''):
-        raise NotImplementedError("This method should be overridden in the subclass")
-
-    def pretrazi(self):
-        raise NotImplementedError("This method should be overridden in the subclass")
-
-    def izlistaj(self, kriterijum='', pretraga=''):
-        raise NotImplementedError("This method should be overridden in the subclass")
+        
+    def napravi_sql_cmbbx(self, text, labelX, labelY, comboX, comboY, query, broj_kolona=1, specificni=False):
+        return wid.napravi_sql_cmbbx(self.current_canvas, text, labelX, labelY, comboX, comboY, query, broj_kolona, specificni)
+        
+    def selektuj_vrednost_comboBox(self, cmbbx, vrednost):
+        wid.selektuj_vrednost_comboBox(cmbbx, vrednost)
+        
+    def create_entry(self, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",manual_fin_fon=(False,"Polje"),justify="left"):
+        return wid.create_entry(self.current_canvas, x, y, on_focus_in, on_focus_out, placeholder, width, height, belo, state, corner_radius, back_color, manual_fin_fon, justify)

@@ -11,3 +11,4 @@ import datetime
 
 import helperFunctions
 import widgets as wid
+from winTemplate import winTemplate

@@ -107,3 +107,15 @@ def azuriraj_setup(kljuc, nova_vrednost):
       
 def ocisti_string(*args):
    return tuple(str(arg).strip() for arg in args)
+
+def eng_dani_u_srp(dan):
+   dani_map = {
+      "Monday": "Ponedeljak",
+      "Tuesday": "Utorak",
+      "Wednesday": "Sreda",
+      "Thursday": "Četvrtak",
+      "Friday": "Petak",
+      "Saturday": "Subota",
+      "Sunday": "Nedelja"
+   }
+   return dani_map.get(dan, "Nepoznat dan")

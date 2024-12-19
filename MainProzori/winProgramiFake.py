@@ -31,6 +31,7 @@ class ProgramiWindow(winTemplate):
         #     self.create_button("./src/img/Widget/btnIzmeni.png", 300, 543, 252, 40, self.winProgrami_Izmeni)
         #     self.create_button("./src/img/Widget/btnObrisi.png", 577, 543, 252, 40, self.obrisi_program)
 
+
     def popuni_tabelu(self, tabela, kriterijum='id_programa', pretraga=''):
         for red in tabela.get_children():
             tabela.delete(red)

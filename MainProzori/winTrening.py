@@ -3,12 +3,9 @@ import bp_programi
 from imports import *
 import bp_trening
 
-class TreningWindow:
-    def __init__(self, window, main_window,uloga):
-        self.window = window
-        self.main_window=main_window
-        self.current_canvas = None
-        self.uloga=uloga
+class TreningWindow(winTemplate):
+    def __init__(self, window, main_window, uloga):
+        super().__init__(window, main_window, uloga)
         self.dani_dict = {
             "Pon": False,
             "Uto": False,
@@ -20,19 +17,20 @@ class TreningWindow:
         }
 
     def start(self):
-        self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
-          
+        self.create_canvas()  
         
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,lambda: self.main_window.unisti_trenutni_win())# EXit dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winTrening_Dodaj()) # Dodaj Dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winTrening_Izmeni()) # Izmeni Dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi_trening) # Obrisi Dugme
+        self.create_exit_button()
+        self.create_search_button(self.pretrazi)
+        self.create_entry_search(self.pretrazi)
         
-        self.current_canvas.place(x=230, y=0)
-        self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/searchPozadina.png",23,53)
-        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
-         
+        velika=True
+        if self.uloga == "admin":
+            self.create_button("./src/img/Widget/btnDodaj.png", 23, 543, 252, 40, lambda: self.winTrening_Dodaj())
+            self.create_button("./src/img/Widget/btnIzmeni.png", 300, 543, 252, 40, lambda: self.winTrening_Izmeni())
+            self.create_button("./src/img/Widget/btnObrisi.png", 577, 543, 252, 40, self.obrisi_trening)
+            velika=False
+        
+        self.kriterijumi=["Šifra", "Sala", "Vreme početka", "Vreme kraja", "Dani nedelje", "Program"]
         self.kriterijumiMap={
             "Šifra" : "id_treninga",
             "Sala" : "naziv_sale",
@@ -41,13 +39,9 @@ class TreningWindow:
             "Dani nedelje" : "dani",
             "Program" : "naziv_programa"
         }
-        self.kriterijumi=["Šifra", "Sala", "Vreme početka", "Vreme kraja", "Dani nedelje", "Program"]
-        self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
         
-        self.current_canvas.create_text(610,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,x=681,y=53)
-        
-        self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,tuple(self.kriterijumi))
+        self.create_cmbbxSearch(self.kriterijumi)
+        self.create_table(self.kriterijumi, velika=velika)
 
 
     def popuni_tabelu(self,tabela,kriterijum='id_treninga',pretraga=""):
@@ -125,39 +119,37 @@ class TreningWindow:
         self.switch_dani(slctd_dani)
         
         # sifra
-        self.entrySifra = wid.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True,placeholder=slctd_id,state="disabled")
-        
-        self.cmbbxSala=wid.napravi_sql_cmbbx(self.trenutni_window,"Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala WHERE obrisana IS NOT TRUE",2,True) #Kombo box za naziv
-        self.cmbbxProgram=wid.napravi_sql_cmbbx(self.trenutni_window,"Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
-        wid.selektuj_vrednost_comboBox(self.cmbbxSala,slctd_sala)
-        wid.selektuj_vrednost_comboBox(self.cmbbxProgram,slctd_program)
+        self.entrySifra = self.create_entry(141, 30, width=179, height=23, belo=True, placeholder=slctd_id, state="disabled")
+        self.cmbbxSala=self.napravi_sql_cmbbx("Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala WHERE obrisana IS NOT TRUE",2,True) #Kombo box za naziv
+        self.cmbbxProgram=self.napravi_sql_cmbbx("Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
+        self.selektuj_vrednost_comboBox(self.cmbbxSala,slctd_sala)
+        self.selektuj_vrednost_comboBox(self.cmbbxProgram,slctd_program)
         
         self.zajednicke_Dodaj_Izmeni(slctd_vreme_pocetka,slctd_vreme_kraja,mode=1)
 
     def winTrening_Dodaj(self):
         self.trenutni_window=helperFunctions.napravi_toplevel(height=390,title="Dodaj trening")
         
-        self.cmbbxSala=wid.napravi_sql_cmbbx(self.trenutni_window,"Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala WHERE obrisana IS NOT TRUE",2,True) #Kombo box za naziv
-        self.cmbbxProgram=wid.napravi_sql_cmbbx(self.trenutni_window,"Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
+        self.cmbbxSala=self.napravi_sql_cmbbx("Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala WHERE obrisana IS NOT TRUE",2,True) #Kombo box za naziv
+        self.cmbbxProgram=self.napravi_sql_cmbbx("Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
         
-        self.entrySifra = wid.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True)
+        self.entrySifra=self.create_entry(141, 30, width=179, height=23, belo=True, placeholder="Unesite šifru")
         
         self.zajednicke_Dodaj_Izmeni(mode=0)
         
     def zajednicke_Dodaj_Izmeni(self,vreme_pocetka="00:00",vreme_kraja="00:00",mode=0,dani=""): # 0 za dodaj 1 za izmeni
-        wid.create_label(self.trenutni_window, text="Šifra:",x=58,y=31)
+        self.create_label("Šifra",58,31)
         
         #labele za vreme
-        wid.create_label(self.trenutni_window, text="Vreme početka:",x=20,y=122)
-        wid.create_label(self.trenutni_window, text="h   :",x=204,y=121)
-        wid.create_label(self.trenutni_window, text="min",x=288,y=121)
+        self.create_label("Vreme početka",20,122)
+        self.create_label("h   :",204,121)
+        self.create_label("min",288,121)
         
-        wid.create_label(self.trenutni_window, text="Vreme kraja:",x=33,y=162)
-        wid.create_label(self.trenutni_window, text="h   :",x=204,y=161)
-        wid.create_label(self.trenutni_window, text="min",x=288,y=161)
+        self.create_label("Vreme kraja",33,162)
+        self.create_label("h   :",204,161)
+        self.create_label("min",288,161)
         
-        wid.create_label(self.trenutni_window, text="Dani:",x=23,y=243)
-        
+        self.create_label("Dani:",23,243)        
         
         vreme_pocetka=(vreme_pocetka.strip()).split(":")
         pocetak_sati=vreme_pocetka[0]
@@ -167,10 +159,10 @@ class TreningWindow:
         kraj_sati=vreme_kraja[0]
         kraj_minuti=vreme_kraja[1]
         
-        self.entryPocetakSati = wid.create_entry(self.trenutni_window,156,119,width=42,height=23,belo=True,placeholder=pocetak_sati,on_focus_out=lambda *args: self.sredi_sate("pocetak"))
-        self.entryPocetakMinuti = wid.create_entry(self.trenutni_window,241,119,width=42,height=23,belo=True,placeholder=pocetak_minuti,on_focus_out=lambda *args: self.sredi_sate("pocetak"))
-        self.entryKrajSati = wid.create_entry(self.trenutni_window,156,160,width=42,height=23,belo=True,placeholder=kraj_sati,on_focus_out=lambda *args: self.sredi_sate("kraj"))
-        self.entryKrajMinuti = wid.create_entry(self.trenutni_window,242,160,width=42,height=23,belo=True,placeholder=kraj_minuti,on_focus_out=lambda *args: self.sredi_sate("kraj"))
+        self.entryPocetakSati=self.create_entry(156,119,width=42,height=23,belo=True,placeholder=pocetak_sati,on_focus_out=lambda *args: self.sredi_sate("pocetak"))
+        self.entryPocetakMinuti=self.create_entry(241,119,width=42,height=23,belo=True,placeholder=pocetak_minuti,on_focus_out=lambda *args: self.sredi_sate("pocetak"))
+        self.entryKrajSati=self.create_entry(156,160,width=42,height=23,belo=True,placeholder=kraj_sati,on_focus_out=lambda *args: self.sredi_sate("kraj"))
+        self.entryKrajMinuti=self.create_entry(242,160,width=42,height=23,belo=True,placeholder=kraj_minuti,on_focus_out=lambda *args: self.sredi_sate("kraj"))
         
         #Kreiranje dugmadi za dane
         self.btnPon=self.button_dani("Pon",self.trenutni_window,16,272)
@@ -184,7 +176,8 @@ class TreningWindow:
         btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Sačuvaj", command=lambda: self.dodaj_izmeni(mode=mode))
         btnSacuvaj.place(x=102,y=325)
         #dugme za otkazivanje
-        wid.create_button(self.trenutni_window,"./src/img/Widget/btnOtkazi.png",x=136,y=362,width=72,height=17,command=self.trenutni_window.destroy)
+        self.create_button("./src/img/Widget/btnOtkazi.png",x=136,y=362,width=72,height=17,command=self.trenutni_window.destroy)
+        
         
     def sredi_sate(self,vreme: str)-> None:
         id_programa=self.cmbbxProgram.get()

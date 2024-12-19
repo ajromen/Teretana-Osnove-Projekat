@@ -2,31 +2,16 @@ from datetime import timedelta
 from imports import *
 import bp_termini
 
-class TerminiWindow:
+
+class TerminiWindow(winTemplate):
     def __init__(self, window, main_window, uloga):
-        self.window = window
-        self.main_window = main_window
-        self.current_canvas = None
-        self.uloga = uloga
-        self.dani_map = {
-            "Monday": "Ponedeljak",
-            "Tuesday": "Utorak",
-            "Wednesday": "Sreda",
-            "Thursday": "Četvrtak",
-            "Friday": "Petak",
-            "Saturday": "Subota",
-            "Sunday": "Nedelja"
-        }
+        super().__init__(window, main_window, uloga)
 
     def start(self):
-        self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
-        self.current_canvas.place(x=230, y=0)
-
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnExit.png", 812, 9, 33, 33, lambda: self.main_window.unisti_trenutni_win())
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnSearch.png", 358, 53, 33, 33, self.pretrazi)
-        
-        self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/searchPozadina.png", 23, 53)
-        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina_duza.png",23,102)
+        self.create_canvas()
+        self.create_exit_button()
+        self.create_search_button(self.pretrazi)
+        self.create_entry_search(self.pretrazi)
         
         self.kriterijumi=["Šifra","Naziv programa","Vrsta treninga","Sala","Dan","Datum održavanja","Vreme početka","Vreme kraja","Potreban paket"]
         self.kriterijumiMap = {
@@ -41,19 +26,17 @@ class TerminiWindow:
             "Potreban paket": "Program.potreban_paket"
         }
         
-        self.entrySearch = wid.create_entry_search(self.current_canvas, self.pretrazi)
+        self.create_entry_search(self.pretrazi)
 
-        self.current_canvas.create_text(610, 65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch = wid.create_comboBox(self.current_canvas, self.kriterijumi, x=681, y=53)  
-        self.cmbbxSearch.configure(values=[kriterijum for kriterijum in self.kriterijumi if kriterijum != "Dan"])
+        opcije=[kriterijum for kriterijum in self.kriterijumi if kriterijum != "Dan"]
+        self.create_cmbbxSearch(opcije,)
+        self.cmbbxSedmica = self.create_comboBox(["Ova nedelja", "Sledeća nedelja","SVE"], 423, 53)
         
-        self.cmbbxSedmica = wid.create_comboBox(self.current_canvas, ["Ova nedelja", "Sledeća nedelja","SVE"], x=423, y=53)
-        
-        tabela_hieight=470
-        self.table = wid.create_table(self.current_canvas, self.popuni_tabelu, tuple(self.kriterijumi),height=tabela_hieight)
+        self.create_table(self.kriterijumi, velika=True)
         self.table.column("Vrsta treninga", width=100)
         self.table.column("Naziv programa", width=100)
         self.table.column("Dan", width=70)
+        self.table.column("Sala", width=70)
         self.table.column("Vreme kraja", width=70)
         self.table.column("Vreme početka", width=90)
         
@@ -67,7 +50,7 @@ class TerminiWindow:
         for podatak in podaci:
             podatak=list(podatak)
             dan = datetime.datetime.strptime(podatak[4], "%Y-%m-%d")
-            dan=self.dani_map[dan.strftime("%A")]
+            dan = helperFunctions.eng_dani_u_srp(dan.strftime("%A"))
             if(podatak[7]):
                 podatak[7]="Premium"
             else:
