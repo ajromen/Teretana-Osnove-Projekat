@@ -8,6 +8,15 @@ class TerminiWindow:
         self.main_window = main_window
         self.current_canvas = None
         self.uloga = uloga
+        self.dani_map = {
+            "Monday": "Ponedeljak",
+            "Tuesday": "Utorak",
+            "Wednesday": "Sreda",
+            "Thursday": "Četvrtak",
+            "Friday": "Petak",
+            "Saturday": "Subota",
+            "Sunday": "Nedelja"
+        }
 
     def start(self):
         self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
@@ -19,12 +28,13 @@ class TerminiWindow:
         self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/searchPozadina.png", 23, 53)
         self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina_duza.png",23,102)
         
-        self.kriterijumi=["Šifra","Naziv programa","Vrsta treninga","Sala","Datum održavanja","Vreme početka","Vreme kraja","Potreban paket"]
+        self.kriterijumi=["Šifra","Naziv programa","Vrsta treninga","Sala","Dan","Datum održavanja","Vreme početka","Vreme kraja","Potreban paket"]
         self.kriterijumiMap = {
             "Šifra": "Termin.id_termina",
             "Naziv programa": "Program.naziv",
             "Vrsta treninga": "Vrste_treninga.naziv",
             "Sala": "Sala.naziv",
+            "Dan": "Termin.datum_odrzavanja",
             "Datum održavanja": "Termin.datum_odrzavanja",
             "Vreme početka": "Trening.vreme_pocetka",
             "Vreme kraja": "Trening.vreme_kraja",
@@ -42,6 +52,7 @@ class TerminiWindow:
         self.table = wid.create_table(self.current_canvas, self.popuni_tabelu, tuple(self.kriterijumi),height=tabela_hieight)
         self.table.column("Vrsta treninga", width=100)
         self.table.column("Naziv programa", width=100)
+        self.table.column("Dan", width=70)
         
 
     def popuni_tabelu(self, tabela, kriterijum='id_termina', pretraga=""):
@@ -52,12 +63,15 @@ class TerminiWindow:
         i = 0
         for podatak in podaci:
             podatak=list(podatak)
+            dan = datetime.datetime.strptime(podatak[4], "%Y-%m-%d")
+            dan=self.dani_map[dan.strftime("%A")]
             if(podatak[7]):
                 podatak[7]="Premium"
             else:
                 podatak[7]="Standard"
                 
-            if podatak[8] == 1:
+            podatak.insert(4, dan)
+            if podatak[9] == 1:
                 if self.uloga == "admin":
                     tabela.insert("", "end", values=podatak, tags="obrisano" + str(i % 2))
             else:
