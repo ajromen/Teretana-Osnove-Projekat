@@ -35,24 +35,45 @@ class winTemplate:
         self.create_label("Pretraži po:", x-71, 62)
         self.cmbbxSearch = self.create_comboBox(values, x, y)
 
-    def create_comboBox(self, values, x, y):
-        return wid.create_comboBox(self.current_canvas, values, x=x, y=y)
+    def create_comboBox(self, values, x, y, top_level=False):
+        canvas=self.if_top_level_canvas(top_level)
+        return wid.create_comboBox(canvas, values, x=x, y=y)
 
     def create_entry_search(self, command):
         self.searchPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/searchPozadina.png", 23, 53)
         self.entrySearch = wid.create_entry_search(self.current_canvas, command)
 
-    def create_label(self, text, x, y, font_size=12):
-        wid.create_label(self.current_canvas, text, x, y, font_size)
+    def create_label(self, text, x, y, font_size=12,top_level=False):
+        canvas=self.if_top_level_canvas(top_level)
+        wid.create_label(canvas, text, x, y, font_size)
 
-    def create_button(self, image_path, x, y, width, height, command):
-        wid.create_button(self.current_canvas, image_path, x, y, width, height, command)
+    def create_button(self, image_path, x, y, width, height, command,top_level=False):
+        canvas=self.if_top_level_canvas(top_level)
+        wid.create_button(canvas, image_path, x, y, width, height, command)
         
-    def napravi_sql_cmbbx(self, text, labelX, labelY, comboX, comboY, query, broj_kolona=1, specificni=False):
-        return wid.napravi_sql_cmbbx(self.current_canvas, text, labelX, labelY, comboX, comboY, query, broj_kolona, specificni)
+    def napravi_sql_cmbbx(self, text, labelX, labelY, comboX, comboY, query, broj_kolona=1, specificni=False,top_level=False):  
+        canvas=self.if_top_level_canvas(top_level)
+        return wid.napravi_sql_cmbbx(canvas, text, labelX, labelY, comboX, comboY, query, broj_kolona, specificni)
         
     def selektuj_vrednost_comboBox(self, cmbbx, vrednost):
         wid.selektuj_vrednost_comboBox(cmbbx, vrednost)
         
-    def create_entry(self, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",manual_fin_fon=(False,"Polje"),justify="left"):
-        return wid.create_entry(self.current_canvas, x, y, on_focus_in, on_focus_out, placeholder, width, height, belo, state, corner_radius, back_color, manual_fin_fon, justify)
+    def create_switch(self, x, y, width=43, height=24,top_level=False):
+        canvas=self.if_top_level_canvas(top_level)
+        swtch=ctk.CTkSwitch(canvas,width=width,height=height,text='')
+        swtch.place(x=x,y=y)
+        return swtch
+
+    def create_text_button(self, text, x, y, command,width=140,height=28,top_level=False):
+        canvas=self.if_top_level_canvas(top_level)
+        btn = ctk.CTkButton(canvas, text=text, command=command,width=width,height=height)
+        btn.place(x=x,y=y)
+        
+    def if_top_level_canvas(self,top_level)->Canvas:
+        if top_level:canvas=self.trenutni_window
+        else:canvas=self.current_canvas
+        return canvas
+        
+    def create_entry(self, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",manual_fin_fon=(False,"Polje"),justify="left",top_level=False):
+        canvas=self.if_top_level_canvas(top_level)
+        return wid.create_entry(canvas, x, y, on_focus_in, on_focus_out, placeholder, width, height, belo, state, corner_radius, back_color, manual_fin_fon, justify)

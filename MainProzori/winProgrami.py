@@ -3,32 +3,25 @@ from imports import *
 from ctk_rangeslider import *
 import bp_programi
 
-class ProgramiWindow:
+class ProgramiWindow(winTemplate):
     def __init__(self, window, main_window,uloga):
-        self.window = window
-        self.main_window=main_window
-        self.uloga=uloga
-        self.current_canvas = None
+        super().__init__(window, main_window,uloga)
         self.promenljive_filteri()
 
     def start(self):
-        self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
-        self.current_canvas.place(x=230, y=0)        
+        self.create_canvas()
+        self.create_exit_button()
+        self.create_search_button(self.pretrazi)
+        self.create_button("./src/img/Widget/btnFilteri.png", 687, 53, 142, 33, self.winProgramiFilteri)
         
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,lambda: self.main_window.unisti_trenutni_win())# EXit dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnFilteri.png",687,55,142,33,self.winProgramiFilteri) # Filteri Dugme
-        self.uloga=="admin" and wid.create_button(self.current_canvas,"./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winProgrami_Dodaj()) # Dodaj Dugme
-        self.uloga=="admin" and wid.create_button(self.current_canvas,"./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winProgrami_Izmeni()) # Izmeni Dugme
-        self.uloga=="admin" and wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi_program) # Obrisi Dugme
-        
-        
-        self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/searchPozadina.png",23,53)
-        if self.uloga=="admin": self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
-        else: self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina_duza.png",23,102)
-
-        
-        self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
+        visoki=True
+        if self.uloga=="admin": 
+            self.create_button("./src/img/Widget/btnDodaj.png", 23, 543, 252, 40, lambda: self.winProgrami_Dodaj())
+            self.create_button("./src/img/Widget/btnIzmeni.png", 300, 543, 252, 40, lambda: self.winProgrami_Izmeni())
+            self.create_button("./src/img/Widget/btnObrisi.png", 577, 543, 252, 40, self.obrisi_program)
+            visoki=False
+            
+        self.create_entry_search(self.pretrazi)
         
         self.kriterijumi=["Šifra", "Naziv", "Vrsta treninga", "Trajanje", "Instruktor", "Potreban paket", "Opis"]
         self.kriterijumiMap={
@@ -41,12 +34,9 @@ class ProgramiWindow:
             "Opis" : "opis"
         }
         
-        self.current_canvas.create_text(450,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,524,55)
+        self.create_cmbbxSearch(self.kriterijumi,524,53)
         
-        if self.uloga=="admin":tabela_hieight=401
-        else: tabela_hieight=470
-        self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,self.kriterijumi,height=tabela_hieight)
+        self.create_table(self.kriterijumi,visoki)
         self.table.column("Potreban paket",width=100)
         self.table.column("Opis",width=100)
            
@@ -87,16 +77,12 @@ class ProgramiWindow:
         self.popuni_tabelu(self.table,pretraga=pretraga,kriterijum=kriterijum)
 
     def winProgramiFilteri(self):
-        self.trenutni_window = ctk.CTkToplevel(fg_color='#000000')
-        self.trenutni_window.title("Filteri")
-        self.trenutni_window.geometry("343x382")
-        self.trenutni_window.resizable(False,False)
-        helperFunctions.centerWindow(self.trenutni_window)
+        self.trenutni_window=helperFunctions.napravi_toplevel(width=343,height=382,title="Filteri")
 
-        self.cmbbxSifre=wid.napravi_sql_cmbbx(self.trenutni_window,"Šifra:",64,39,172,31,"SELECT id_programa FROM Program WHERE obrisan IS NOT TRUE") #Kombo box za id
-        self.cmbbxNaziv=wid.napravi_sql_cmbbx(self.trenutni_window,"Naziv:",56,78,172,72,'SELECT DISTINCT Program.naziv FROM Program WHERE Program.obrisan IS NOT TRUE') #Kombo box za naziv
-        self.filt_cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,'SELECT DISTINCT Vrste_treninga.naziv FROM Program JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga WHERE Vrste_treninga.obrisan IS NOT TRUE') #Kombo box za naziv
-        self.filt_cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,233,172,225,"SELECT DISTINCT Korisnici.ime FROM Program JOIN Korisnici ON Program.id_instruktora = Korisnici.username WHERE Korisnici.username IS NOT 'obrisan_korisnik'") #Kombo box za naziv
+        self.cmbbxSifre=self.napravi_sql_cmbbx("Šifra:",64,39,172,31,"SELECT id_programa FROM Program WHERE obrisan IS NOT TRUE",top_level=True) #Kombo box za id
+        self.cmbbxNaziv=self.napravi_sql_cmbbx("Naziv:",56,78,172,72,'SELECT DISTINCT Program.naziv FROM Program WHERE Program.obrisan IS NOT TRUE',top_level=True) #Kombo box za naziv
+        self.filt_cmbbxVrsteTreninga=self.napravi_sql_cmbbx("Vrsta treninga:",26,121,172,115,'SELECT DISTINCT Vrste_treninga.naziv FROM Program JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga WHERE Vrste_treninga.obrisan IS NOT TRUE',top_level=True) #Kombo box za naziv
+        self.filt_cmbbxInstruktor=self.napravi_sql_cmbbx("Trener:",52,233,172,225,"SELECT DISTINCT Korisnici.ime FROM Program JOIN Korisnici ON Program.id_instruktora = Korisnici.username WHERE Korisnici.username IS NOT 'obrisan_korisnik'",top_level=True) #Kombo box za naziv
         
         naziv = self.naziv if self.naziv != "" else "SVE"
         self.cmbbxNaziv.set(naziv)
@@ -107,23 +93,20 @@ class ProgramiWindow:
         instruktor = self.instruktor if self.instruktor != "" else "SVE"
         self.filt_cmbbxInstruktor.set(instruktor)
         
-        wid.create_label(self.trenutni_window, text="Potreban Premium Paket:",x=27,y=280)
-        
-        self.filt_switchPaket=ctk.CTkSwitch(self.trenutni_window,width=43,height=24,text='')
-        self.filt_switchPaket.place(x=252,y=278)
-        
+        self.create_label("Potreban Premium Paket", 27, 280,top_level=True)
+        self.filt_switchPaket=self.create_switch(252,278,top_level=True)        
         
         min,max=bp_programi.get_trajanje_range()
-        wid.create_label(self.trenutni_window, text="Trajanje od do:",x=124,y=167)
+        self.create_label("Trajanje od do:",124,167,top_level=True)
 
         self.slajder=CTkRangeSlider(self.trenutni_window,height=16,width=288,from_=min, to=max,command=self.update_trajanje)
         self.slajder.configure(command=lambda value: self.update_trajanje())
         self.slajder.place(x=32,y=191)
-        self.slajder.set([self.trajanjeOd,self.trajanjeDo])
+        self.slajder.set([self.trajanjeOd,self.trajanjeDo])#nema funk jedini put da se pojavljuje
         
         
-        self.entryTrajanjeOd=wid.create_entry(canvas=self.trenutni_window,x=32,y=166,width=59,height=18,manual_fin_fon=(True,"Polje"))
-        self.entryTrajanjeDo=wid.create_entry(canvas=self.trenutni_window,x=261,y=166,width=59,height=18,manual_fin_fon=(True,"Polje"))
+        self.entryTrajanjeOd=self.create_entry(32,166,width=59,height=18,manual_fin_fon=(True,"Polje"),top_level=True)
+        self.entryTrajanjeDo=self.create_entry(261,166,width=59,height=18,manual_fin_fon=(True,"Polje"),top_level=True)
         self.entryTrajanjeOd.bind("<Return>", lambda event:self.apdejtuj_slajder(self.entryTrajanjeOd.get(),self.trajanjeDo))
         self.entryTrajanjeDo.bind("<Return>", lambda event: self.apdejtuj_slajder(self.trajanjeOd, self.entryTrajanjeDo.get()))
         self.update_trajanje()
@@ -131,11 +114,9 @@ class ProgramiWindow:
         if (self.potrebanPaket): self.filt_switchPaket.select() 
         else: self.filt_switchPaket.deselect()
         
-        btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Sačuvaj", command=self.ugasi_filteri)
-        btnSacuvaj.place(x=102,y=323)
-        self.imgObrisiFiltere = PhotoImage(file="./src/img/Widget/btnObrisiFiltere.png")
-        btnObrisiFiltere = Button(self.trenutni_window,image=self.imgObrisiFiltere, borderwidth=0, highlightthickness=0, relief="flat",command=self.restartuj_filtere) 
-        btnObrisiFiltere.place(x=135,y=357,width=72,height=17)
+        self.create_text_button("Sačuvaj",102,323,self.ugasi_filteri,top_level=True)
+        
+        self.create_button("./src/img/Widget/btnObrisiFiltere.png", 135, 357, 72, 17, self.restartuj_filtere,top_level=True)
         
     def on_entry_trajanjeOd_click(self,event):
         self.entryTrajanjeOd.configure(text_color="white")
@@ -244,59 +225,56 @@ class ProgramiWindow:
         slctd_opis=slctd_data["values"][6]
         
         #Izmeni specificniwidgeti
-        self.cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
-        self.cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1 AND username IS NOT 'obrisan_korisnik'",3,True) #Kombo box za naziv
+        self.cmbbxVrsteTreninga=self.napravi_sql_cmbbx("Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga WHERE obrisan IS NOT TRUE",2,True,top_level=True) #Kombo box za naziv
+        self.cmbbxInstruktor=self.napravi_sql_cmbbx("Trener:",52,220,172,212, "SELECT username,ime,prezime FROM Korisnici WHERE uloga=1 AND username IS NOT 'obrisan_korisnik'",3,True,top_level=True) #Kombo box za naziv
         
-        wid.selektuj_vrednost_comboBox(self.cmbbxVrsteTreninga,slctd_vrsta_treninga)
-        wid.selektuj_vrednost_comboBox(self.cmbbxInstruktor,slctd_instruktor)
+        self.selektuj_vrednost_comboBox(self.cmbbxVrsteTreninga,slctd_vrsta_treninga)
+        self.selektuj_vrednost_comboBox(self.cmbbxInstruktor,slctd_instruktor)
         
-        self.entrySifra = wid.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True,placeholder=slctd_id,state="disabled")
+        self.entrySifra=self.create_entry(141,30,width=179,height=23,belo=True,placeholder=slctd_id,state="disabled",top_level=True)
         
         self.zajednicke_Dodaj_Izmeni(slctd_naziv,slctd_trajanje,slctd_paket,slctd_opis,mode=1)
 
     def winProgrami_Dodaj(self):
         self.napravi_dodaj_izmeni_prozor()
         
-        self.cmbbxVrsteTreninga=wid.napravi_sql_cmbbx(self.trenutni_window,"Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
-        self.cmbbxInstruktor=wid.napravi_sql_cmbbx(self.trenutni_window,"Trener:",52,220,172,212,"SELECT username,ime,prezime FROM Korisnici WHERE uloga=1 AND username IS NOT 'obrisan_korisnik'",3,True) #Kombo box za naziv
+        self.cmbbxVrsteTreninga=self.napravi_sql_cmbbx("Vrsta treninga:",26,121,172,115,"SELECT id_vrste_treninga, naziv FROM Vrste_treninga WHERE obrisan IS NOT TRUE",2,True,top_level=True) #Kombo box za naziv
+        self.cmbbxInstruktor=self.napravi_sql_cmbbx("Trener:",52,220,172,212, "SELECT username,ime,prezime FROM Korisnici WHERE uloga=1 AND username IS NOT 'obrisan_korisnik'",3,True,top_level=True) #Kombo box za naziv
         
-        self.entrySifra = wid.create_entry(self.trenutni_window,141,30,width=179,height=23,belo=True)
+        self.entrySifra=self.create_entry(141,30,width=179,height=23,belo=True,top_level=True)
         
         self.zajednicke_Dodaj_Izmeni(mode=0)
         
     def zajednicke_Dodaj_Izmeni(self,naziv="",trajanje="",paket=1,opis="",mode=0): # 0 za dodaj 1 za izmeni
         # Postavljanje switch-a i label-e za potreban paket
-        wid.create_label(self.trenutni_window, text="Potreban Premium Paket:",x=60,y=280)
-        self.switchPaket=ctk.CTkSwitch(self.trenutni_window,width=43,height=24,text='')
-        self.switchPaket.place(x=252,y=278)
+        self.create_label("Potreban Premium Paket",60,280,top_level=True)
+        self.switchPaket=self.create_switch(252,278,top_level=True)
         
         if (paket): self.switchPaket.select() 
         else: self.switchPaket.deselect()
         
         # sifra labela
-        wid.create_label(self.trenutni_window, text="Šifra:",x=58,y=31)
+        self.create_label("Šifra:",58,31,top_level=True)
         
         #ulaz za trajanje
-        wid.create_label(self.trenutni_window, text="Trajanje:",x=46,y=169)
-        self.entryTrajanje = wid.create_entry(self.trenutni_window,141,168,width=179,height=23,belo=True,placeholder=trajanje)
+        self.create_label("Trajanje:",46,169,top_level=True)
+        self.entryTrajanje=self.create_entry(141,168,width=179,height=23,belo=True,placeholder=trajanje,top_level=True)
         
         #ulaz za naziv programa
-        wid.create_label(self.trenutni_window, text="Naziv:",x=58,y=79)
-        self.entryNaziv = wid.create_entry(self.trenutni_window,141,74,width=179,height=23,placeholder=naziv,belo=True)
+        self.create_label("Naziv:",58,79,top_level=True)
+        self.entryNaziv = self.create_entry(141,74,width=179,height=23,belo=True,placeholder=naziv,top_level=True)
         
         
         #ulaz za opis
-        wid.create_label(self.trenutni_window, text="Opis:",x=27,y=308)
+        self.create_label("Opis:",27,308,top_level=True)
 
-        self.txtbxOpis = ctk.CTkTextbox(self.trenutni_window,width=294,height=80,corner_radius=4,fg_color="#080A17")
+        self.txtbxOpis = ctk.CTkTextbox(self.trenutni_window,width=294,height=80,corner_radius=4,fg_color="#080A17")# i ovo se pojavljuje 2 puta ne vredi
         self.txtbxOpis.place(x=26,y=334)
         self.txtbxOpis.insert("0.0", opis)
         
-        
-        btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Sačuvaj", command=lambda: self.dodaj_izmeni_program(mode=mode))
-        btnSacuvaj.place(x=102,y=424)
+        self.create_text_button("Sačuvaj",102,424,lambda: self.dodaj_izmeni_program(mode=mode),top_level=True)
         #dugme za otkazivanje
-        wid.create_button(self.trenutni_window,"./src/img/Widget/btnOtkazi.png",x=136,y=461,width=72,height=17,command=self.trenutni_window.destroy)
+        self.create_button("./src/img/Widget/btnOtkazi.png", 136, 461, 72, 17, self.trenutni_window.destroy,top_level=True)
 
         
         
