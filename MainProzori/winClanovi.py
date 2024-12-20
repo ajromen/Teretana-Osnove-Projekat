@@ -17,7 +17,6 @@ class ClanoviWindow(winTemplate):
         
         self.uloga=="admin" and self.create_button("./src/img/Widget/btnDodaj.png",23,541,252,40,lambda: self.winClan_Izmeni("Nagradi")) # Dodaj Dugme
         
-        self.uloga=="admin" and wid.create_button(self.current_canvas,"./src/img/Widget/btnNagradi.png",23,541,252,40,lambda: self.winClan_Izmeni("Nagradi")) # nagradi
         wid.create_button(self.current_canvas,"./src/img/Widget/btnAktiviraj.png",300,541,252,40,lambda: self.winClan_Izmeni("Aktiviraj")) # aktiviraj
         wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",576,541,252,40,self.clan_delete) # delete
         
