@@ -121,7 +121,7 @@ class ClanoviWindow(winTemplate):
         slctd_aktiviran=slctd_data["values"][3]
         slctd_paket=slctd_data["values"][4]
         
-        self.entryID=self.create_entry(70,11,width=203,height=23,placeholder=slctd_username+", "+slctd_ime+" "+slctd_prezime,justify="center",belo=True,state="disabled")
+        self.entryID=self.create_entry(70,11,width=203,height=23,placeholder=slctd_username+", "+slctd_ime+" "+slctd_prezime,justify="center",belo=True,state="disabled",top_level=True)
         
         if(mode=="Nagradi"):
             self.create_label("Broj realizovanih rezervacija u proteklih",34,52,top_level=True)
@@ -142,7 +142,7 @@ class ClanoviWindow(winTemplate):
             else: self.switchPaket.deselect()
             self.create_text_button("Aktiviraj status", 89, 132, self.aktiviraj_paket, width=166, height=27,top_level=True)
             
-        self.create_button("./src/img/Widget/btnPotvrdi.png",x=58,y=166,width=72,height=17,command=self.trenutni_window.destroy,top_level=True)
+        self.create_button("./src/img/Widget/btnOtkazi.png",x=58,y=166,width=72,height=17,command=self.trenutni_window.destroy,top_level=True)
     
     def clan_delete(self):
         slctd_item = self.table.selection()
