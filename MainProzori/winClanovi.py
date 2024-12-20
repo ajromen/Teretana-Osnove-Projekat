@@ -35,15 +35,15 @@ class ClanoviWindow(winTemplate):
         
         self.create_cmbbxSearch(self.kriterijumi[:-1])
         
-        self.create_table(tuple(self.kriterijumi))
+        self.create_table(self.kriterijumi)
         self.table.column("Korisničko ime", width=90)
         self.table.column("Ime", width=100)
         self.table.column("Prezime", width=100)
         self.table.column("Datum registracije", width=100)
         self.table.column("Članarina obnovljena", width=120)    
         
-        wid.create_label(self.current_canvas,"Zahtev za nagradu",421,64,12)
-        self.entryBrojNagrada=wid.create_entry(self.current_canvas,540,60,width=59,height=23,belo=True,justify="center",placeholder=self.broj_rezervacija_za_nagradjivanje)
+        self.create_label("Zahtev za nagradu: ",421,64,12)
+        self.entryBrojNagrada=self.create_entry(540,60,width=59,height=23,placeholder=self.broj_rezervacija_za_nagradjivanje,justify="center",belo=True)
         self.entryBrojNagrada.bind("<Return>",command=lambda event: self.promeni_broj_rezervacija())
         
         
@@ -121,34 +121,28 @@ class ClanoviWindow(winTemplate):
         slctd_aktiviran=slctd_data["values"][3]
         slctd_paket=slctd_data["values"][4]
         
-        self.entryID=wid.create_entry(self.trenutni_window,70,11,width=203,height=23,placeholder=slctd_username+", "+slctd_ime+" "+slctd_prezime,justify="center",belo=True,state="disabled")
+        self.entryID=self.create_entry(70,11,width=203,height=23,placeholder=slctd_username+", "+slctd_ime+" "+slctd_prezime,justify="center",belo=True,state="disabled")
         
         if(mode=="Nagradi"):
-            wid.create_label(self.trenutni_window,"Broj realizovanih rezervacija u proteklih",34,52)
-            wid.create_label(self.trenutni_window,"mesec dana:",126,70)
-            self.entryBrDana=wid.create_entry(self.trenutni_window,151,96,width=41,height=23,placeholder=slctd_br_rez,justify="center",belo=True,state="disabled")
+            self.create_label("Broj realizovanih rezervacija u proteklih",34,52,top_level=True)
+            self.create_label("mesec dana:",126,70,top_level=True)
+            self.entryBrDana=self.create_entry(151,96,width=41,height=23,placeholder=slctd_br_rez,justify="center",belo=True,state="disabled",top_level=True)
             za_aktivaciju=slctd_data.get("tags")[0]
             if(za_aktivaciju=='za_aktivaciju'):
-                fg_color="#3DA928"
-                btnSacuvaj = ctk.CTkButton(self.trenutni_window,width=166,height=27,text_color="#FFFFFF", text="Nagradi lojalnost",font=("Inter", 15),fg_color=fg_color,hover_color="#87E175", command=self.nagradi_lojalnost)
-                btnSacuvaj.place(x=89,y=132)
+                self.create_text_button("Nagradi lojalnost", 89, 132, self.nagradi_lojalnost, width=166, height=27,hover_color="#87E175",fg_color="#3DA928",top_level=True)
             else:
-                fg_color="#2B2B2B"
-                btnSacuvaj = ctk.CTkButton(self.trenutni_window,width=166,height=27, text="Nagradi lojalnost",font=("Inter", 15),fg_color=fg_color,hover_color="#6B6969", command=lambda: None)
-                btnSacuvaj.place(x=89,y=132)
+                self.create_text_button("Nagradi lojalnost", 89, 132, lambda: None, width=166, height=27,hover_color="#6B6969",fg_color="#2B2B2B",top_level=True)
         
         else:
-            wid.create_label(self.trenutni_window,"Trenutni status:",22,57)
-            wid.create_label(self.trenutni_window,"Premium paket:",22,93)
-            self.entryStatus=wid.create_entry(self.trenutni_window,197,52,width=124,height=23,placeholder=slctd_aktiviran,justify="center",belo=True,state="disabled")
-            self.switchPaket=ctk.CTkSwitch(self.trenutni_window,width=43,height=24,text='')
-            self.switchPaket.place(x=272,y=90)
+            self.create_label("Trenutni status:",22,57,top_level=True)
+            self.create_label("Premium paket:",22,93,top_level=True)
+            self.entryStatus=self.create_entry(197,52,width=124,height=23,placeholder=slctd_aktiviran,justify="center",belo=True,state="disabled",top_level=True)
+            self.switchPaket=self.create_switch(272,90,top_level=True)
             if (slctd_paket=="Premium"): self.switchPaket.select() 
             else: self.switchPaket.deselect()
-            btnSacuvaj = ctk.CTkButton(self.trenutni_window,width=166,height=27, text="Aktiviraj status",font=("Inter", 15), command=self.aktiviraj_paket)
-            btnSacuvaj.place(x=89,y=132)
+            self.create_text_button("Aktiviraj status", 89, 132, self.aktiviraj_paket, width=166, height=27,top_level=True)
             
-        wid.create_button(self.trenutni_window,"./src/img/Widget/btnOtkazi.png",x=136,y=166,width=72,height=17,command=self.trenutni_window.destroy)
+        self.create_button("./src/img/Widget/btnPotvrdi.png",x=58,y=166,width=72,height=17,command=self.trenutni_window.destroy,top_level=True)
     
     def clan_delete(self):
         slctd_item = self.table.selection()

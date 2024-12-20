@@ -87,19 +87,22 @@ def ucitaj_iz_setup(text):
       
 def azuriraj_setup(kljuc, nova_vrednost):
    if os.path.exists(SETUP_PATH):
+      with open(SETUP_PATH, 'r', encoding='utf-8') as file:
+         lines = file.readlines()
+
       postoji = False
       updated_lines = []
 
-      with open(SETUP_PATH, 'r', encoding='utf-8') as file:
-         for line in file:
-            if line.strip() and line.strip().split(": ")[0] == kljuc:
-               updated_lines.append(f"{kljuc}: {nova_vrednost}\n")
-               postoji = True
-            else:
-               updated_lines.append(line)
+      for line in lines:
+         if line.strip() and line.strip().split(": ")[0] == kljuc:
+            updated_lines.append(f"{kljuc}: {nova_vrednost}\n")
+            postoji = True
+         else:
+            updated_lines.append(line)
 
       if not postoji:
          updated_lines.append(f"{kljuc}: {nova_vrednost}\n")
+
       with open(SETUP_PATH, 'w', encoding='utf-8') as file:
          file.writelines(updated_lines)
    else:
