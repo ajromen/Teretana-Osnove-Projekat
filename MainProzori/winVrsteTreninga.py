@@ -1,37 +1,30 @@
 from imports import *
 import bp_vrste_treninga
 
-class VrsteTreningaWindow:
+class VrsteTreningaWindow(winTemplate):
     def __init__(self, window, main_window,uloga):
-        self.window = window
-        self.main_window=main_window
-        self.current_canvas = None
-        self.uloga=uloga
+        super().__init__(window,main_window,uloga)
 
     def start(self):
-        self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
-        self.current_canvas.place(x=230, y=0)        
+        self.create_canvas()
+        self.create_exit_button()
+        self.create_search_button(self.pretrazi)
         
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,lambda: self.main_window.unisti_trenutni_win())# EXit dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winVrste_dodaj()) # Dodaj Dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: print("izmeni")) # Izmeni Dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi) # Obrisi Dugme
-        
-        self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/searchPozadina.png",23,53)
-        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
+        velika=True
+        if(self.uloga=="admin"):
+            wid.create_button(self.current_canvas,"./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winVrste_dodaj()) # Dodaj Dugme
+            wid.create_button(self.current_canvas,"./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winVrste_izmeni()) # Izmeni Dugme
+            wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi) # Obrisi Dugme
+            velika=False
         
         self.kriterijumiMap={
             "Šifra vrste treninga" : "id_vrste_treninga",
             "Naziv" : "naziv" 
         }
         self.kriterijumi=["Šifra vrste treninga", "Naziv"]
-        self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
-        
-        self.current_canvas.create_text(610,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,x=681,y=53)
-        
-        self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,tuple(self.kriterijumi))
+        self.create_cmbbxSearch(self.kriterijumi)
+        self.create_entry_search(self.pretrazi)
+        self.create_table(self.kriterijumi,velika)
         self.table.column("Naziv", width=720)
         
 
@@ -70,18 +63,16 @@ class VrsteTreningaWindow:
     def winVrste_dodaj(self):
         self.trenutni_window=helperFunctions.napravi_toplevel(height=267,title="Dodaj vrstu treninga")
         
-        wid.create_label(self.trenutni_window,"Šifra vrste treninga:",23,35)
-        wid.create_label(self.trenutni_window,"Naziv:",23,86)
-        self.entrySifra=wid.create_entry(self.trenutni_window,170,32,width=164,height=23,manual_fin_fon=(True,"Polje"))
+        self.create_label("Šifra vrste treninga:",23,35,top_level=True)
+        self.create_label("Naziv:",23,86,top_level=True)
+        self.entrySifra=self.create_entry(170,32,width=150,height=23,manual_fin_fon=(True,"Polje"),top_level=True)
 
-        self.txtbxOpis = ctk.CTkTextbox(self.trenutni_window,width=294,height=80,corner_radius=4,fg_color="#080A17")
+        self.txtbxOpis = ctk.CTkTextbox(self.trenutni_window,width=294,height=80,corner_radius=4,fg_color="#080A17")# drugi pput
         self.txtbxOpis.place(x=26,y=112)
         self.txtbxOpis.insert("0.0", "")
 
-        btnSacuvaj = ctk.CTkButton(self.trenutni_window,width=166,height=27,text_color="#FFFFFF", text="Dodaj",font=("Inter", 15),command=self.napravi)
-        btnSacuvaj.place(x=88,y=202)
-        wid.create_button(self.trenutni_window,"./src/img/Widget/btnOtkazi.png",x=136,y=239,width=72,height=17,command=self.trenutni_window.destroy)
-
+        self.create_text_button("Dodaj",88,202,self.napravi,width=166,top_level=True)
+        self.create_button("./src/img/Widget/btnOtkazi.png",136,239,72,17,self.trenutni_window.destroy,top_level=True)
         
     def napravi(self):
         sifra=self.entrySifra.get().strip()
@@ -116,4 +107,39 @@ class VrsteTreningaWindow:
         self.popuni_tabelu(self.table)
         helperFunctions.obavestenje(title="Brisanje", poruka="Vrsta treninga je uspešno obrisana.")
             
-        
+    def winVrste_izmeni(self):
+        slctd_item = self.table.selection()
+        if not slctd_item:
+            helperFunctions.obavestenje(poruka="Niste odabrali nijednu vrstu treninga za izmenu.")
+            return
+
+        self.trenutni_window = helperFunctions.napravi_toplevel(height=267, title="Izmeni vrstu treninga")
+
+        slctd_data = self.table.item(slctd_item)
+        slctd_id = slctd_data["values"][0]
+        slctd_naziv = slctd_data["values"][1]
+
+        self.create_label("Šifra vrste treninga:", 23, 35, top_level=True)
+        self.create_label("Naziv:", 23, 86, top_level=True)
+        self.entrySifra = self.create_entry(170, 32, width=150, height=23, manual_fin_fon=(True, "Polje"), placeholder=slctd_id, state="disabled", top_level=True)
+
+        self.txtbxOpis = ctk.CTkTextbox(self.trenutni_window, width=294, height=80, corner_radius=4, fg_color="#080A17")
+        self.txtbxOpis.place(x=26, y=112)
+        self.txtbxOpis.insert("0.0", slctd_naziv)
+
+        self.create_text_button("Sačuvaj", 88, 202, lambda: self.izmeni_vrstu_treninga(slctd_id), width=166, top_level=True)
+        self.create_button("./src/img/Widget/btnOtkazi.png", 136, 239, 72, 17, self.trenutni_window.destroy, top_level=True)
+
+    def izmeni_vrstu_treninga(self, id_vrste_treninga):
+        naziv = self.txtbxOpis.get("0.0", END).strip()
+
+        if not naziv:
+            helperFunctions.obavestenje("Naziv ne sme biti prazan.")
+            return
+
+        if bp_vrste_treninga.azuriraj_vrstu_treninga(id_vrste_treninga, naziv):
+            return
+
+        helperFunctions.obavestenje(title="Izmena vrste treninga", poruka="Uspešno izmenjena vrsta treninga.")
+        self.popuni_tabelu(self.table)
+        self.trenutni_window.destroy()

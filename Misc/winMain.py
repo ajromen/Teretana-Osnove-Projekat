@@ -1,6 +1,5 @@
 from imports import *
 import winProgrami
-import winProgramiFake
 import winTermini
 import winTrening
 import winVrsteTreninga

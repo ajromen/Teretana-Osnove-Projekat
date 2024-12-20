@@ -41,3 +41,11 @@ def obrisi_vrste_treninga(id_vrste_treninga):
     
     BazaPodataka.commit()
     
+def azuriraj_vrstu_treninga(id_vrste_treninga, naziv):
+    cursor = BazaPodataka.get_cursor()
+    komanda = '''UPDATE Vrste_treninga
+                 SET naziv = ?
+                 WHERE id_vrste_treninga = ?;'''
+    cursor.execute(komanda, (naziv, id_vrste_treninga))
+    BazaPodataka.commit()
+    return False
