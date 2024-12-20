@@ -3,23 +3,17 @@ import re
 import bp_korisnici
 
 
-class AdminWindow:
+class AdminWindow(winTemplate):
     def __init__(self, window, main_window):
-        self.window = window
-        self.main_window=main_window
-        self.current_canvas = None
+        super().__init__(window, main_window, "admin")
 
     def start(self):
-        self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
-        self.current_canvas.place(x=230, y=0)        
+        self.create_canvas()
+        self.create_exit_button()
+        self.create_search_button(self.pretrazi)       
         
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,lambda: self.main_window.unisti_trenutni_win())# EXit dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winAdmin_Dodaj()) # Dodaj Dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi) # Obrisi Dugme
-        
-        self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/searchPozadina.png",23,53)
-        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
+        self.create_button("./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winAdmin_Dodaj()) # Dodaj Dugme
+        self.create_button("./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi) # Obrisi Dugme
         
         self.kriterijumiMap={
             "Korisničko ime" : "username",
@@ -29,12 +23,11 @@ class AdminWindow:
             "Članstvo" : "status_clanstva",
         }
         self.kriterijumi=["Korisničko ime", "Ime", "Prezime","Uloga","Datum registracije"]
-        self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
+        self.create_entry_search(self.pretrazi)
         
-        self.current_canvas.create_text(610,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,x=681,y=53)
+        self.create_cmbbxSearch(self.kriterijumi)
         
-        self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,tuple(self.kriterijumi))
+        self.create_table(self.kriterijumi)
         self.table.column("Korisničko ime", width=90)
         self.table.column("Ime", width=100)
         self.table.column("Prezime", width=100) 
@@ -97,24 +90,21 @@ class AdminWindow:
     def winAdmin_Dodaj(self):
         self.trenutni_window=helperFunctions.napravi_toplevel(height=341,title="Dodaj administrarota")
         
-        wid.create_label(self.trenutni_window,"Korisničko ime:",23,31)
-        wid.create_label(self.trenutni_window,"Ime:",62,76)
-        wid.create_label(self.trenutni_window,"Prezime:",46,120)
-        wid.create_label(self.trenutni_window,"Lozinka:",47,164)
-        wid.create_label(self.trenutni_window,"Administrator:",27,218)
+        self.create_label("Korisničko ime:",23,31)
+        self.create_label("Ime:",62,76)
+        self.create_label("Prezime:",46,120)
+        self.create_label("Lozinka:",47,164)
+        self.create_label("Administrator:",27,218)
         
-        self.entryUsername=wid.create_entry(self.trenutni_window,141,30,width=179,height=23,manual_fin_fon=(True,"Polje"))
-        self.entryIme=wid.create_entry(self.trenutni_window,141,74,width=179,height=23,manual_fin_fon=(True,"Polje"))
-        self.entryPrezime=wid.create_entry(self.trenutni_window,141,118,width=179,height=23,manual_fin_fon=(True,"Polje"))
-        self.entryLozinka=wid.create_entry(self.trenutni_window,141,162,width=179,height=23,manual_fin_fon=(True,"Lozinka"),placeholder="Lozinka")
+        self.entryUsername=self.create_entry(141,30,width=179,height=23,manual_fin_fon=(True,"Polje"))
+        self.entryIme=self.create_entry(141,74,width=179,height=23,manual_fin_fon=(True,"Polje"))
+        self.entryPrezime=self.create_entry(141,118,width=179,height=23,manual_fin_fon=(True,"Polje"))
+        self.entryLozinka=self.create_entry(141,162,width=179,height=23,manual_fin_fon=(True,"Lozinka"),placeholder="Lozinka")
         
-        self.switchPaket=ctk.CTkSwitch(self.trenutni_window,width=43,height=24,text='')
-        self.switchPaket.place(x=272,y=215)
+        self.switchPaket=self.create_switch(272,215)
 
-        btnSacuvaj = ctk.CTkButton(self.trenutni_window,width=166,height=27,text_color="#FFFFFF", text="Napravi nalog",font=("Inter", 15),command=self.napravi_nalog)
-        btnSacuvaj.place(x=88,y=268)
-        wid.create_button(self.trenutni_window,"./src/img/Widget/btnOtkazi.png",x=136,y=303,width=72,height=17,command=self.trenutni_window.destroy)
-
+        self.create_text_button("Napravi nalog",88,268,self.napravi_nalog,width=166)
+        self.create_button("./src/img/Widget/btnOtkazi.png",136,303,72,17,command=self.trenutni_window.destroy)
         
     def napravi_nalog(self):
         username=self.entryUsername.get().strip()

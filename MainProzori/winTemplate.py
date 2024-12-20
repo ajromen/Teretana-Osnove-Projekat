@@ -66,7 +66,7 @@ class winTemplate:
 
     def create_text_button(self, text, x, y, command,width=140,height=28,top_level=False,hover_color="#144870",fg_color="#1F6AA5"):
         canvas=self.if_top_level_canvas(top_level)
-        btn = ctk.CTkButton(canvas, text=text, command=command,width=width,height=height)
+        btn = ctk.CTkButton(canvas, text=text, command=command,width=width,height=height,font=("Inter", 15),fg_color=fg_color,hover_color=hover_color)
         btn.place(x=x,y=y)
         
     def if_top_level_canvas(self,top_level)->Canvas:

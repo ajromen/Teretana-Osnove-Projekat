@@ -42,8 +42,8 @@ class ClanoviWindow(winTemplate):
         self.table.column("Datum registracije", width=100)
         self.table.column("Članarina obnovljena", width=120)    
         
-        self.create_label("Zahtev za nagradu: ",421,64,12)
-        self.entryBrojNagrada=self.create_entry(540,60,width=59,height=23,placeholder=self.broj_rezervacija_za_nagradjivanje,justify="center",belo=True)
+        self.create_label("Zahtev za nagradu: ",421,62,12)
+        self.entryBrojNagrada=self.create_entry(540,59,width=59,height=23,placeholder=self.broj_rezervacija_za_nagradjivanje,justify="center",belo=True)
         self.entryBrojNagrada.bind("<Return>",command=lambda event: self.promeni_broj_rezervacija())
         
         
