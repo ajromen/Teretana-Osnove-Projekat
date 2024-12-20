@@ -17,11 +17,8 @@ class ClanoviWindow(winTemplate):
         
         self.uloga=="admin" and self.create_button("./src/img/Widget/btnDodaj.png",23,541,252,40,lambda: self.winClan_Izmeni("Nagradi")) # Dodaj Dugme
         
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnAktiviraj.png",300,541,252,40,lambda: self.winClan_Izmeni("Aktiviraj")) # aktiviraj
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",576,541,252,40,self.clan_delete) # delete
-        
-        self.imgsearchPozadiga = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/searchPozadina.png",23,53)
-        self.tabelaPozadina = wid.create_canvas_image(self.current_canvas,"./src/img/Widget/tabelaPozadina.png",23,102)
+        self.create_button("./src/img/Widget/btnAktiviraj.png",300,541,252,40,lambda: self.winClan_Izmeni("Aktiviraj"))
+        self.create_button("./src/img/Widget/btnObrisi.png", 576, 541, 252, 40, self.clan_delete)
         
         self.kriterijumiMap={
             "Korisničko ime" : "username",
@@ -33,13 +30,12 @@ class ClanoviWindow(winTemplate):
             "Članarina obnovljena" : "obnova_clanarine"
         }
         self.kriterijumi=["Korisničko ime", "Ime", "Prezime", "Članstvo", "Paket","Datum registracije","Članarina obnovljena","Broj rezervacija"]
-        self.entrySearch=wid.create_entry_search(self.current_canvas,self.pretrazi)
         
-        self.current_canvas.create_text(610,65, anchor="nw", text="Pretraži po:", fill="#FFFFFF", font=("Inter", 12 * -1))
-        self.cmbbxSearch=wid.create_comboBox(self.current_canvas,self.kriterijumi,x=681,y=53)
-        self.cmbbxSearch.configure(values=self.kriterijumi[:-1])
+        self.create_entry_search(self.izlistaj)
         
-        self.table=wid.create_table(self.current_canvas,self.popuni_tabelu,tuple(self.kriterijumi))
+        self.create_cmbbxSearch(self.kriterijumi[:-1])
+        
+        self.create_table(tuple(self.kriterijumi))
         self.table.column("Korisničko ime", width=90)
         self.table.column("Ime", width=100)
         self.table.column("Prezime", width=100)
