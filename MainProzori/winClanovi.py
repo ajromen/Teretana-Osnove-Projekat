@@ -1,24 +1,22 @@
 from imports import *
 import bp_korisnici
 
-class ClanoviWindow:
+class ClanoviWindow(winTemplate):
     def __init__(self, window, main_window,uloga):
-        self.window = window
-        self.main_window=main_window
-        self.current_canvas = None
+        super().__init__(window,main_window,uloga)
+        
         self.broj_rez_kluc="potreban_broj_za_rezervacije"
         broj_rez=helperFunctions.ucitaj_iz_setup(self.broj_rez_kluc)
         self.broj_rezervacija_za_nagradjivanje=int(broj_rez) if broj_rez else 27
         
-        self.uloga=uloga
-        
 
     def start(self):
-        self.current_canvas = Canvas(self.window, bg="#010204", height=618, width=860, bd=0, highlightthickness=0, relief="ridge")
-        self.current_canvas.place(x=230, y=0)        
+        self.create_canvas()      
+        self.create_exit_button()
+        self.create_search_button(self.pretrazi)
         
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnExit.png",812,9,33,33,lambda: self.main_window.unisti_trenutni_win())# EXit dugme
-        wid.create_button(self.current_canvas,"./src/img/Widget/btnSearch.png",358,53,33,33,self.pretrazi) # Search dugme
+        self.uloga=="admin" and self.create_button("./src/img/Widget/btnDodaj.png",23,541,252,40,lambda: self.winClan_Izmeni("Nagradi")) # Dodaj Dugme
+        
         self.uloga=="admin" and wid.create_button(self.current_canvas,"./src/img/Widget/btnNagradi.png",23,541,252,40,lambda: self.winClan_Izmeni("Nagradi")) # nagradi
         wid.create_button(self.current_canvas,"./src/img/Widget/btnAktiviraj.png",300,541,252,40,lambda: self.winClan_Izmeni("Aktiviraj")) # aktiviraj
         wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",576,541,252,40,self.clan_delete) # delete
