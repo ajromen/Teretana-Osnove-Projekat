@@ -1,6 +1,5 @@
-from bp_import import BazaPodataka, helperFunctions
+from bp_import import *
 from bp_programi import obrisi_program
-import datetime, random
 
 '''Korisnici
 username            CHAR(25) PRIMARY KEY NOT NULL,
@@ -163,7 +162,8 @@ def broj_rezervacija_za_mesec(username):#promeniti da se gleda vreme termina a n
                     Rezervacija.id_korisnika = ? AND
                     Termin.datum_odrzavanja > Korisnici.obnova_clanarine AND
                     Termin.datum_odrzavanja <= DATE('now') AND
-                    Termin.datum_odrzavanja <= DATE(Korisnici.obnova_clanarine, '+1 month');
+                    Termin.datum_odrzavanja <= DATE(Korisnici.obnova_clanarine, '+1 month') AND
+                    Termin.obrisan IS NOT TRUE;
                 """
     
     cursor.execute(komanda, (username,))
@@ -174,7 +174,7 @@ def proveri_status_korisnika():
     cursor=BazaPodataka.get_cursor()
     
     komanda = '''UPDATE Korisnici
-                 SET status_clanstva = 0, uplacen_paket = 0
+                 SET status_clanstva = 0, uplacen_paket = 0, obnova_clanarine = NULL
                  WHERE uloga = 0 AND obnova_clanarine < DATE('now', '-1 month')'''
     cursor.execute(komanda)
     BazaPodataka.commit()

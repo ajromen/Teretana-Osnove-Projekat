@@ -1,4 +1,4 @@
-from bp_import import *
+from bp_import import * 
 from bp_trening import obrisi_trening
 
 '''Program

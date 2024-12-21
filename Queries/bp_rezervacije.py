@@ -1,4 +1,4 @@
-from bp_import import *
+from bp_import import * 
 
 '''Rezervacija
 id_rezervacije      INTEGER PRIMARY KEY NOT NULL,

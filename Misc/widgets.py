@@ -66,7 +66,7 @@ def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=
     cmbbx=create_comboBox(canvas, values=lista,x=comboX,y=comboY)
     return cmbbx
 
-def create_comboBox(canvas,values,x,y,width=148):
+def create_comboBox(canvas,values,x,y,width=148,variable=None):
     combo= ctk.CTkComboBox(
         canvas,
         width=width,height=33,
@@ -76,7 +76,8 @@ def create_comboBox(canvas,values,x,y,width=148):
         fg_color="#080A17",
         dropdown_fg_color="#080A17",
         button_color="#0D1026",
-        state="readonly")
+        state="readonly",
+        variable=variable)
     combo.place(x=x,y=y)
     combo.set(values[0])
     return combo

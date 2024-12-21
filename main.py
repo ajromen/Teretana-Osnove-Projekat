@@ -8,7 +8,7 @@ import bp_korisnici
 import bp_termini
 from baza_podataka import BazaPodataka
 
-BazaPodataka.restart()
+#BazaPodataka.restart()
 
 def login_startup_loop(ekran,user=''):
     return_value=ekran
@@ -55,7 +55,6 @@ if __name__ == '__main__':
         if(type(staDaRadim)==type(lista)):
             user=staDaRadim[1]
             staDaRadim=staDaRadim[0]
-            
     azuriraj_podatke()
         
     
