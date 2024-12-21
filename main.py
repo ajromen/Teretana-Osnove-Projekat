@@ -55,5 +55,7 @@ if __name__ == '__main__':
         if(type(staDaRadim)==type(lista)):
             user=staDaRadim[1]
             staDaRadim=staDaRadim[0]
+            
+    azuriraj_podatke()
         
     

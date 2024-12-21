@@ -66,10 +66,10 @@ def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=
     cmbbx=create_comboBox(canvas, values=lista,x=comboX,y=comboY)
     return cmbbx
 
-def create_comboBox(canvas,values,x,y):
+def create_comboBox(canvas,values,x,y,width=148):
     combo= ctk.CTkComboBox(
         canvas,
-        width=148,height=33,
+        width=width,height=33,
         corner_radius=5,
         border_width=0,
         values=values,

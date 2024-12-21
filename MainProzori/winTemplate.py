@@ -37,9 +37,9 @@ class winTemplate:
         self.create_label("Pretraži po:", x-71, 62)
         self.cmbbxSearch = self.create_comboBox(values, x, y)
 
-    def create_comboBox(self, values, x, y, top_level=False):
+    def create_comboBox(self, values, x, y, width=148,top_level=False):
         canvas=self.if_top_level_canvas(top_level)
-        return wid.create_comboBox(canvas, values, x=x, y=y)
+        return wid.create_comboBox(canvas, values, x=x, y=y,width=width)
 
     def create_entry_search(self, command):
         self.searchPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/searchPozadina.png", 23, 53)

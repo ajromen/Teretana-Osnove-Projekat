@@ -20,4 +20,4 @@ class IzvestajiWindow(winTemplate):
             "Izveštaj H": "Najpopularniji dan u nedelji (1 godina)"
         }
         
-        self.create_comboBox(["Izveštaj "+slovo for slovo in "ABCDEFGH"], 23, 53)
+        self.create_comboBox([self.izvestajiMap["Izveštaj "+slovo] for slovo in "ABCDEFGH"], 23, 54,width=184)
