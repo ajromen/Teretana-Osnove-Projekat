@@ -1,2 +1,2 @@
-potreban_broj_za_rezervacije: 1
+potreban_broj_za_rezervacije: 27
 nesto: 0

@@ -19,14 +19,16 @@ class winTemplate:
     def create_search_button(self, command):
         wid.create_button(self.current_canvas, "./src/img/Widget/btnSearch.png", 358, 53, 33, 33, command)
 
-    def create_table(self, columns, velika=False):
+    def create_table_bg(self, velika=False)->int:
         if velika: 
             self.tabelaPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/tabelaPozadina_duza.png", 23, 102)
-            height = 470
+            return 470
         else: 
             self.tabelaPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/tabelaPozadina.png", 23, 102)
-            height = 400
+            return 400
             
+    def create_table(self, columns, velika=False):
+        height=self.create_table_bg(velika)
         self.table = wid.create_table(self.current_canvas, self.popuni_tabelu, tuple(columns), height=height)
         for column in columns:
             self.table.column(column, width=100)

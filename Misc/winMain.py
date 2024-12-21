@@ -1,4 +1,5 @@
 from imports import *
+import winIzvestaji
 import winProgrami
 import winTermini
 import winTrening
@@ -60,7 +61,7 @@ class MainWindow:
         dugmad = {
             "btnVrsteTreninga": lambda i: self.create_button("src/img/Main/btnVrsteTreninga.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("vrste_treninga")),
             "btnTreninzi": lambda i: self.create_button("src/img/Main/btnTreninzi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("trening")),
-            "btnIzvestaji": lambda i: self.create_button("src/img/Main/btnIzvestaji.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnIzvestaji clicked")),#
+            "btnIzvestaji": lambda i: self.create_button("src/img/Main/btnIzvestaji.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("izvestaji")),
             "btnAdmin": lambda i: self.create_button("src/img/Main/btnAdmin.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("admin")),
             "btnClanovi": lambda i: self.create_button("src/img/Main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("clanovi")),
             "btnTermini": lambda i: self.create_button("src/img/Main/btnTermini.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("termini")),
@@ -156,6 +157,9 @@ class MainWindow:
         self.trenutni_window = winTermini.TerminiWindow(self.window, self, self.uloga)
         self.trenutni_window.start()
         
+    def napravi_win_izvestaji(self):
+        self.trenutni_window = winIzvestaji.IzvestajiWindow(self.window, self, self.uloga)
+        self.trenutni_window.start()
 
     def prebaci_win(self, win):
         self.unisti_trenutni_win()
@@ -165,3 +169,4 @@ class MainWindow:
         elif win == "admin": self.napravi_win_admin()
         elif win == "vrste_treninga": self.napravi_win_vrste_treninga()
         elif win == "termini": self.napravi_win_termini()
+        elif win == "izvestaji": self.napravi_win_izvestaji()
