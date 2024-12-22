@@ -24,8 +24,9 @@ class IzvestajiWindow(winTemplate):
         self.cmbbxIzvestaj=self.create_comboBox([slovo+". "+self.izvestajiMap[slovo] for slovo in "ABCDEFGH"], 23, 54,width=184,variable=self.varIzvestaj)
         self.varIzvestaj.trace_add("write", self.on_combo_change)
         
+        self.ret=None#promenljiva koja oznacava return vrednost filtera 
         self.btnFilteri=self.create_text_button("Filteri",214, 54,width=150,height=33,command=self.filteri)
-        self.entryInfo=self.create_entry(374,54,width=296,height=33,placeholder="Molim Vas izaberite filtere.")
+        self.entryInfo=self.create_entry(374,54,width=296,height=33,placeholder="Molim Vas izaberite filtere.",state="disabled")
         self.entryInfo.configure(text_color="#FF1C1C")
         self.create_text_button("Sačuvaj u datoteku",679, 54,width=150,height=33)
         self.a_izvestaj()
@@ -33,12 +34,18 @@ class IzvestajiWindow(winTemplate):
     def on_combo_change(self, *args):
         if(self.varIzvestaj.get()==""): return
         izvestaj=self.varIzvestaj.get().split(". ")[0]
-        self.btnFilteri.destroy()
         self.table.destroy()
         
         match izvestaj:
             case "A": self.a_izvestaj(),
             case "B": self.b_izvestaj(),
+            case "C": self.c_izvestaj(),
+            case "D": self.d_izvestaj(),
+            case "E": self.e_izvestaj(),
+            case "F": self.f_izvestaj(),
+            case "G": self.g_izvestaj(),
+            case "H": self.h_izvestaj()
+            case _: self.a_izvestaj()
             
     def popuni_tabelu(self,tabela,podaci:list =None,kolonaZaBrisanje=None):
         for red in tabela.get_children():
@@ -65,15 +72,19 @@ class IzvestajiWindow(winTemplate):
         izvestaj=self.cmbbxIzvestaj.get().split(". ")
         helperFunctions.napravi_toplevel(title=izvestaj[1],height=182)
         match izvestaj[0]:
-            case "A": pass
-            case "B": pass
-            case "C": pass
+            case "A": self.fltr_a_izvestaj(),
+            case "B": self.fltr_b_izvestaj(),
+            case "C": self.fltr_c_izvestaj()
     
     def a_izvestaj(self):
         kriterijumi=["Ime","Prezime","Datum rezervacije","Red","Program"]
-        #podaci=bp_izvestaji.a_izvestaj(None)
+        self.btnFilteri.configure(command=self.fltr_a_izvestaj)
+        
         self.create_table(kriterijumi,True)
-        #self.popuni_tabelu(self.table,podaci)
+        if(self.ret==None):
+            return
+        podaci=bp_izvestaji.a_izvestaj(self.ret)
+        self.popuni_tabelu(self.table,podaci)
     
     def b_izvestaj(self):
         kriterijumi=["Ime","Prezime","Datum termina","Red","Program"]
@@ -97,4 +108,30 @@ class IzvestajiWindow(winTemplate):
         pass
     
     def h_izvestaj(self):
+        pass
+    
+    def fltr_a_izvestaj(self):
+        self.trenutni_window=helperFunctions.napravi_toplevel(height=182,title=self.izvestajiMap["A"])
+        self.entryDate=self.create_entry(33,28,top_level=True)
+        self.create_text_button("AJDE",110,100,command=lambda:print("usp"),top_level=True)
+    
+    def fltr_b_izvestaj(self):
+        pass
+    
+    def fltr_c_izvestaj(self):
+        pass
+    
+    def fltr_d_izvestaj(self):
+        pass
+    
+    def fltr_e_izvestaj(self):
+        pass
+    
+    def fltr_f_izvestaj(self):
+        pass
+    
+    def fltr_g_izvestaj(self):
+        pass
+    
+    def fltr_h_izvestaj(self):
         pass

@@ -64,3 +64,4 @@ class BazaPodataka:
     def commit(cls):
         cls.povezi_se()
         cls.connection.commit()
+        
