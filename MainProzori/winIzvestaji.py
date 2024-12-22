@@ -24,11 +24,11 @@ class IzvestajiWindow(winTemplate):
         self.cmbbxIzvestaj=self.create_comboBox([slovo+". "+self.izvestajiMap[slovo] for slovo in "ABCDEFGH"], 23, 54,width=184,variable=self.varIzvestaj)
         self.varIzvestaj.trace_add("write", self.on_combo_change)
         
-        self.ret=None#promenljiva koja oznacava return vrednost filtera 
+        self.ret=None #promenljiva koja oznacava return vrednost filtera 
         self.btnFilteri=self.create_text_button("Filteri",214, 54,width=150,height=33,command=self.filteri)
-        self.entryInfo=self.create_entry(374,54,width=296,height=33,placeholder="Molim Vas izaberite filtere.",state="disabled")
-        self.entryInfo.configure(text_color="#FF1C1C")
-        self.create_text_button("Sačuvaj u datoteku",679, 54,width=150,height=33)
+        self.entryInfo=self.create_entry(374,54,width=296,height=33,placeholder="",state="disabled")
+        self.btnFajl=self.create_text_button("Sačuvaj u datoteku",679, 54,width=150,height=33)
+        self.btnFajl_onemogucen()
         self.a_izvestaj()
         
     def on_combo_change(self, *args):
@@ -67,6 +67,14 @@ class IzvestajiWindow(winTemplate):
         self.entryInfo.configure(text_color="#FF1C1C")
         self.entryInfo.delete(0,END)
         self.entryInfo.insert(0,tekst)
+        
+    def btnFajl_onemogucen(self):
+        self.btnFajl.configure(command=None)
+        self.btnFajl.configure(fg_color="#252525")
+    
+    def btnFajl_omogucen(self):
+        self.btnFajl.configure(command=self.sacuvaj_u_fajl)
+        self.btnFajl.configure(fg_color="#1F6AA5")
             
     def filteri(self):
         izvestaj=self.cmbbxIzvestaj.get().split(". ")
@@ -75,14 +83,22 @@ class IzvestajiWindow(winTemplate):
             case "A": self.fltr_a_izvestaj(),
             case "B": self.fltr_b_izvestaj(),
             case "C": self.fltr_c_izvestaj()
+            
+    def sacuvaj_u_fajl(self):
+        pass
     
     def a_izvestaj(self):
         kriterijumi=["Ime","Prezime","Datum rezervacije","Red","Program"]
+        
+        self.btnFajl_onemogucen()
+        self.info_upozorenje("Molimo Vas prvo izaberite datum u filterima.")
         self.btnFilteri.configure(command=self.fltr_a_izvestaj)
         
         self.create_table(kriterijumi,True)
-        if(self.ret==None):
+        if(self.ret==None or self.ret==[] or self.ret=="" or len(self.ret)==0):
             return
+        self.info_uspesan("")
+        self.btnFajl_omogucen()
         podaci=bp_izvestaji.a_izvestaj(self.ret)
         self.popuni_tabelu(self.table,podaci)
     
@@ -112,8 +128,8 @@ class IzvestajiWindow(winTemplate):
     
     def fltr_a_izvestaj(self):
         self.trenutni_window=helperFunctions.napravi_toplevel(height=182,title=self.izvestajiMap["A"])
-        self.entryDate=self.create_entry(33,28,top_level=True)
-        self.create_text_button("AJDE",110,100,command=lambda:print("usp"),top_level=True)
+        wid.create_date_picker(self.trenutni_window, 10, 10, "Datum rezervacije")
+        self.create_text_button("AJDE",110,100,command=self.ret_a,top_level=True)
     
     def fltr_b_izvestaj(self):
         pass
@@ -136,8 +152,26 @@ class IzvestajiWindow(winTemplate):
     def fltr_h_izvestaj(self):
         pass
     
-    def ret_a():
+    def ret_a(self):
+        self.ret=self.entryDate.get()
+        self.trenutni_window.destroy()
+        self.a_izvestaj()
+    
+    def ret_b(self):
         pass
     
-    def ret_b():
+    def ret_c(self):
         pass
+    
+    def ret_d(self):
+        pass
+    
+    def ret_e(self):
+        pass
+    
+    def ret_f(self):
+        pass
+    
+    def ret_g(self):
+        pass
+    

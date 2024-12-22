@@ -1,6 +1,7 @@
 from baza_podataka import BazaPodataka
 from imports import *
 from tkinter import ttk
+import tkcalendar
 
 def create_button(canvas,image_path, x, y, width, height, command):
     image = PhotoImage(file=image_path)
@@ -144,7 +145,6 @@ def selektuj_vrednost_comboBox(komboBox, kriterijum):
             komboBox.set(vrednost)
             return
     
-            
 def create_label(window,text,x,y,font_size=15):
     labela = ctk.CTkLabel(window, text=text, font=("Inter",font_size * -1),anchor='nw')
     labela.place(x=x,y=y)
@@ -154,6 +154,40 @@ def create_canvas_image(canvas,image_path,x,y):
     image=PhotoImage(file=image_path)
     canvas.create_image(x, y, image=image,anchor='nw')
     return image
+
+def create_date_picker(canvas, x, y, variable):
+    style = ttk.Style()
+    style.theme_use("default")
+    
+    style.configure("DateEntry",
+                    background="#080A17",
+                    foreground="white",
+                    fieldbackground="#080A17",
+                    bordercolor="#343638",
+                    borderwidth=0)
+    style.map('DateEntry', background=[('selected', '#3e4cb3')])
+    
+    date_picker = tkcalendar.DateEntry(
+            canvas, 
+            width=15,  # Increase the width of the entry
+            background='#080A17', 
+            foreground='#FFFFFF', 
+            borderwidth=0, 
+            headersbackground='#2d3680', 
+            headersforeground='#FFFFFF', 
+            selectbackground='#3e4cb3', 
+            selectforeground='#FFFFFF',
+            weekendbackground='#080A17',  # Change weekend background to match the rest
+            weekendforeground='#FFFFFF',  # Change weekend foreground to match the rest
+            othermonthbackground='#04050B',  # Change background for days from last month
+            othermonthforeground='#A19E9E',  # Change text color for days from last month
+            showweeknumbers=False,  # Remove week numbers
+            style="DateEntry",
+            date_pattern="yyyy-mm-dd",
+            locale="sr_RS"
+        )
+    date_picker.place(x=x, y=y)
+    return date_picker
 
 # ne radi posle nagradjivanja jer odmah postaje premium
 # popraviti tako sto ostavis da nije nagradjen js al mu je promenjn datum i ako se naidje na nekome kome je datum danas 

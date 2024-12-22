@@ -12,7 +12,7 @@ h) Najpopularniji dan u nedelji (1 godina)
 '''
 
 #a) Lista rezervacija po datumu rezervacije
-def a_izvestaj(datum:datetime):
+def a_izvestaj(datum:str):
     cursor=BazaPodataka.get_cursor()
     komanda='''SELECT 
                     Korisnici.ime,
@@ -27,7 +27,6 @@ def a_izvestaj(datum:datetime):
                 JOIN Program ON Trening.id_programa = Program.id_programa
                 WHERE Rezervacija.datum = ?
                 '''
-    datum=datum.strftime("%Y-%m-%d")
     cursor.execute(komanda,(datum,))
     
     return cursor.fetchall()
