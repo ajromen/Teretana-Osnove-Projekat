@@ -135,3 +135,9 @@ class IzvestajiWindow(winTemplate):
     
     def fltr_h_izvestaj(self):
         pass
+    
+    def ret_a():
+        pass
+    
+    def ret_b():
+        pass
