@@ -84,8 +84,14 @@ class IzvestajiWindow(winTemplate):
             case "B": self.fltr_b_izvestaj(),
             case "C": self.fltr_c_izvestaj()
             
-    def sacuvaj_u_fajl(self):
-        pass
+    def sacuvaj_u_fajl(self,putanja=""):
+        podaci=self.table.get_children()
+        if(len(podaci)==0): 
+            if not helperFunctions.pitaj("Nema podataka za čuvanje u fajl. \nDa li želite da sačuvate praznu tabelu?"): return
+            
+        imena_kolona=[kolona for kolona in self.table["columns"]]
+        print(podaci,imena_kolona,putanja)
+        helperFunctions.sacuvaj_tabelu(podaci,imena_kolona,putanja)
     
     def a_izvestaj(self):
         kriterijumi=["Ime","Prezime","Datum rezervacije","Red","Program"]
@@ -128,7 +134,7 @@ class IzvestajiWindow(winTemplate):
     
     def fltr_a_izvestaj(self):
         self.trenutni_window=helperFunctions.napravi_toplevel(height=182,title=self.izvestajiMap["A"])
-        wid.create_date_picker(self.trenutni_window, 10, 10, "Datum rezervacije")
+        self.entryDatum=self.create_date_picker(10, 10,top_level=True)
         self.create_text_button("AJDE",110,100,command=self.ret_a,top_level=True)
     
     def fltr_b_izvestaj(self):
@@ -153,7 +159,7 @@ class IzvestajiWindow(winTemplate):
         pass
     
     def ret_a(self):
-        self.ret=self.entryDate.get()
+        self.ret=self.entryDatum.get()
         self.trenutni_window.destroy()
         self.a_izvestaj()
     

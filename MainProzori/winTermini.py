@@ -100,4 +100,6 @@ class TerminiWindow(winTemplate):
             krajnji_datum = pocetni_datum + timedelta(days=6)
 
         return bp_termini.izlistaj_termini(pretraga, kriterijum, pocetni_datum, krajnji_datum)
+    
+    
 

@@ -81,5 +81,10 @@ class winTemplate:
         canvas=self.if_top_level_canvas(top_level)
         return wid.create_entry(canvas, x, y, on_focus_in, on_focus_out, placeholder, width, height, belo, state, corner_radius, back_color, manual_fin_fon, justify)
     
+    def create_date_picker(self,x,y,top_level=False,variable=None):
+        canvas=self.if_top_level_canvas(top_level)
+        return wid.create_date_picker(canvas, x, y, variable)
+    
     def popuni_tabelu(self):
         raise NotImplementedError("Metoda popuni_tabelu nije implementirana")
+    

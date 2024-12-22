@@ -168,24 +168,28 @@ def create_date_picker(canvas, x, y, variable):
     style.map('DateEntry', background=[('selected', '#3e4cb3')])
     
     date_picker = tkcalendar.DateEntry(
-            canvas, 
-            width=15,  # Increase the width of the entry
-            background='#080A17', 
-            foreground='#FFFFFF', 
-            borderwidth=0, 
-            headersbackground='#2d3680', 
-            headersforeground='#FFFFFF', 
-            selectbackground='#3e4cb3', 
-            selectforeground='#FFFFFF',
-            weekendbackground='#080A17',  # Change weekend background to match the rest
-            weekendforeground='#FFFFFF',  # Change weekend foreground to match the rest
-            othermonthbackground='#04050B',  # Change background for days from last month
-            othermonthforeground='#A19E9E',  # Change text color for days from last month
-            showweeknumbers=False,  # Remove week numbers
-            style="DateEntry",
-            date_pattern="yyyy-mm-dd",
-            locale="sr_RS"
-        )
+        canvas,
+        width=15,
+        background='#080A17',
+        foreground='#FFFFFF',
+        borderwidth=0,
+        headersbackground='#2d3680',
+        headersforeground='#FFFFFF',
+        selectbackground='#3e4cb3',
+        selectforeground='#FFFFFF',
+        normalbackground='#FFFFFF',
+        normalforeground='#000000',
+        weekendbackground='#FFFFFF',
+        weekendforeground='#000000',
+        othermonthbackground='#04050B',
+        othermonthforeground='#A19E9E',
+        othermonthwebackground='#04050B',
+        othermonthweforeground='#A19E9E',
+        showweeknumbers=False,
+        style="DateEntry",
+        date_pattern="yyyy-mm-dd",
+        locale="sr_RS"
+    )
     date_picker.place(x=x, y=y)
     return date_picker
 

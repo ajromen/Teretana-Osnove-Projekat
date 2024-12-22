@@ -122,3 +122,7 @@ def eng_dani_u_srp(dan):
       "Sunday": "Nedelja"
    }
    return dani_map.get(dan, "Nepoznat dan")
+
+def sacuvaj_tabelu(podaci,imena_kolona,putanja):
+   with open(putanja, 'w', newline='') as file:
+      pass
