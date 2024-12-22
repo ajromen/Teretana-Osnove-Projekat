@@ -66,10 +66,11 @@ class winTemplate:
         swtch.place(x=x,y=y)
         return swtch
 
-    def create_text_button(self, text, x, y, command,width=140,height=28,top_level=False,hover_color="#144870",fg_color="#1F6AA5"):
+    def create_text_button(self, text, x, y, command=None,width=140,height=28,top_level=False,hover_color="#144870",fg_color="#1F6AA5"):
         canvas=self.if_top_level_canvas(top_level)
         btn = ctk.CTkButton(canvas, text=text, command=command,width=width,height=height,font=("Inter", 15),fg_color=fg_color,hover_color=hover_color)
         btn.place(x=x,y=y)
+        return btn
         
     def if_top_level_canvas(self,top_level)->Canvas:
         if top_level:canvas=self.trenutni_window
@@ -78,7 +79,6 @@ class winTemplate:
         
     def create_entry(self, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",manual_fin_fon=(False,"Polje"),justify="left",top_level=False):
         canvas=self.if_top_level_canvas(top_level)
-        
         return wid.create_entry(canvas, x, y, on_focus_in, on_focus_out, placeholder, width, height, belo, state, corner_radius, back_color, manual_fin_fon, justify)
     
     def popuni_tabelu(self):
