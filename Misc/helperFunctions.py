@@ -2,6 +2,7 @@ from imports import *
 import hashlib
 import ctypes
 import os
+from fpdf import FPDF
 
 SETUP_PATH="src/setup.txt"
 
@@ -124,5 +125,30 @@ def eng_dani_u_srp(dan):
    return dani_map.get(dan, "Nepoznat dan")
 
 def sacuvaj_tabelu(podaci,imena_kolona,putanja):
-   with open(putanja, 'w', newline='') as file:
-      pass
+   def sacuvaj_tabelu(podaci, imena_kolona, putanja):
+      class PDF(FPDF):
+         def header(self):
+            self.set_font('Arial', 'B', 12)
+            for col_name in imena_kolona:
+               self.cell(40, 10, col_name, 1)
+            self.ln()
+
+         def table_row(self, row):
+            self.set_font('Arial', '', 12)
+            for item in row:
+               self.cell(40, 10, str(item), 1)
+            self.ln()
+
+      pdf = PDF()
+      pdf.add_page()
+
+      for row in podaci:
+         pdf.table_row(row)
+
+      pdf.output(putanja)
+
+   # Example usage:
+   # podaci = [["John", "Doe", 28], ["Jane", "Doe", 25]]
+   # imena_kolona = ["First Name", "Last Name", "Age"]
+   # putanja = "output.pdf"
+   # sacuvaj_tabelu(podaci, imena_kolona, putanja)

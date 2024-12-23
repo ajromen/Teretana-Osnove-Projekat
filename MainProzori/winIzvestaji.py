@@ -4,6 +4,7 @@ from imports import *
 class IzvestajiWindow(winTemplate):
     def __init__(self, window, main_window,uloga):
         super().__init__(window,main_window,uloga)
+        self.trenutni_izvestaj=None
         
     def start(self):
         self.create_canvas()
@@ -94,6 +95,7 @@ class IzvestajiWindow(winTemplate):
         helperFunctions.sacuvaj_tabelu(podaci,imena_kolona,putanja)
     
     def a_izvestaj(self):
+        self.trenutni_izvestaj = "A"
         kriterijumi=["Ime","Prezime","Datum rezervacije","Red","Program"]
         
         self.btnFajl_onemogucen()
@@ -109,27 +111,34 @@ class IzvestajiWindow(winTemplate):
         self.popuni_tabelu(self.table,podaci)
     
     def b_izvestaj(self):
+        self.trenutni_izvestaj = "B"
         kriterijumi=["Ime","Prezime","Datum termina","Red","Program"]
         self.create_table(kriterijumi,True)
         pass
     
     def c_izvestaj(self):
+        self.trenutni_izvestaj = "C"
         kriterijumi=["Ime","Prezime","Datum rezervacije","Red","Program"]
         pass
     
     def d_izvestaj(self):
+        self.trenutni_izvestaj = "D"
         pass
     
     def e_izvestaj(self):
+        self.trenutni_izvestaj = "E"
         pass
     
     def f_izvestaj(self):
+        self.trenutni_izvestaj = "F"
         pass
     
     def g_izvestaj(self):
+        self.trenutni_izvestaj = "G"
         pass
     
     def h_izvestaj(self):
+        self.trenutni_izvestaj = "H"
         pass
     
     def fltr_a_izvestaj(self):
