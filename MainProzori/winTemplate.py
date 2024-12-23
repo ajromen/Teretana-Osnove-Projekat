@@ -1,6 +1,7 @@
 # MainProzori/winTemplate.py
 import os
 from imports import *
+import widgets as wid
 
 class winTemplate:
     def __init__(self, window, main_window, uloga):
@@ -49,7 +50,7 @@ class winTemplate:
         canvas=self.if_top_level_canvas(top_level)
         wid.create_label(canvas, text, x, y, font_size)
 
-    def create_button(self, image_path, x, y, width, height, command,top_level=False):
+    def create_button(self, image_path, x, y, width=None, height=None, command=None,top_level=False):
         canvas=self.if_top_level_canvas(top_level)
         wid.create_button(canvas, image_path, x, y, width, height, command)
         

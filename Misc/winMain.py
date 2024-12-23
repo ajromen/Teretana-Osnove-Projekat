@@ -1,4 +1,5 @@
 from imports import *
+import widgets as wid
 import winIzvestaji
 import winProgrami
 import winTermini

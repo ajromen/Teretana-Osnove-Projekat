@@ -1,5 +1,6 @@
 from baza_podataka import BazaPodataka
 from imports import *
+import widgets as wid
 
 class LoginWindow:
     def __init__(self,window):

@@ -12,9 +12,9 @@ class VrsteTreningaWindow(winTemplate):
         
         velika=True
         if(self.uloga=="admin"):
-            wid.create_button(self.current_canvas,"./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winVrste_dodaj()) # Dodaj Dugme
-            wid.create_button(self.current_canvas,"./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winVrste_izmeni()) # Izmeni Dugme
-            wid.create_button(self.current_canvas,"./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi) # Obrisi Dugme
+            self.create_button("./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winVrste_dodaj()) # Dodaj Dugme
+            self.create_button("./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winVrste_izmeni()) # Izmeni Dugme
+            self.create_button("./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi) # Obrisi Dugme
             velika=False
         
         self.kriterijumiMap={

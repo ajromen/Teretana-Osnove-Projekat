@@ -15,7 +15,7 @@ def obavestenje(poruka,title="Greška",sirina=350):
    error_window.title(title)
    error_window.geometry(f"{sirina}x150")
    error_window.resizable(False, False)
-   centerWindow(error_window)
+   centriraj_window(error_window)
 
    error_label = ctk.CTkLabel(error_window, text=poruka, fg_color="red")
    error_label.pack(pady=20)
@@ -28,7 +28,7 @@ def pitaj(poruka,title="Greška",text1="Da",text2="Ne"):
    error_window.title(title)
    error_window.geometry("350x150")
    error_window.resizable(False, False)
-   centerWindow(error_window)
+   centriraj_window(error_window)
 
    error_label = ctk.CTkLabel(error_window, text=poruka, fg_color="red")
    error_label.pack(pady=20)
@@ -50,13 +50,13 @@ def setup_window(window,title,width_height,bg_color="#000000"):
    window.geometry(width_height)
    window.configure(bg = bg_color)
    window.resizable(False, False)
-   centerWindow(window)
+   centriraj_window(window)
    window.iconbitmap("src/img/Logo/TFLogo.ico")
    if os.name == "nt":
       app_id = "mycompany.myapp.subapp"
       ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
         
-def centerWindow(window):
+def centriraj_window(window):
    window.update_idletasks()
    screen_width = window.winfo_screenwidth()
    screen_height = window.winfo_screenheight()
@@ -73,7 +73,7 @@ def napravi_toplevel(width=343,height=485,title=""):
    window.title(title)
    window.geometry(str(width)+"x"+str(height))
    window.resizable(False,False)
-   centerWindow(window)
+   centriraj_window(window)
    return window
 
 def ucitaj_iz_setup(text):

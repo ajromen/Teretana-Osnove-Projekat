@@ -3,8 +3,12 @@ from imports import *
 from tkinter import ttk
 import tkcalendar
 
-def create_button(canvas,image_path, x, y, width, height, command):
+def create_button(canvas,image_path, x, y, width=None, height=None, command=None):
     image = PhotoImage(file=image_path)
+    if width is None:
+        width = image.width()
+    if height is None:  
+        height = image.height()
     button = Button(canvas, image=image, borderwidth=0, highlightthickness=0, command=command, relief="flat")
     button.image = image  
     button.place(x=x, y=y, width=width, height=height)
@@ -164,7 +168,9 @@ def create_date_picker(canvas, x, y, variable):
                     foreground="white",
                     fieldbackground="#080A17",
                     bordercolor="#343638",
-                    borderwidth=0)
+                    borderwidth=0,
+                    arrowcolor="white")
+    
     style.map('DateEntry', background=[('selected', '#3e4cb3')])
     
     date_picker = tkcalendar.DateEntry(

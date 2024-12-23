@@ -7,28 +7,29 @@ class IzvestajiLogika(PocetniWindow):
         super().__init__(window, main_window, uloga)
         self.ret = None  # promenljiva koja oznacava return vrednost filtera
         
-
-    # Izvestaj A
-    def a_izvestaj(self):
-        self.trenutni_izvestaj = "A"
-        kriterijumi = ["Ime", "Prezime", "Datum rezervacije", "Broj mesta", "Program"]
-
+    def postavi_izvestaj(self, kriterijumi, izvestaj_funk):
         self.btnFajl_onemogucen()
         self.info_upozorenje("Molimo Vas prvo izaberite datum u filterima.")
-        self.btnFilteri.configure(command=self.fltr_a_izvestaj)
 
         self.create_table(kriterijumi, True)
         if self.ret is None or self.ret == [] or self.ret == "" or len(self.ret) == 0:
             return
         self.info_uspesan("")
         self.btnFajl_omogucen()
-        podaci = bp_izvestaji.a_izvestaj(self.ret)
+        podaci = izvestaj_funk(self.ret)
         self.popuni_tabelu(self.table, podaci)
+
+    # Izvestaj A
+    def a_izvestaj(self):
+        self.trenutni_izvestaj = "A"
+        kriterijumi = ["Ime", "Prezime", "Datum rezervacije", "Broj mesta", "Program"]
+        self.postavi_izvestaj(kriterijumi,bp_izvestaji.a_izvestaj)
         
     def fltr_a_izvestaj(self):
-        self.trenutni_window = helperFunctions.napravi_toplevel(height=182, title=self.izvestajiMap["A"])
-        self.entryDatum = self.create_date_picker(10, 10, top_level=True)
-        self.create_text_button("AJDE", 110, 100, command=self.ret_a, top_level=True)
+        self.trenutni_window.geometry("343x167")
+        self.create_label("Odaberite datum:", 38, 41, top_level=True)
+        self.btnSacuvaj.configure(command=self.ret_a)
+        self.entryDatum = self.create_date_picker(197, 42, top_level=True)
     
     def ret_a(self):
         self.ret = self.entryDatum.get()

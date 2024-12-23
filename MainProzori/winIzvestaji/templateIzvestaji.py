@@ -1,6 +1,5 @@
 # baseWindow.py
 from imports import *
-import helperFunctions
 
 class PocetniWindow(winTemplate):
     def __init__(self, window, main_window, uloga):

@@ -1,6 +1,7 @@
 from baza_podataka import BazaPodataka
 import bp_korisnici
 from imports import *
+import widgets as wid
 import re
 
 class SignupWindow:

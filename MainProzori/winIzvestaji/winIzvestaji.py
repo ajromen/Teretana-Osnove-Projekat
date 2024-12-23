@@ -34,6 +34,8 @@ class IzvestajiWindow(IzvestajiLogika):
     def on_combo_change(self, *args):
         if self.varIzvestaj.get() == "":
             return
+        self.ret = None
+        self.btnFajl_onemogucen()
         izvestaj = self.varIzvestaj.get().split(". ")[0]
         self.table.destroy()
 
@@ -50,7 +52,9 @@ class IzvestajiWindow(IzvestajiLogika):
 
     def filteri(self):
         izvestaj = self.cmbbxIzvestaj.get().split(". ")
-        helperFunctions.napravi_toplevel(title=izvestaj[1], height=182)
+        self.trenutni_window=helperFunctions.napravi_toplevel(title=izvestaj[1],height=200)
+        self.create_button("src/img/Widget/btnOtkazi.png",136,139,command=self.trenutni_window.destroy,top_level=True)
+        self.btnSacuvaj=self.create_text_button("Sačuvaj", 102, 102,top_level=True)
         match izvestaj[0]:
             case "A": self.fltr_a_izvestaj(),
             case "B": self.fltr_b_izvestaj(),
