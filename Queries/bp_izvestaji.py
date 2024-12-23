@@ -57,8 +57,7 @@ def b_izvestaj(datum:datetime,instruktor:str):
     komanda='''SELECT 
                     Korisnici.ime,
                     Korisnici.prezime,
-                    Termin.datum,
-                    Rezervacija.oznaka_reda_kolone,
+                    Rezervacija.datum,
                     Program.naziv,
                     Program.id_instruktora
                 FROM Rezervacija
@@ -75,13 +74,13 @@ def b_izvestaj(datum:datetime,instruktor:str):
     return cursor.fetchall()
 
 # d) Broj rezervacija za dan u nedelji
-def d_izvestaj(dan_broj:int):
+def d_izvestaj(dan_broj:int):#0..6
     cursor = BazaPodataka.get_cursor()
     komanda = '''SELECT 
+                    strftime('%w', Rezervacija.datum)
                     Korisnici.ime,
                     Korisnici.prezime,
                     Rezervacija.datum,
-                    Rezervacija.oznaka_reda_kolone,
                     Program.naziv
                 FROM Rezervacija
                 JOIN Korisnici ON Rezervacija.id_korisnika = Korisnici.username

@@ -25,7 +25,6 @@ class IzvestajiWindow(IzvestajiLogika):
         self.cmbbxIzvestaj = self.create_comboBox([slovo + ". " + self.izvestajiMap[slovo] for slovo in "ABCDEFGH"], 23, 54, width=184, variable=self.varIzvestaj)
         self.varIzvestaj.trace_add("write", self.on_combo_change)
 
-        self.ret = None  # promenljiva koja oznacava return vrednost filtera
         self.btnFilteri = self.create_text_button("Filteri", 214, 54, width=150, height=33, command=self.filteri)
         self.entryInfo = self.create_entry(374, 54, width=296, height=33, placeholder="", state="disabled")
         self.btnFajl = self.create_text_button("Sačuvaj u datoteku", 679, 54, width=150, height=33)
@@ -61,3 +60,27 @@ class IzvestajiWindow(IzvestajiLogika):
             case "F": self.fltr_f_izvestaj(),
             case "G": self.fltr_g_izvestaj(),
             case "H": self.fltr_h_izvestaj()
+            
+    def sacuvaj_u_fajl(self):
+        podaci = [list(self.table.item(item)["values"]) for item in self.table.get_children()]
+        if not helperFunctions.pitaj("Da li  ste sigurni da želite da sačuvate izveštaj u fajl?"):
+            return
+        if len(podaci) == 0:
+            if not helperFunctions.pitaj("Nema podataka za čuvanje u fajl. \nDa li želite da sačuvate praznu tabelu?"):
+                return
+
+        imena_kolona = [kolona for kolona in self.table["columns"]]
+        putanja = "Izvestaji/izvestaj_" + self.trenutni_izvestaj + ".txt"
+        helperFunctions.sacuvaj_tabelu(podaci, imena_kolona, putanja)
+        
+        match self.trenutni_izvestaj:
+            case "A": self.a_txt()
+            case "B": self.b_txt()
+            case "C": self.c_txt()
+            case "D": self.d_txt()
+            case "E": self.e_txt()
+            case "F": self.f_txt()
+            case "G": self.g_txt()
+            case "H": self.h_txt()
+            
+        helperFunctions.dopisi_u_fajl(putanja, "Datum izrade izveštaja: " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))

@@ -1,5 +1,5 @@
 from imports import *
-import winIzvestaji2 as winIzvestaji
+import winIzvestaji
 import winProgrami
 import winTermini
 import winTrening

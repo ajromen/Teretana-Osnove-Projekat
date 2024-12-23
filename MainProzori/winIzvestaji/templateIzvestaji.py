@@ -38,12 +38,4 @@ class PocetniWindow(winTemplate):
         self.btnFajl.configure(command=self.sacuvaj_u_fajl)
         self.btnFajl.configure(fg_color="#1F6AA5")
 
-    def sacuvaj_u_fajl(self):
-        podaci = [list(self.table.item(item)["values"]) for item in self.table.get_children()]
-        if len(podaci) == 0:
-            if not helperFunctions.pitaj("Nema podataka za čuvanje u fajl. \nDa li želite da sačuvate praznu tabelu?"):
-                return
-
-        imena_kolona = [kolona for kolona in self.table["columns"]]
-        putanja = "Izvestaji/izvestaj_" + self.trenutni_izvestaj + ".txt"
-        helperFunctions.sacuvaj_tabelu(podaci, imena_kolona, putanja)
+    
