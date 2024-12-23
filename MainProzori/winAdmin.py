@@ -33,11 +33,12 @@ class AdminWindow(winTemplate):
         self.table.column("Prezime", width=100) 
         
 
-    def popuni_tabelu(self,tabela):
+    def popuni_tabelu(self,tabela,kriterijum='username',pretraga=""):
         for red in tabela.get_children():
             tabela.delete(red)
                 
-        podaci=self.izlistaj()
+        podaci=self.izlistaj(kriterijum=kriterijum,pretraga=pretraga)
+        
         i=0
         for podatak in podaci:
             podatak=list(podatak)
@@ -73,21 +74,13 @@ class AdminWindow(winTemplate):
             else:
                 pass
         
-        podaci=self.izlistaj(pretraga=pretraga,kriterijum=kriterijum)
-        
-        i=0
-        for podatak in podaci:
-            podatak=list(podatak)
-            admin=podatak[3]
-            if(admin=="Administrator"):
-                self.table.insert("", "end", values=podatak,tags="admin")
-            else: self.table.insert("", "end", values=podatak,tags=str(i%2))
-            i+=1
+        self.popuni_tabelu(self.table,pretraga=pretraga,kriterijum=kriterijum)
 
     def izlistaj(self,kriterijum='username',pretraga=""):              
         return bp_korisnici.izlistaj_instruktore_admine(pretraga,kriterijum)
     
     def winAdmin_Dodaj(self):
+        self.top_level=True
         self.trenutni_window=helperFunctions.napravi_toplevel(height=341,title="Dodaj administrarota")
         
         self.create_label("Korisničko ime:",23,31)
@@ -105,6 +98,7 @@ class AdminWindow(winTemplate):
 
         self.create_text_button("Napravi nalog",88,268,self.napravi_nalog,width=166)
         self.create_button("./src/img/Widget/btnOtkazi.png",136,303,72,17,command=self.trenutni_window.destroy)
+        self.top_level=False
         
     def napravi_nalog(self):
         username=self.entryUsername.get().strip()

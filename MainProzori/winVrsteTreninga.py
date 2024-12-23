@@ -61,18 +61,20 @@ class VrsteTreningaWindow(winTemplate):
         return bp_vrste_treninga.izlistaj_vrste_treninga(pretraga,kriterijum)
     
     def winVrste_dodaj(self):
+        self.top_level=True
         self.trenutni_window=helperFunctions.napravi_toplevel(height=267,title="Dodaj vrstu treninga")
         
-        self.create_label("Šifra vrste treninga:",23,35,top_level=True)
-        self.create_label("Naziv:",23,86,top_level=True)
-        self.entrySifra=self.create_entry(170,32,width=150,height=23,manual_fin_fon=(True,"Polje"),top_level=True)
+        self.create_label("Šifra vrste treninga:",23,35)
+        self.create_label("Naziv:",23,86)
+        self.entrySifra=self.create_entry(170,32,width=150,height=23,manual_fin_fon=(True,"Polje"))
 
         self.txtbxOpis = ctk.CTkTextbox(self.trenutni_window,width=294,height=80,corner_radius=4,fg_color="#080A17")# drugi pput
         self.txtbxOpis.place(x=26,y=112)
         self.txtbxOpis.insert("0.0", "")
 
-        self.create_text_button("Dodaj",88,202,self.napravi,width=166,top_level=True)
-        self.create_button("./src/img/Widget/btnOtkazi.png",136,239,72,17,self.trenutni_window.destroy,top_level=True)
+        self.create_text_button("Dodaj",88,202,self.napravi,width=166)
+        self.create_button("./src/img/Widget/btnOtkazi.png",136,239,72,17,self.trenutni_window.destroy)
+        self.top_level=False
         
     def napravi(self):
         sifra=self.entrySifra.get().strip()
@@ -108,6 +110,7 @@ class VrsteTreningaWindow(winTemplate):
         helperFunctions.obavestenje(title="Brisanje", poruka="Vrsta treninga je uspešno obrisana.")
             
     def winVrste_izmeni(self):
+        self.top_level=True
         slctd_item = self.table.selection()
         if not slctd_item:
             helperFunctions.obavestenje(poruka="Niste odabrali nijednu vrstu treninga za izmenu.")
@@ -119,16 +122,17 @@ class VrsteTreningaWindow(winTemplate):
         slctd_id = slctd_data["values"][0]
         slctd_naziv = slctd_data["values"][1]
 
-        self.create_label("Šifra vrste treninga:", 23, 35, top_level=True)
-        self.create_label("Naziv:", 23, 86, top_level=True)
-        self.entrySifra = self.create_entry(170, 32, width=150, height=23, manual_fin_fon=(True, "Polje"), placeholder=slctd_id, state="disabled", top_level=True)
+        self.create_label("Šifra vrste treninga:", 23, 35)
+        self.create_label("Naziv:", 23, 86)
+        self.entrySifra = self.create_entry(170, 32, width=150, height=23, manual_fin_fon=(True, "Polje"), placeholder=slctd_id, state="disabled")
 
         self.txtbxOpis = ctk.CTkTextbox(self.trenutni_window, width=294, height=80, corner_radius=4, fg_color="#080A17")
         self.txtbxOpis.place(x=26, y=112)
         self.txtbxOpis.insert("0.0", slctd_naziv)
 
-        self.create_text_button("Sačuvaj", 88, 202, lambda: self.izmeni_vrstu_treninga(slctd_id), width=166, top_level=True)
-        self.create_button("./src/img/Widget/btnOtkazi.png", 136, 239, 72, 17, self.trenutni_window.destroy, top_level=True)
+        self.create_text_button("Sačuvaj", 88, 202, lambda: self.izmeni_vrstu_treninga(slctd_id), width=166)
+        self.create_button("./src/img/Widget/btnOtkazi.png", 136, 239, 72, 17, self.trenutni_window.destroy)
+        self.top_level=False
 
     def izmeni_vrstu_treninga(self, id_vrste_treninga):
         naziv = self.txtbxOpis.get("0.0", END).strip()

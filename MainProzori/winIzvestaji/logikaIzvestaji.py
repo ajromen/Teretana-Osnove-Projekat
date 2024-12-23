@@ -26,10 +26,12 @@ class IzvestajiLogika(PocetniWindow):
         self.postavi_izvestaj(kriterijumi,bp_izvestaji.a_izvestaj)
         
     def fltr_a_izvestaj(self):
+        self.top_level = True
         self.trenutni_window.geometry("343x167")
-        self.create_label("Odaberite datum:", 38, 41, top_level=True)
+        self.create_label("Odaberite datum:", 38, 41)
         self.btnSacuvaj.configure(command=self.ret_a)
-        self.entryDatum = self.create_date_picker(197, 42, top_level=True)
+        self.entryDatum = self.create_date_picker(197, 42)
+        self.top_level = False
     
     def ret_a(self):
         self.ret = self.entryDatum.get()

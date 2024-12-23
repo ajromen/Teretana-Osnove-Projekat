@@ -35,6 +35,19 @@ def azuriraj_podatke():
     bp_korisnici.proveri_status_korisnika()
     bp_korisnici.obrisi_goste()
     BazaPodataka.commit()
+    
+def main():
+    staDaRadim="login"
+    user=''
+    lista=[]
+    while(True):
+        staDaRadim=vozi(staDaRadim,user)
+        user=''
+        if(staDaRadim!="login" and staDaRadim!="signup" and type(staDaRadim)!=type(lista)):
+            break
+        if(type(staDaRadim)==type(lista)):
+            user=staDaRadim[1]
+            staDaRadim=staDaRadim[0]
 
 if __name__ == '__main__':
     azuriraj_podatke()
@@ -44,17 +57,9 @@ if __name__ == '__main__':
     winSignup=winSignup.SignupWindow(window)
     winMain=winMain.MainWindow(window)
     
-    staDaRadim="login"
-    user=''
-    lista=[0,0]
-    while(True):
-        staDaRadim=vozi(staDaRadim,user)
-        user=''
-        if(staDaRadim!="login" and staDaRadim!="signup" and type(staDaRadim)!=type(lista)):
-            break
-        if(type(staDaRadim)==type(lista)):
-            user=staDaRadim[1]
-            staDaRadim=staDaRadim[0]
+    #main()
+    
+    winMain.start("tea",2)
     azuriraj_podatke()
         
     

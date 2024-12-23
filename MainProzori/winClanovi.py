@@ -15,7 +15,7 @@ class ClanoviWindow(winTemplate):
         self.create_exit_button()
         self.create_search_button(self.pretrazi)
         
-        self.uloga=="admin" and self.create_button("./src/img/Widget/btnDodaj.png",23,541,252,40,lambda: self.winClan_Izmeni("Nagradi")) # Dodaj Dugme
+        self.uloga=="admin" and self.create_button("./src/img/Widget/btnNagradi.png",23,541,252,40,lambda: self.winClan_Izmeni("Nagradi")) # Dodaj Dugme
         
         self.create_button("./src/img/Widget/btnAktiviraj.png",300,541,252,40,lambda: self.winClan_Izmeni("Aktiviraj"))
         self.create_button("./src/img/Widget/btnObrisi.png", 576, 541, 252, 40, self.clan_delete)
@@ -106,6 +106,7 @@ class ClanoviWindow(winTemplate):
     
     
     def winClan_Izmeni(self,mode="Nagradi"):# ili Aktiviraj
+        self.top_level=True
         slctd_item = self.table.selection()
         if not slctd_item:
             helperFunctions.obavestenje(poruka="Niste odabrali nijednog korisnika.")
@@ -121,28 +122,29 @@ class ClanoviWindow(winTemplate):
         slctd_aktiviran=slctd_data["values"][3]
         slctd_paket=slctd_data["values"][4]
         
-        self.entryID=self.create_entry(70,11,width=203,height=23,placeholder=slctd_username+", "+slctd_ime+" "+slctd_prezime,justify="center",belo=True,state="disabled",top_level=True)
+        self.entryID=self.create_entry(70,11,width=203,height=23,placeholder=slctd_username+", "+slctd_ime+" "+slctd_prezime,justify="center",belo=True,state="disabled")
         
         if(mode=="Nagradi"):
-            self.create_label("Broj realizovanih rezervacija u proteklih",34,52,top_level=True)
-            self.create_label("mesec dana:",126,70,top_level=True)
-            self.entryBrDana=self.create_entry(151,96,width=41,height=23,placeholder=slctd_br_rez,justify="center",belo=True,state="disabled",top_level=True)
+            self.create_label("Broj realizovanih rezervacija u proteklih",45,52,font_size=15)
+            self.create_label("mesec dana:",137,70,font_size=15)
+            self.entryBrDana=self.create_entry(151,96,width=41,height=23,placeholder=slctd_br_rez,justify="center",belo=True,state="disabled")
             za_aktivaciju=slctd_data.get("tags")[0]
             if(za_aktivaciju=='za_aktivaciju'):
-                self.create_text_button("Nagradi lojalnost", 89, 132, self.nagradi_lojalnost, width=166, height=27,hover_color="#87E175",fg_color="#3DA928",top_level=True)
+                self.create_text_button("Nagradi lojalnost", 89, 132, self.nagradi_lojalnost, width=166, height=27,hover_color="#87E175",fg_color="#3DA928")
             else:
-                self.create_text_button("Nagradi lojalnost", 89, 132, lambda: None, width=166, height=27,hover_color="#6B6969",fg_color="#2B2B2B",top_level=True)
+                self.create_text_button("Nagradi lojalnost", 89, 132, lambda: None, width=166, height=27,hover_color="#6B6969",fg_color="#2B2B2B")
         
         else:
-            self.create_label("Trenutni status:",22,57,top_level=True)
-            self.create_label("Premium paket:",22,93,top_level=True)
-            self.entryStatus=self.create_entry(197,52,width=124,height=23,placeholder=slctd_aktiviran,justify="center",belo=True,state="disabled",top_level=True)
-            self.switchPaket=self.create_switch(272,90,top_level=True)
+            self.create_label("Trenutni status:",22,57)
+            self.create_label("Premium paket:",22,93)
+            self.entryStatus=self.create_entry(197,52,width=124,height=23,placeholder=slctd_aktiviran,justify="center",belo=True,state="disabled")
+            self.switchPaket=self.create_switch(272,90)
             if (slctd_paket=="Premium"): self.switchPaket.select() 
             else: self.switchPaket.deselect()
-            self.create_text_button("Aktiviraj status", 89, 132, self.aktiviraj_paket, width=166, height=27,top_level=True)
+            self.create_text_button("Aktiviraj status", 89, 132, self.aktiviraj_paket, width=166, height=27)
             
-        self.create_button("./src/img/Widget/btnOtkazi.png",x=58,y=166,width=72,height=17,command=self.trenutni_window.destroy,top_level=True)
+        self.create_button("./src/img/Widget/btnOtkazi.png",x=136,y=166,width=72,height=17,command=self.trenutni_window.destroy)
+        self.top_level=False
     
     def clan_delete(self):
         slctd_item = self.table.selection()

@@ -51,10 +51,11 @@ class IzvestajiWindow(IzvestajiLogika):
             case _: self.a_izvestaj()
 
     def filteri(self):
+        self.top_level = True
         izvestaj = self.cmbbxIzvestaj.get().split(". ")
         self.trenutni_window=helperFunctions.napravi_toplevel(title=izvestaj[1],height=200)
-        self.create_button("src/img/Widget/btnOtkazi.png",136,139,command=self.trenutni_window.destroy,top_level=True)
-        self.btnSacuvaj=self.create_text_button("Sačuvaj", 102, 102,top_level=True)
+        self.create_button("src/img/Widget/btnOtkazi.png",136,139,command=self.trenutni_window.destroy)
+        self.btnSacuvaj=self.create_text_button("Sačuvaj", 102, 102)
         match izvestaj[0]:
             case "A": self.fltr_a_izvestaj(),
             case "B": self.fltr_b_izvestaj(),
@@ -64,6 +65,8 @@ class IzvestajiWindow(IzvestajiLogika):
             case "F": self.fltr_f_izvestaj(),
             case "G": self.fltr_g_izvestaj(),
             case "H": self.fltr_h_izvestaj()
+            
+        self.top_level = False
             
     def sacuvaj_u_fajl(self):
         podaci = [list(self.table.item(item)["values"]) for item in self.table.get_children()]

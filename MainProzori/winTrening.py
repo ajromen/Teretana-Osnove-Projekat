@@ -101,6 +101,7 @@ class TreningWindow(winTemplate):
             
                 
     def winTrening_Izmeni(self):
+        self.top_level=True
         slctd_item = self.table.selection()
         if not slctd_item:
             helperFunctions.obavestenje(poruka="Niste odabrali nijedan trening za izmenu.")
@@ -126,8 +127,10 @@ class TreningWindow(winTemplate):
         self.selektuj_vrednost_comboBox(self.cmbbxProgram,slctd_program)
         
         self.zajednicke_Dodaj_Izmeni(slctd_vreme_pocetka,slctd_vreme_kraja,mode=1)
+        self.top_level=False
 
     def winTrening_Dodaj(self):
+        self.top_level=True
         self.trenutni_window=helperFunctions.napravi_toplevel(height=390,title="Dodaj trening")
         
         self.cmbbxSala=self.napravi_sql_cmbbx("Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala WHERE obrisana IS NOT TRUE",2,True) #Kombo box za naziv
@@ -136,8 +139,10 @@ class TreningWindow(winTemplate):
         self.entrySifra=self.create_entry(141, 30, width=179, height=23, belo=True, placeholder="Unesite šifru")
         
         self.zajednicke_Dodaj_Izmeni(mode=0)
+        self.top_level=False
         
     def zajednicke_Dodaj_Izmeni(self,vreme_pocetka="00:00",vreme_kraja="00:00",mode=0,dani=""): # 0 za dodaj 1 za izmeni
+        self.top_level=True
         self.create_label("Šifra",58,31)
         
         #labele za vreme
@@ -177,6 +182,7 @@ class TreningWindow(winTemplate):
         btnSacuvaj.place(x=102,y=325)
         #dugme za otkazivanje
         self.create_button("./src/img/Widget/btnOtkazi.png",x=136,y=362,width=72,height=17,command=self.trenutni_window.destroy)
+        self.top_level=False
         
         
     def sredi_sate(self,vreme: str)-> None:
@@ -200,8 +206,6 @@ class TreningWindow(winTemplate):
             self.entryPocetakSati.insert(0, vreme_pocetka.strftime("%H"))
             self.entryPocetakMinuti.delete(0, ctk.END)  
             self.entryPocetakMinuti.insert(0, vreme_pocetka.strftime("%M"))
-
-        
         
     def proveri_entry_vreme(self):
         #provera unosa za vreme
