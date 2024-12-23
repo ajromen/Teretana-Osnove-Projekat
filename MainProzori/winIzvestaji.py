@@ -85,18 +85,18 @@ class IzvestajiWindow(winTemplate):
             case "B": self.fltr_b_izvestaj(),
             case "C": self.fltr_c_izvestaj()
             
-    def sacuvaj_u_fajl(self,putanja=""):
-        podaci=self.table.get_children()
+    def sacuvaj_u_fajl(self):
+        podaci = [list(self.table.item(item)["values"]) for item in self.table.get_children()]
         if(len(podaci)==0): 
             if not helperFunctions.pitaj("Nema podataka za čuvanje u fajl. \nDa li želite da sačuvate praznu tabelu?"): return
             
         imena_kolona=[kolona for kolona in self.table["columns"]]
-        print(podaci,imena_kolona,putanja)
+        putanja="Izvestaji/izvestaj_"+self.trenutni_izvestaj+".txt"
         helperFunctions.sacuvaj_tabelu(podaci,imena_kolona,putanja)
     
     def a_izvestaj(self):
         self.trenutni_izvestaj = "A"
-        kriterijumi=["Ime","Prezime","Datum rezervacije","Red","Program"]
+        kriterijumi=["Ime","Prezime","Datum rezervacije","Broj mesta","Program"]
         
         self.btnFajl_onemogucen()
         self.info_upozorenje("Molimo Vas prvo izaberite datum u filterima.")
@@ -112,13 +112,13 @@ class IzvestajiWindow(winTemplate):
     
     def b_izvestaj(self):
         self.trenutni_izvestaj = "B"
-        kriterijumi=["Ime","Prezime","Datum termina","Red","Program"]
+        kriterijumi=["Ime","Prezime","Datum termina","Broj mesta","Program"]
         self.create_table(kriterijumi,True)
         pass
     
     def c_izvestaj(self):
         self.trenutni_izvestaj = "C"
-        kriterijumi=["Ime","Prezime","Datum rezervacije","Red","Program"]
+        kriterijumi=["Ime","Prezime","Datum rezervacije","Broj mesta","Program"]
         pass
     
     def d_izvestaj(self):

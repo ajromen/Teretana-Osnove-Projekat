@@ -2,7 +2,6 @@ from imports import *
 import hashlib
 import ctypes
 import os
-from fpdf import FPDF
 
 SETUP_PATH="src/setup.txt"
 
@@ -124,31 +123,31 @@ def eng_dani_u_srp(dan):
    }
    return dani_map.get(dan, "Nepoznat dan")
 
-def sacuvaj_tabelu(podaci,imena_kolona,putanja):
-   def sacuvaj_tabelu(podaci, imena_kolona, putanja):
-      class PDF(FPDF):
-         def header(self):
-            self.set_font('Arial', 'B', 12)
-            for col_name in imena_kolona:
-               self.cell(40, 10, col_name, 1)
-            self.ln()
 
-         def table_row(self, row):
-            self.set_font('Arial', '', 12)
-            for item in row:
-               self.cell(40, 10, str(item), 1)
-            self.ln()
-
-      pdf = PDF()
-      pdf.add_page()
-
-      for row in podaci:
-         pdf.table_row(row)
-
-      pdf.output(putanja)
-
-   # Example usage:
-   # podaci = [["John", "Doe", 28], ["Jane", "Doe", 25]]
-   # imena_kolona = ["First Name", "Last Name", "Age"]
-   # putanja = "output.pdf"
-   # sacuvaj_tabelu(podaci, imena_kolona, putanja)
+def sacuvaj_tabelu(podaci, imena_kolona, putanja):
+   with open(putanja,'w',encoding='utf-8') as file:
+      max=0
+      for ime in imena_kolona:
+         if len(ime)>max: max=len(ime)
+      
+      for podatak in podaci:
+         for item in podatak:
+            if len(str(item))>max: max=len(str(item))
+            
+      max+=2
+      file.write("|")
+      for ime in imena_kolona:
+         file.write(ime.center(max)+"|")
+         
+      file.write("\n"+"—"*(max+1)*len(imena_kolona)+"\n")
+      
+      for podatak in podaci:
+         file.write("|")
+         for item in podatak:
+            file.write(str(item).center(max)+"|")
+         file.write("\n")
+         
+      file.write("—"*(max+1)*len(imena_kolona)+"\n")
+   
+   obavestenje(f"Podaci su uspešno sačuvani u fajl: {putanja}",title="Uspešno čuvanje")
+      
