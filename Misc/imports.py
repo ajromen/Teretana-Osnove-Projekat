@@ -1,5 +1,6 @@
 import sys
 sys.path.append('MainProzori')
+sys.path.append('MainProzori/winIzvestaji')
 sys.path.append('Queries')
 sys.path.append('Misc')
 
