@@ -10,4 +10,4 @@
 
 Rezervacije po datumu termina za datum: 2024-01-01
 
-Datum izrade izveštaja: 2024-12-24 02:00:05
+Datum izrade izveštaja: 2024-12-24 02:18:02

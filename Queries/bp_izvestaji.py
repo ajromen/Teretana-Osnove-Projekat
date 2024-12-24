@@ -66,10 +66,9 @@ def c_izvestaj(podaci:tuple):
                 JOIN Termin ON Rezervacija.id_termina = Termin.id_termina
                 JOIN Trening ON Termin.id_treninga = Trening.id_treninga
                 JOIN Program ON Trening.id_programa = Program.id_programa
-                WHERE Program.datum = ? AND
+                WHERE Rezervacija.datum = ? AND
                       Program.id_instruktora = ?
                 '''
-    datum=datum.strftime("%Y-%m-%d")
     cursor.execute(komanda,(datum,instruktor,))
     
     return cursor.fetchall()

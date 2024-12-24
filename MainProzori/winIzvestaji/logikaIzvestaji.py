@@ -67,17 +67,29 @@ class IzvestajiLogika(winTemplate):
     def c_izvestaj(self):
         self.trenutni_izvestaj = "C"
         kriterijumi = ["Ime", "Prezime", "Datum rezervacije", "Program", "Instruktor"]
-        self.create_table(kriterijumi, True)
-        pass
+        self.postavi_izvestaj(kriterijumi,bp_izvestaji.c_izvestaj,"Molimo Vas prvo izaberite datum i instruktora u filterima.","Datum, Instruktor: " + str(self.ret))
 
     def fltr_c_izvestaj(self):
-        pass
+        self.top_level = True
+        self.trenutni_window.geometry("343x189")
+        self.create_label("Odaberite datum termina:", 15, 29)
+        self.cmbbxInstruktor=self.napravi_sql_cmbbx("Odaberite instruktora:", 25, 80,177,69,"SELECT username,ime,prezime FROM Korisnici WHERE uloga = 1",2,True,12)
+        self.btnSacuvaj.configure(command=self.ret_c)
+        self.btnSacuvaj.place(x=102, y=126)
+        self.btnOtkazi.place(x=136, y=163)
+        self.entryDatum = self.create_date_picker(197, 29)
+        self.top_level = False
+
 
     def ret_c(self):
-        pass
+        instruktor=self.cmbbxInstruktor.get().strip().split(" ")[0]
+        datum=self.entryDatum.get()
+        self.ret = (datum,instruktor)
+        self.trenutni_window.destroy()
+        self.c_izvestaj()
     
     def c_txt(self):
-        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_C.txt", "Rezervacije po datumu rezervacije i instruktoru za datum: " + self.ret)
+        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_C.txt", "Rezervacije po datumu rezervacije i instruktoru za datum: " + str(self.ret))
     
     
     # Izvestaj D

@@ -54,7 +54,7 @@ class IzvestajiWindow(IzvestajiLogika):
         self.top_level = True
         izvestaj = self.cmbbxIzvestaj.get().split(". ")
         self.trenutni_window=helperFunctions.napravi_toplevel(title=izvestaj[1],height=200)
-        self.create_button("src/img/Widget/btnOtkazi.png",136,139,command=self.trenutni_window.destroy)
+        self.btnOtkazi=self.create_button("src/img/Widget/btnOtkazi.png",136,139,command=self.trenutni_window.destroy)
         self.btnSacuvaj=self.create_text_button("Sačuvaj", 102, 102)
         match izvestaj[0]:
             case "A": self.fltr_a_izvestaj(),
