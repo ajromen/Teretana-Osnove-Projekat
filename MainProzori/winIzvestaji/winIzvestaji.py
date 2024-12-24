@@ -26,7 +26,7 @@ class IzvestajiWindow(IzvestajiLogika):
         self.varIzvestaj.trace_add("write", self.on_combo_change)
 
         self.btnFilteri = self.create_text_button("Filteri", 214, 54, width=150, height=33, command=self.filteri)
-        self.entryInfo = self.create_entry(374, 54, width=296, height=33, placeholder="", state="disabled")
+        self.entryInfo = self.create_entry(374, 54, width=296, height=33, placeholder="", state="normal")
         self.btnFajl = self.create_text_button("Sačuvaj u datoteku", 679, 54, width=150, height=33)
         self.btnFajl_onemogucen()
         self.a_izvestaj()
@@ -47,7 +47,7 @@ class IzvestajiWindow(IzvestajiLogika):
             case "E": self.e_izvestaj(),
             case "F": self.f_izvestaj(),
             case "G": self.g_izvestaj(),
-            case "H": self.h_izvestaj()
+            case "H": self.h_izvestaj(),
             case _: self.a_izvestaj()
 
     def filteri(self):
@@ -64,7 +64,8 @@ class IzvestajiWindow(IzvestajiLogika):
             case "E": self.fltr_e_izvestaj(),
             case "F": self.fltr_f_izvestaj(),
             case "G": self.fltr_g_izvestaj(),
-            case "H": self.fltr_h_izvestaj()
+            case "H": self.fltr_h_izvestaj(),
+            case _: self.fltr_a_izvestaj()
             
         self.top_level = False
             
@@ -91,3 +92,38 @@ class IzvestajiWindow(IzvestajiLogika):
             case "H": self.h_txt()
             
         helperFunctions.dopisi_u_fajl(putanja, "Datum izrade izveštaja: " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        
+    def popuni_tabelu(self, tabela, podaci: list = None, kolonaZaBrisanje=None):
+        for red in tabela.get_children():
+            tabela.delete(red)
+        if podaci is None:
+            return
+        i = 0
+        for podatak in podaci:
+            if kolonaZaBrisanje is not None and podatak[kolonaZaBrisanje] == 1:  # obrisan
+                tabela.insert("", "end", values=podatak, tags="obrisano" + str(i % 2))
+            else:
+                tabela.insert("", "end", values=podatak, tags=str(i % 2))
+            i += 1
+
+    def info_uspesan(self, tekst):
+        self.entryInfo.configure(state="normal")
+        self.entryInfo.configure(text_color="#A5A5A5")
+        self.entryInfo.delete(0, END)
+        self.entryInfo.insert(0, tekst)
+        self.entryInfo.configure(state="disabled")
+
+    def info_upozorenje(self, tekst):
+        self.entryInfo.configure(state="normal")
+        self.entryInfo.configure(text_color="#FF1C1C")
+        self.entryInfo.delete(0, END)
+        self.entryInfo.insert(0, tekst)
+        self.entryInfo.configure(state="disabled")
+
+    def btnFajl_onemogucen(self):
+        self.btnFajl.configure(command=None)
+        self.btnFajl.configure(fg_color="#252525")
+
+    def btnFajl_omogucen(self):
+        self.btnFajl.configure(command=self.sacuvaj_u_fajl)
+        self.btnFajl.configure(fg_color="#1F6AA5")

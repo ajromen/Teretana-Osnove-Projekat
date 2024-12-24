@@ -8,8 +8,6 @@ import bp_korisnici
 import bp_termini
 from baza_podataka import BazaPodataka
 
-#BazaPodataka.restart()
-
 def login_startup_loop(ekran,user=''):
     return_value=ekran
     while True:   
@@ -31,6 +29,7 @@ def vozi(ekran,user=''):
     return winMain.start(return_value[0][0],return_value[0][1])
 
 def azuriraj_podatke():
+    #BazaPodataka.restart()
     bp_termini.generisi_termine()
     bp_korisnici.proveri_status_korisnika()
     bp_korisnici.obrisi_goste()
@@ -59,7 +58,7 @@ if __name__ == '__main__':
     
     #main()
     
-    winMain.start("tea",2)
+    winMain.start("admin",2)
     azuriraj_podatke()
         
     

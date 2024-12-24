@@ -1,29 +1,28 @@
 import bp_izvestaji
 from imports import *
-from templateIzvestaji import PocetniWindow
 
-class IzvestajiLogika(PocetniWindow):
+class IzvestajiLogika(winTemplate):
     def __init__(self, window, main_window, uloga):
         super().__init__(window, main_window, uloga)
-        self.ret = None  # promenljiva koja oznacava return vrednost filtera
+        self.trenutni_izvestaj = None 
+        self.ret = None
         
-    def postavi_izvestaj(self, kriterijumi, izvestaj_funk):
+    def postavi_izvestaj(self, kriterijumi, izvestaj_funk,text_fail='',text_succ=''):
         self.btnFajl_onemogucen()
-        self.info_upozorenje("Molimo Vas prvo izaberite datum u filterima.")
-
         self.create_table(kriterijumi, True)
         if self.ret is None or self.ret == [] or self.ret == "" or len(self.ret) == 0:
+            self.info_upozorenje(text_fail)
             return
-        self.info_uspesan("")
+        self.info_uspesan(text_succ)
         self.btnFajl_omogucen()
         podaci = izvestaj_funk(self.ret)
-        self.popuni_tabelu(self.table, podaci)
+        self.popuni_tabelu(self.table, podaci) 
 
     # Izvestaj A
     def a_izvestaj(self):
         self.trenutni_izvestaj = "A"
         kriterijumi = ["Ime", "Prezime", "Datum rezervacije", "Broj mesta", "Program"]
-        self.postavi_izvestaj(kriterijumi,bp_izvestaji.a_izvestaj)
+        self.postavi_izvestaj(kriterijumi,bp_izvestaji.a_izvestaj,"Molimo Vas prvo izaberite datum u filterima.","Datum: " + str(self.ret))
         
     def fltr_a_izvestaj(self):
         self.top_level = True
@@ -45,14 +44,20 @@ class IzvestajiLogika(PocetniWindow):
     def b_izvestaj(self):
         self.trenutni_izvestaj = "B"
         kriterijumi = ["Ime", "Prezime", "Datum termina", "Broj mesta", "Program"]
-        self.create_table(kriterijumi, True)
-        pass
+        self.postavi_izvestaj(kriterijumi,bp_izvestaji.b_izvestaj,"Molimo Vas prvo izaberite datum termina u filterima.","Datum termina: " + str(self.ret))
     
     def fltr_b_izvestaj(self):
-        pass
+        self.top_level = True
+        self.trenutni_window.geometry("343x167")
+        self.create_label("Odaberite datum termina:", 38, 41)
+        self.btnSacuvaj.configure(command=self.ret_b)
+        self.entryDatum = self.create_date_picker(197, 42)
+        self.top_level = False
     
     def ret_b(self):
-        pass
+        self.ret = self.entryDatum.get()
+        self.trenutni_window.destroy()
+        self.b_izvestaj()
     
     def b_txt(self):
         helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_B.txt", "Rezervacije po datumu termina za datum: " + self.ret)

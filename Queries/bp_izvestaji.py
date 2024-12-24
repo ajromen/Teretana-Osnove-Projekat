@@ -31,12 +31,12 @@ def a_izvestaj(datum:str):
     
     return cursor.fetchall()
 
-def b_izvestaj(datum:datetime):
+def b_izvestaj(datum:str):
     cursor=BazaPodataka.get_cursor()
     komanda='''SELECT 
                     Korisnici.ime,
                     Korisnici.prezime,
-                    Termin.datum,
+                    Termin.datum_odrzavanja,
                     Rezervacija.oznaka_reda_kolone,
                     Program.naziv
                 FROM Rezervacija
@@ -44,16 +44,17 @@ def b_izvestaj(datum:datetime):
                 JOIN Termin ON Rezervacija.id_termina = Termin.id_termina
                 JOIN Trening ON Termin.id_treninga = Trening.id_treninga
                 JOIN Program ON Trening.id_programa = Program.id_programa
-                WHERE Termin.datum = ?
+                WHERE Termin.datum_odrzavanja = ?
                 '''
-    datum=datum.strftime("%Y-%m-%d")
     cursor.execute(komanda,(datum,))
     
     return cursor.fetchall()
 
 # c) Lista rezervacija po datumu rezervacije i instruktoru
-def b_izvestaj(datum:datetime,instruktor:str):
+def c_izvestaj(podaci:tuple):
+    """Podaci su tuple(datum:str,instruktor:str)"""
     cursor=BazaPodataka.get_cursor()
+    datum,instruktor=podaci
     komanda='''SELECT 
                     Korisnici.ime,
                     Korisnici.prezime,
