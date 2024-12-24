@@ -66,7 +66,7 @@ class IzvestajiLogika(winTemplate):
     # Izvestaj C
     def c_izvestaj(self):
         self.trenutni_izvestaj = "C"
-        kriterijumi = ["Ime", "Prezime", "Datum rezervacije", "Program", "Instruktor"]
+        kriterijumi = ["Ime", "Prezime", "Datum rezervacije","Broj mesta", "Program"]
         self.postavi_izvestaj(kriterijumi,bp_izvestaji.c_izvestaj,"Molimo Vas prvo izaberite datum i instruktora u filterima.","Datum, Instruktor: " + str(self.ret))
 
     def fltr_c_izvestaj(self):
@@ -84,12 +84,12 @@ class IzvestajiLogika(winTemplate):
     def ret_c(self):
         instruktor=self.cmbbxInstruktor.get().strip().split(" ")[0]
         datum=self.entryDatum.get()
-        self.ret = (datum,instruktor)
+        self.ret = f'{datum}, {instruktor}'
         self.trenutni_window.destroy()
         self.c_izvestaj()
     
     def c_txt(self):
-        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_C.txt", "Rezervacije po datumu rezervacije i instruktoru za datum: " + str(self.ret))
+        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_C.txt", "Rezervacije po datumu i instruktoru: " + self.ret)
     
     
     # Izvestaj D

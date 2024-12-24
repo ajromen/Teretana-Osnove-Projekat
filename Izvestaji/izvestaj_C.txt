@@ -1,9 +1,9 @@
-|          Ime          |        Prezime        |   Datum rezervacije   |        Program        |       Instruktor      |
+|          Ime          |        Prezime        |   Datum rezervacije   |       Broj mesta      |        Program        |
 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-|          Akva         |         Vivić         |       2024-11-11      | Mršavljenje uz Momira |         momir         |
-|          Akva         |         Vivić         |       2024-11-11      | Mršavljenje uz Momira |         momir         |
+|          Akva         |         Vivić         |       2024-11-11      |           9           | Mršavljenje uz Momira |
+|          Akva         |         Vivić         |       2024-11-11      |           9           | Mršavljenje uz Momira |
 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 
-Rezervacije po datumu rezervacije i instruktoru za datum: ('2024-11-11', 'momir')
+Rezervacije po datumu i instruktoru: 2024-11-11, momir
 
-Datum izrade izveštaja: 2024-12-24 02:34:11
+Datum izrade izveštaja: 2024-12-24 02:53:36

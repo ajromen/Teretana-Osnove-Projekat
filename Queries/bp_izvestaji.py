@@ -51,16 +51,16 @@ def b_izvestaj(datum:str):
     return cursor.fetchall()
 
 # c) Lista rezervacija po datumu rezervacije i instruktoru
-def c_izvestaj(podaci:tuple):
-    """Podaci su tuple(datum:str,instruktor:str)"""
+def c_izvestaj(podaci:str):
+    """Podaci su 'datum, instruktor'"""
     cursor=BazaPodataka.get_cursor()
-    datum,instruktor=podaci
+    datum,instruktor=podaci.split(", ")
     komanda='''SELECT 
                     Korisnici.ime,
                     Korisnici.prezime,
                     Rezervacija.datum,
-                    Program.naziv,
-                    Program.id_instruktora
+                    Rezervacija.oznaka_reda_kolone,
+                    Program.naziv
                 FROM Rezervacija
                 JOIN Korisnici ON Rezervacija.id_korisnika = Korisnici.username
                 JOIN Termin ON Rezervacija.id_termina = Termin.id_termina
