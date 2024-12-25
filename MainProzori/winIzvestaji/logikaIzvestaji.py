@@ -7,7 +7,7 @@ class IzvestajiLogika(winTemplate):
         self.trenutni_izvestaj = None 
         self.ret = None
         
-    def postavi_izvestaj(self, kriterijumi, izvestaj_funk,text_fail='',text_succ='',uslov=False):
+    def postavi_izvestaj(self, kriterijumi, izvestaj_funk,text_fail='',text_succ='',uslov=False,ima_ret=True):
         self.btnFajl_onemogucen()
         self.create_table(kriterijumi, True)
         if not uslov:
@@ -15,7 +15,10 @@ class IzvestajiLogika(winTemplate):
             return
         self.info_uspesan(text_succ)
         self.btnFajl_omogucen()
-        podaci = izvestaj_funk(self.ret)
+        if ima_ret:
+            podaci = izvestaj_funk(self.ret)
+        else:
+            podaci = izvestaj_funk()
         self.popuni_tabelu(self.table, podaci) 
         
     def namesti_top_level(self,window_y,sacuvaj_y,ret_komanda=None):
@@ -123,13 +126,20 @@ class IzvestajiLogika(winTemplate):
     # Izvestaj E
     def e_izvestaj(self,izabrano=False):
         self.trenutni_izvestaj = "E"
-        pass
+        kriterijumi=["Korisničko ime","Ime","Prezime","Broj rezervacija"]
+        self.btnFilteri_onemogucen()
+        self.postavi_izvestaj(kriterijumi,bp_izvestaji.e_izvestaj,"","",True,False)
     
     def fltr_e_izvestaj(self):
+        """Nema filtere"""
         pass
     
     def ret_e(self):    
+        """Nema return vrednost"""
         pass
+    
+    def e_txt(self):
+        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_E.txt", "Broj rezervacija po instruktoru (30 dana)")
     
     
     # Izvestaj F

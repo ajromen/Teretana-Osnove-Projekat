@@ -36,6 +36,7 @@ class IzvestajiWindow(IzvestajiLogika):
             return
         self.ret = None
         self.btnFajl_onemogucen()
+        self.btnFilteri_omogucen()
         izvestaj = self.varIzvestaj.get().split(". ")[0]
         self.table.destroy()
 
@@ -127,3 +128,11 @@ class IzvestajiWindow(IzvestajiLogika):
     def btnFajl_omogucen(self):
         self.btnFajl.configure(command=self.sacuvaj_u_fajl)
         self.btnFajl.configure(fg_color="#1F6AA5")
+        
+    def btnFilteri_onemogucen(self):
+        self.btnFilteri.configure(command=None)
+        self.btnFilteri.configure(fg_color="#252525")
+        
+    def btnFilteri_omogucen(self):
+        self.btnFilteri.configure(command=self.filteri)
+        self.btnFilteri.configure(fg_color="#1F6AA5")
