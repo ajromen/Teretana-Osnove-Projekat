@@ -25,7 +25,7 @@ class ProgramiWindow(winTemplate):
         
         self.kriterijumi=["Šifra", "Naziv", "Vrsta treninga", "Trajanje", "Instruktor", "Potreban paket", "Opis"]
         self.kriterijumiMap={
-            "Šifra" : "id_programa",
+            "Šifra" : "id_programa", 
             "Naziv" : "naziv_programa",
             "Vrsta treninga" : "naziv_vrste_treninga",
             "Trajanje" : "trajanje",

@@ -124,11 +124,6 @@ def e_izvestaj():
     return sorted(podaci,key=lambda x:x[3],reverse=True)
 
 # f) Broj realizovanih rezervacija po paketu
-# f. Ukupan broj rezervacija realizovanih u terminima treninga za koje je
-# potreban premium paket članstva kao i ukupan broj rezervacija
-# realizovanih u terminima treninga za koje je potreban standardni paket
-# članstva, u poslednjih 30 dana.
-
 def f_izvestaj(paket:bool):
     cursor=BazaPodataka.get_cursor()
     komanda='''SELECT 
@@ -150,5 +145,23 @@ def f_izvestaj(paket:bool):
     cursor.execute(komanda,(paket,))
     return cursor.fetchall()
 
-# g) Top 3 najpopularnija treninga
+# g) Top 3 najpopularnija programa treninga
+# g. Najpopularniji programi treninga. Pronaći najpopularnija 3 programa
+# treninga po broju rezervacija izvršenih u poslednjih godinu dana.
+def g_izvestaj():
+    cursor=BazaPodataka.get_cursor()
+    komanda='''SELECT 
+                    Program.naziv,
+                    COUNT(*)
+                FROM Rezervacija
+                JOIN Termin ON Rezervacija.id_termina = Termin.id_termina
+                JOIN Trening ON Termin.id_treninga = Trening.id_treninga
+                JOIN Program ON Trening.id_programa = Program.id_programa
+                WHERE Termin.datum_odrzavanja > date('now','-1 year')
+                GROUP BY Program.naziv
+                ORDER BY COUNT(*) DESC
+                LIMIT 3
+            '''
+    cursor.execute(komanda)
+    return cursor.fetchall()
 # h) Najpopularniji dan u nedelji (1 godina)

@@ -175,14 +175,20 @@ class IzvestajiLogika(winTemplate):
     # Izvestaj G
     def g_izvestaj(self,izabrano=False):
         self.trenutni_izvestaj = "G"
-        pass
+        kriterijumi = ["Naziv programa", "Broj rezervacija"]
+        self.btnFilteri_onemogucen()
+        self.postavi_izvestaj(kriterijumi,bp_izvestaji.g_izvestaj,"","Top 3 najpopularnija programa treninga",True,False)
     
     def fltr_g_izvestaj(self):
+        """Nema filtere"""
         pass
     
     def ret_g(self):
+        """Nema return vrednost"""
         pass
     
+    def g_txt(self):
+        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_G.txt", "Top 3 najpopularnija programa treninga")
     
     # Izvestaj H
     def h_izvestaj(self,izabrano=False):

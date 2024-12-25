@@ -18,7 +18,7 @@ class IzvestajiWindow(IzvestajiLogika):
             "D": "Broj rezervacija za dan u nedelji",
             "E": "Broj rezervacija po instruktoru (30 dana)",
             "F": "Broj realizovanih rezervacija po paketu",
-            "G": "Top 3 najpopularnija treninga",
+            "G": "Top 3 najpopularnija programa treninga",
             "H": "Najpopularniji dan u nedelji (1 godina)"
         }
         self.varIzvestaj = StringVar()
