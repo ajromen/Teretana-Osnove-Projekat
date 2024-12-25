@@ -324,7 +324,7 @@ class ProgramiWindow(winTemplate):
         self.trenutni_window.destroy()
         self.trenutni_window=None
         
-        
+        self.txtbxOpis=None
         self.entryNaziv=None
         self.entrySifra=None
         self.cmbbxInstruktor=None

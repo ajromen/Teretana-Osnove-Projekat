@@ -123,6 +123,30 @@ def eng_dani_u_srp(dan):
    }
    return dani_map.get(dan, "Nepoznat dan")
 
+def broj_u_dan(dan):
+   dani_map = {
+      0: "Ponedeljak",
+      1: "Utorak",
+      2: "Sreda",
+      3: "Četvrtak",
+      4: "Petak",
+      5: "Subota",
+      6: "Nedelja"
+   }
+   return dani_map.get(dan, "Nepoznat dan")
+
+def dan_u_broj(dan):
+   dani_map = {
+      "Ponedeljak": 0,
+      "Utorak": 1,
+      "Sreda": 2,
+      "Četvrtak": 3,
+      "Petak": 4,
+      "Subota": 5,
+      "Nedelja": 6
+   }
+   return dani_map.get(dan, -1)
+
 
 def sacuvaj_tabelu(podaci, imena_kolona, putanja):
    with open(putanja,'w',encoding='utf-8') as file:

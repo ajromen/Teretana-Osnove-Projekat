@@ -1,9 +1,10 @@
 |          Ime          |        Prezime        |   Datum rezervacije   |       Broj mesta      |        Program        |
 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 |          Akva         |         Vivić         |       2024-11-11      |           9           | Mršavljenje uz Momira |
+|         Rolex         |       Jovanović       |       2024-01-01      |           1           |    Milica do pobede   |
 |          Akva         |         Vivić         |       2024-11-11      |           9           | Mršavljenje uz Momira |
 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 
-Rezervacije po datumu i instruktoru: 2024-11-11, momir
+Rezervacije po danu: Utorak
 
-Datum izrade izveštaja: 2024-12-25 18:16:22
+Datum izrade izveštaja: 2024-12-25 18:16:34

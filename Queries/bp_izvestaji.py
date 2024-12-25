@@ -77,10 +77,10 @@ def c_izvestaj(podaci:str):
 def d_izvestaj(dan_broj:int):#0..6
     cursor = BazaPodataka.get_cursor()
     komanda = '''SELECT 
-                    strftime('%w', Rezervacija.datum)
                     Korisnici.ime,
                     Korisnici.prezime,
                     Rezervacija.datum,
+                    Rezervacija.oznaka_reda_kolone,
                     Program.naziv
                 FROM Rezervacija
                 JOIN Korisnici ON Rezervacija.id_korisnika = Korisnici.username
@@ -90,7 +90,7 @@ def d_izvestaj(dan_broj:int):#0..6
                 WHERE strftime('%w', Rezervacija.datum) = ?
                 '''
     
-    cursor.execute(komanda, (dan_broj,))
+    cursor.execute(komanda, (str(dan_broj),))
     
     return cursor.fetchall()
 
