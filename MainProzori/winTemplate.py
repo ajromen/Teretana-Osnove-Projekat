@@ -40,52 +40,45 @@ class winTemplate:
         self.cmbbxSearch = self.create_comboBox(values, x, y)
 
     def create_comboBox(self, values, x, y, width=148,variable=None):
-        canvas=self.if_top_level_canvas()
-        return wid.create_comboBox(canvas, values, x=x, y=y,width=width,variable=variable)
+        
+        return wid.create_comboBox(self.get_canvas(), values, x=x, y=y,width=width,variable=variable)
 
     def create_entry_search(self, command):
         self.searchPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/searchPozadina.png", 23, 53)
         self.entrySearch = wid.create_entry_search(self.current_canvas, command)
 
     def create_label(self, text, x, y, font_size=12):
-        canvas=self.if_top_level_canvas()
-        wid.create_label(canvas, text, x, y, font_size)
+        wid.create_label(self.get_canvas(), text, x, y, font_size)
 
     def create_button(self, image_path, x, y, width=None, height=None, command=None):
-        canvas=self.if_top_level_canvas()
-        return wid.create_button(canvas, image_path, x, y, width, height, command)
+        return wid.create_button(self.get_canvas(), image_path, x, y, width, height, command)
         
     def napravi_sql_cmbbx(self, text, labelX, labelY, comboX, comboY, query, broj_kolona=1, specificni=False,font_size=15):  
-        canvas=self.if_top_level_canvas()
-        return wid.napravi_sql_cmbbx(canvas, text, labelX, labelY, comboX, comboY, query, broj_kolona, specificni,font_size)
+        return wid.napravi_sql_cmbbx(self.get_canvas(), text, labelX, labelY, comboX, comboY, query, broj_kolona, specificni,font_size)
         
     def selektuj_vrednost_comboBox(self, cmbbx, vrednost):
         wid.selektuj_vrednost_comboBox(cmbbx, vrednost)
         
     def create_switch(self, x, y, width=43, height=24,):
-        canvas=self.if_top_level_canvas()
-        swtch=ctk.CTkSwitch(canvas,width=width,height=height,text='')
+        swtch=ctk.CTkSwitch(self.get_canvas(),width=width,height=height,text='')
         swtch.place(x=x,y=y)
         return swtch
 
     def create_text_button(self, text, x, y, command=None,width=140,height=28,hover_color="#144870",fg_color="#1F6AA5"):
-        canvas=self.if_top_level_canvas()
-        btn = ctk.CTkButton(canvas, text=text, command=command,width=width,height=height,font=("Inter", 15),fg_color=fg_color,hover_color=hover_color)
+        btn = ctk.CTkButton(self.get_canvas(), text=text, command=command,width=width,height=height,font=("Inter", 15),fg_color=fg_color,hover_color=hover_color)
         btn.place(x=x,y=y)
         return btn
         
-    def if_top_level_canvas(self)->Canvas:
+    def get_canvas(self)->Canvas:
         if self.top_level:canvas=self.trenutni_window
         else:canvas=self.current_canvas
         return canvas
         
     def create_entry(self, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",manual_fin_fon=(False,"Polje"),justify="left"):
-        canvas=self.if_top_level_canvas()
-        return wid.create_entry(canvas, x, y, on_focus_in, on_focus_out, placeholder, width, height, belo, state, corner_radius, back_color, manual_fin_fon, justify)
+        return wid.create_entry(self.get_canvas(), x, y, on_focus_in, on_focus_out, placeholder, width, height, belo, state, corner_radius, back_color, manual_fin_fon, justify)
     
     def create_date_picker(self,x,y,variable=None):
-        canvas=self.if_top_level_canvas()
-        return wid.create_date_picker(canvas, x, y, variable)
+        return wid.create_date_picker(self.get_canvas(), x, y, variable)
     
     def popuni_tabelu(self):
         raise NotImplementedError("Metoda popuni_tabelu nije implementirana")
