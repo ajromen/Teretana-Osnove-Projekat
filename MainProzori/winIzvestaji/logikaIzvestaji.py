@@ -135,7 +135,7 @@ class IzvestajiLogika(winTemplate):
         self.trenutni_izvestaj = "E"
         kriterijumi=["Korisničko ime","Ime","Prezime","Broj rezervacija"]
         self.btnFilteri_onemogucen()
-        self.postavi_izvestaj(kriterijumi,bp_izvestaji.e_izvestaj,"","",True,False)
+        self.postavi_izvestaj(kriterijumi,bp_izvestaji.e_izvestaj,"","Broj rezervacija po instruktoru (30 dana)",True,False)
     
     def fltr_e_izvestaj(self):
         """Nema filtere"""
@@ -159,7 +159,7 @@ class IzvestajiLogika(winTemplate):
     def fltr_f_izvestaj(self):
         self.top_level = True
         self.namesti_top_level(150, 90, self.ret_f)
-        self.create_label("Premium/Standard paket:", 27, 43)
+        self.create_label("Standard/Premium paket:", 27, 43)
         self.switchPaket=self.create_switch(255,39)
         self.top_level = False
     
