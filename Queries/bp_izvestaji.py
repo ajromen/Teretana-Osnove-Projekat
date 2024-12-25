@@ -94,10 +94,6 @@ def d_izvestaj(dan_broj:int):#0..6->1..7
     return cursor.fetchall()
 
 # e) Broj rezervacija po instruktoru (30 dana)
-# e. Ukupan broj rezervacije po instruktorima (za svakog instruktora) u
-# poslednjih 30 dana. Sortirati prikazane instruktore po ukupnom broju
-# ostvarenih rezervacija u njihovim terminima treninga.
-
 def e_izvestaj():
     cursor=BazaPodataka.get_cursor()
     komanda='''SELECT 
@@ -128,5 +124,31 @@ def e_izvestaj():
     return sorted(podaci,key=lambda x:x[3],reverse=True)
 
 # f) Broj realizovanih rezervacija po paketu
+# f. Ukupan broj rezervacija realizovanih u terminima treninga za koje je
+# potreban premium paket članstva kao i ukupan broj rezervacija
+# realizovanih u terminima treninga za koje je potreban standardni paket
+# članstva, u poslednjih 30 dana.
+
+def f_izvestaj(paket:bool):
+    cursor=BazaPodataka.get_cursor()
+    komanda='''SELECT 
+                    Korisnici.ime,
+                    Korisnici.prezime,
+                    Rezervacija.datum,
+                    Rezervacija.oznaka_reda_kolone,
+                    Program.naziv
+                FROM Rezervacija
+                JOIN Termin ON Rezervacija.id_termina = Termin.id_termina
+                JOIN Trening ON Termin.id_treninga = Trening.id_treninga
+                JOIN Program ON Trening.id_programa = Program.id_programa
+                JOIN Korisnici ON Rezervacija.id_korisnika = Korisnici.username
+                WHERE 
+                    Program.potreban_paket = ? AND
+                    Termin.datum_odrzavanja < date('now') AND
+                    Termin.datum_odrzavanja > date('now','-30 day')
+            '''
+    cursor.execute(komanda,(paket,))
+    return cursor.fetchall()
+
 # g) Top 3 najpopularnija treninga
 # h) Najpopularniji dan u nedelji (1 godina)

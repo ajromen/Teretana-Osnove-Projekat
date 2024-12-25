@@ -29,7 +29,6 @@ def vozi(ekran,user=''):
     return winMain.start(return_value[0][0],return_value[0][1])
 
 def azuriraj_podatke():
-    #BazaPodataka.restart()
     bp_termini.generisi_termine()
     bp_korisnici.proveri_status_korisnika()
     bp_korisnici.obrisi_goste()
@@ -49,6 +48,7 @@ def main():
             staDaRadim=staDaRadim[0]
 
 if __name__ == '__main__':
+    #BazaPodataka.restart()
     azuriraj_podatke()
     window=ctk.CTk()
     

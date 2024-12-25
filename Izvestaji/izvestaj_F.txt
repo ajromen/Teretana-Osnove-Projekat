@@ -1,0 +1,8 @@
+|            Ime             |          Prezime           |     Datum rezervacije      |         Broj mesta         |          Program           |
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+|         Aleksandar         |          Pavlović          |         2024-12-24         |             2              | Izvajajte telo uz Ljubinku |
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+Za odabrani paket: 'Standard', broj realizovanih rezervacija u poslednjih 30 dana je: 1
+
+Datum izrade izveštaja: 2024-12-25 23:10:39

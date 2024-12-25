@@ -162,8 +162,10 @@ def sacuvaj_tabelu(podaci, imena_kolona, putanja):
       file.write("|")
       for ime in imena_kolona:
          file.write(ime.center(max)+"|")
-         
-      file.write("\n"+"—"*(max+1)*len(imena_kolona)+"\n")
+      
+      broj_linija=(max+1)*len(imena_kolona)+1
+      
+      file.write("\n"+"—"*broj_linija+"\n")
       
       for podatak in podaci:
          file.write("|")
@@ -171,7 +173,7 @@ def sacuvaj_tabelu(podaci, imena_kolona, putanja):
             file.write(str(item).center(max)+"|")
          file.write("\n")
          
-      file.write("—"*(max+1)*len(imena_kolona)+"\n")
+      file.write("—"*broj_linija+"\n")
    
    obavestenje(f"Podaci su uspešno sačuvani u fajl: {putanja}",title="Uspešno čuvanje")
       

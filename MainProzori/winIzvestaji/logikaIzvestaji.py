@@ -7,18 +7,25 @@ class IzvestajiLogika(winTemplate):
         self.trenutni_izvestaj = None 
         self.ret = None
         
-    def postavi_izvestaj(self, kriterijumi, izvestaj_funk,text_fail='',text_succ='',uslov=False,ima_ret=True):
+    def postavi_izvestaj(self, kriterijumi, izvestaj_funk,text_fail='',text_succ='',uslov=False,ima_ret=True,izbroj=False):
         self.btnFajl_onemogucen()
         self.create_table(kriterijumi, True)
         if not uslov:
             self.info_upozorenje(text_fail)
             return
-        self.info_uspesan(text_succ)
+        
         self.btnFajl_omogucen()
         if ima_ret:
             podaci = izvestaj_funk(self.ret)
         else:
             podaci = izvestaj_funk()
+            
+        if izbroj:
+            self.broj_redova=len(podaci)
+            text_succ += str(self.broj_redova)
+        
+        self.info_uspesan(text_succ)
+        
         self.popuni_tabelu(self.table, podaci) 
         
     def namesti_top_level(self,window_y,sacuvaj_y,ret_komanda=None):
@@ -124,7 +131,7 @@ class IzvestajiLogika(winTemplate):
 
 
     # Izvestaj E
-    def e_izvestaj(self,izabrano=False):
+    def e_izvestaj(self):
         self.trenutni_izvestaj = "E"
         kriterijumi=["Korisničko ime","Ime","Prezime","Broj rezervacija"]
         self.btnFilteri_onemogucen()
@@ -145,14 +152,25 @@ class IzvestajiLogika(winTemplate):
     # Izvestaj F
     def f_izvestaj(self,izabrano=False):
         self.trenutni_izvestaj = "F"
-        pass
+        kriterijumi = ["Ime", "Prezime", "Datum rezervacije", "Broj mesta", "Program"]
+        pak = "Premium" if self.ret else "Standard"
+        self.postavi_izvestaj(kriterijumi,bp_izvestaji.f_izvestaj,"Molimo Vas prvo izaberite paket u filterima.",f"Paket: {pak}, Broj realizovanih rezervacija(30 dana): ",uslov=izabrano,izbroj=True)
     
     def fltr_f_izvestaj(self):
-        pass
+        self.top_level = True
+        self.namesti_top_level(150, 90, self.ret_f)
+        self.create_label("Premium/Standard paket:", 27, 43)
+        self.switchPaket=self.create_switch(255,39)
+        self.top_level = False
     
     def ret_f(self):
-        pass
+        self.ret = self.switchPaket.get()
+        self.trenutni_window.destroy()
+        self.f_izvestaj(izabrano=True)
     
+    def f_txt(self):
+        pak = "Premium" if self.ret else "Standard"
+        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_F.txt", f"Za odabrani paket: '{pak}', broj realizovanih rezervacija u poslednjih 30 dana je: {self.broj_redova}")
     
     # Izvestaj G
     def g_izvestaj(self,izabrano=False):
