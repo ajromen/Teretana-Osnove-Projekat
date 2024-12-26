@@ -27,13 +27,12 @@ class ClanoviWindow(winTemplate):
             "Članstvo" : "status_clanstva",
             "Paket" : "uplacen_paket",
             "Datum registracije" : "datum_registracije",
-            "Članarina obnovljena" : "obnova_clanarine"
         }
         self.kriterijumi=["Korisničko ime", "Ime", "Prezime", "Članstvo", "Paket","Datum registracije","Članarina obnovljena","Broj rezervacija"]
         
-        self.create_entry_search(self.izlistaj)
+        self.create_entry_search(self.pretrazi)
         
-        self.create_cmbbxSearch(self.kriterijumi[:-1])
+        self.create_cmbbxSearch(self.kriterijumi[:-2])
         
         self.create_table(self.kriterijumi)
         self.table.column("Korisničko ime", width=90)
@@ -99,7 +98,7 @@ class ClanoviWindow(winTemplate):
             else:
                 pass
         
-        self.popuni_tabelu(kriterijum=kriterijum,pretraga=pretraga)
+        self.popuni_tabelu(self.table,kriterijum=kriterijum,pretraga=pretraga)
 
     def izlistaj(self,kriterijum='username',pretraga=""):              
         return bp_korisnici.izlistaj_korisnike(pretraga,kriterijum)
