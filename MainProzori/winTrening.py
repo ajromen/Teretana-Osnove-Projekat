@@ -86,17 +86,23 @@ class TreningWindow(winTemplate):
         if not slctd_item:
             helperFunctions.obavestenje(poruka="Niste odabrali nijedan trening za brisanje.")
             return
-
-        pitaj = helperFunctions.pitaj(title="Potvrda brisanja", poruka="Da li ste sigurni da želite da obiršete odabrani trening?")
-        if not pitaj:
-            return
-
+        
         slctd_data = self.table.item(slctd_item)
         trening_id = slctd_data["values"][0]  
-  
-        bp_trening.obrisi_trening(trening_id)
+        obrisan = self.table.item(slctd_item, "tags")
 
-        self.table.delete(slctd_item)
+        totalno=False
+        for tag in obrisan:
+            if "obrisano" in tag:
+                totalno=helperFunctions.pitaj("Ako obišete već obrisan trening, on će biti trajno\n obrisan kao i sve što je vezano za njega.\n Da li ste sigurni da želite da nastavite?","Brisanje")
+
+        if not totalno:
+            if not helperFunctions.pitaj(title="Potvrda brisanja", poruka="Da li ste sigurni da želite da obiršete odabrani trening?"):
+                return
+  
+        bp_trening.obrisi_trening(trening_id,totalno)
+
+        self.popuni_tabelu(self.table)
         helperFunctions.obavestenje(title="Brisanje", poruka="Trening je uspešno obrisan.")
             
                 
@@ -104,8 +110,15 @@ class TreningWindow(winTemplate):
         self.top_level=True
         slctd_item = self.table.selection()
         if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijedan trening za izmenu.")
+            helperFunctions.obavestenje(poruka="Niste odabrali nijedan trening za izmenu.",crveno=True)
             return
+        
+        obrisan = self.table.item(slctd_item, "tags")
+
+        for tag in obrisan:
+            if "obrisano" in tag:
+                helperFunctions.obavestenje("Ne možete izmeniti obrisan trening.",crveno=True)
+                return
         
         self.trenutni_window=helperFunctions.napravi_toplevel(height=390,title="Izmeni trening")
         

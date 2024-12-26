@@ -67,7 +67,7 @@ def azuriraj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_p
     BazaPodataka.commit()
     return False
 
-def obrisi_trening(id_treninga):
+def obrisi_trening(id_treninga,totalno=False):
     cursor=BazaPodataka.get_cursor()
     #oznaci termin kao obrisan
     cursor.execute("UPDATE Trening SET obrisan=TRUE WHERE id_treninga = ?",(id_treninga,))
@@ -76,6 +76,9 @@ def obrisi_trening(id_treninga):
     cursor.execute("SELECT id_termina FROM Termin WHERE id_treninga=?",(id_treninga,))
     id_termina=cursor.fetchall()
     for termin in id_termina:
-        obrisi_termin(termin[0])
+        obrisi_termin(termin[0],totalno)
+        
+    if totalno:
+        cursor.execute("DELETE FROM Trening WHERE id_treninga=?",(id_treninga,))
     
     BazaPodataka.commit()

@@ -57,9 +57,10 @@ def dodaj_termin(id_termina,datum_odrzavanja,id_treninga,obrisan):
 def izmeni_termin(id_termina,datum_odrzavanja=None,id_treninga=None,obrisan=None):
     pass
 
-def obrisi_termin(id_termina):
+def obrisi_termin(id_termina,totalno=True):
+    """ako se obrise termin u buducnosti onda treba da se obrise i rezervacija za taj termin
+    ako je termin iz proslosti on ne treba da se obrise ali ne treba ni rezervacija"""
     cursor=BazaPodataka.get_cursor()
-    danas = datetime.date.today().strftime("%Y-%m-%d")
     #oznaci termin kao obrisan
     cursor.execute("UPDATE Termin SET obrisan=TRUE WHERE id_termina = ?",(id_termina,))
     
@@ -74,13 +75,11 @@ def obrisi_termin(id_termina):
             obrisi_rezervaciju(rezervacija[0])
         cursor.execute("DELETE FROM Termin WHERE id_termina=?", (id_termina,))
         
-    
-    #ako se obrise termin u buducnosti onda treba da se obrise i rezervacija za taj termin
-    #ako je termin iz proslosti on ne treba da se obrise ali ne treba ni rezervacija
-    
+    if totalno:
+        cursor.execute("DELETE FROM Rezervacija WHERE id_termina=?", (id_termina,))
+        cursor.execute("DELETE FROM Termin WHERE id_termina=?",(id_termina,))
     
     BazaPodataka.commit()
-    
 
     
 def generisi_termine(za_naredne_sedmice=2):

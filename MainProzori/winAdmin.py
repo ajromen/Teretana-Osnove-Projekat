@@ -127,7 +127,7 @@ class AdminWindow(winTemplate):
     def obrisi(self):
         slctd_item = self.table.selection()
         if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijednog korisnika.")
+            helperFunctions.obavestenje(poruka="Niste odabrali nijednog korisnika.",crveno=True)
             return
         
         pitaj = helperFunctions.pitaj(title="Potvrda brisanja", poruka="Da li ste sigurni da želite da obiršete odabranog korisnika?")

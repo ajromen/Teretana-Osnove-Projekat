@@ -97,15 +97,21 @@ class VrsteTreningaWindow(winTemplate):
             helperFunctions.obavestenje(poruka="Niste odabrali nijednu vrstu treninga.")
             return
         
-        pitaj = helperFunctions.pitaj(title="Potvrda brisanja", poruka="Da li ste sigurni da želite da obiršete odabranu vrstu treninga?")
-        if not pitaj:
-            return
-
         slctd_data = self.table.item(slctd_item)
         id_vrste_treninga = slctd_data["values"][0]
+        obrisan = self.table.item(slctd_item, "tags")
         
-        bp_vrste_treninga.obrisi_vrste_treninga(id_vrste_treninga)
+        totalno=False
+        for tag in obrisan:
+            if "obrisano" in tag:
+                totalno=helperFunctions.pitaj("Ako obišete već obrisanu vrstu treninga, ona će biti trajno\n obrisana kao i sve što je vezano za nju.\n Da li ste sigurni da želite da nastavite?","Brisanje")
+        
+        if not totalno:
+            if not helperFunctions.pitaj(title="Potvrda brisanja", poruka="Da li ste sigurni da želite da obiršete odabranu vrstu treninga?"):
+                return
 
+        bp_vrste_treninga.obrisi_vrste_treninga(id_vrste_treninga,totalno)
+    
         self.popuni_tabelu(self.table)
         helperFunctions.obavestenje(title="Brisanje", poruka="Vrsta treninga je uspešno obrisana.")
             
@@ -115,6 +121,13 @@ class VrsteTreningaWindow(winTemplate):
         if not slctd_item:
             helperFunctions.obavestenje(poruka="Niste odabrali nijednu vrstu treninga za izmenu.")
             return
+        
+        obrisan = self.table.item(slctd_item, "tags")
+
+        for tag in obrisan:
+            if "obrisano" in tag:
+                helperFunctions.obavestenje("Ne možete izmeniti obrisan trening.",crveno=True)
+                return
 
         self.trenutni_window = helperFunctions.napravi_toplevel(height=267, title="Izmeni vrstu treninga")
 

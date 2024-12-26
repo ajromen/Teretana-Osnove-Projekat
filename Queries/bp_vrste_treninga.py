@@ -29,15 +29,18 @@ def dodaj_vrstu_treninga(sifra,naziv):
 	        VALUES	(?,?);'''
     cursor.execute(komanda, (sifra,naziv,))
     
-def obrisi_vrste_treninga(id_vrste_treninga):
+def obrisi_vrste_treninga(id_vrste_treninga,totalno=False):
     cursor=BazaPodataka.get_cursor()
     cursor.execute("UPDATE Vrste_treninga SET obrisan=TRUE WHERE id_vrste_treninga = ?",(id_vrste_treninga,))
     
     #logicko brisanje svih termina
-    cursor.execute("SELECT id_vrste_treninga FROM Program WHERE id_vrste_treninga=?",(id_vrste_treninga,))
+    cursor.execute("SELECT id_programa FROM Program WHERE id_vrste_treninga=?",(id_vrste_treninga,))
     id_programa=cursor.fetchall()
     for program in id_programa:
-        obrisi_program(program[0])
+        obrisi_program(program[0],totalno)
+        
+    if totalno:
+        cursor.execute("DELETE FROM Vrste_treninga WHERE id_vrste_treninga = ?",(id_vrste_treninga,))
     
     BazaPodataka.commit()
     

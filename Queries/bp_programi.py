@@ -104,7 +104,7 @@ def get_trajanje_range():
         return rez[0], rez[1]
     return 0, 0
 
-def obrisi_program(id_programa):
+def obrisi_program(id_programa,totalno=False):
     cursor=BazaPodataka.get_cursor()
     #oznaci trening kao obrisan
     cursor.execute("UPDATE Program SET obrisan=TRUE WHERE id_programa = ?",(id_programa,))
@@ -113,9 +113,13 @@ def obrisi_program(id_programa):
     cursor.execute("SELECT id_treninga FROM Trening WHERE id_programa=?",(id_programa,))
     id_treninga=cursor.fetchall()
     for trening in id_treninga:
-        obrisi_trening(trening[0])
+        obrisi_trening(trening[0],totalno)
+        
+    if totalno:
+        cursor.execute("DELETE FROM Program WHERE id_programa=?",(id_programa,))
     
     BazaPodataka.commit()
+    
     
 def get_trajanje(id_programa: str)->int:
     cursor=BazaPodataka.get_cursor()

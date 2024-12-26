@@ -192,17 +192,23 @@ class ProgramiWindow(winTemplate):
         if not slctd_item:
             helperFunctions.obavestenje(poruka="Niste odabrali nijedan program za brisanje.")
             return
-
-        response = helperFunctions.pitaj(title="Potvrda brisanja", poruka="Da li ste sigurni da želite da obiršete odabrani program?")
-        if not response:
-            return
-
+        
         slctd_data = self.table.item(slctd_item)
-        program_id = slctd_data["values"][0]  
+        program_id = slctd_data["values"][0]
+        obrisan = self.table.item(slctd_item, "tags")
+
+        totalno=False
+        for tag in obrisan:
+            if "obrisano" in tag:
+                totalno=helperFunctions.pitaj("Ako obišete već obrisan program, on će biti trajno\n obrisan kao i sve što je vezano za njega.\n Da li ste sigurni da želite da nastavite?","Brisanje")
+            
+        if not totalno:
+            if not helperFunctions.pitaj(title="Potvrda brisanja", poruka="Da li ste sigurni da želite da obiršete odabrani program?"):
+                return
+       
+        bp_programi.obrisi_program(id_programa=program_id,totalno=totalno)
         
-        bp_programi.obrisi_program(id_programa=program_id)
-        
-        self.table.delete(slctd_item)
+        self.popuni_tabelu(self.table)
         helperFunctions.obavestenje(title="Brisanje", poruka="Program je uspešno obrisan.")
                 
     def winProgrami_Izmeni(self):
@@ -210,7 +216,12 @@ class ProgramiWindow(winTemplate):
         if not slctd_item:
             helperFunctions.obavestenje(poruka="Niste odabrali nijedan program za izmenu.")
             return
-        
+        obrisan = self.table.item(slctd_item, "tags")
+
+        for tag in obrisan:
+            if "obrisano" in tag:
+                helperFunctions.obavestenje("Ne možete izmeniti već obrisan program.",crveno=True)
+                return
         self.top_level=True
         self.napravi_dodaj_izmeni_prozor()
         

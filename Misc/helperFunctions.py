@@ -9,28 +9,29 @@ def hashPassword(password):
    password_bytes = password.encode('utf-8')
    hash_object = hashlib.sha256(password_bytes)
    return hash_object.hexdigest()
-
-def obavestenje(poruka,title="Greška",sirina=350):
+ 
+def obavestenje(poruka,title="Greška",sirina=350,crveno=False):
    error_window = ctk.CTkToplevel(fg_color='#000000')
    error_window.title(title)
    error_window.geometry(f"{sirina}x150")
    error_window.resizable(False, False)
    centriraj_window(error_window)
-
-   error_label = ctk.CTkLabel(error_window, text=poruka, fg_color="red")
+   fg_color='red' if crveno else 'black'
+   error_label = ctk.CTkLabel(error_window, text=poruka, fg_color=fg_color)
    error_label.pack(pady=20)
 
    close_button = ctk.CTkButton(error_window, text="Zatvori", command=error_window.destroy)
    close_button.pack(pady=10)
 
-def pitaj(poruka,title="Greška",text1="Da",text2="Ne"):
+def pitaj(poruka,title="Greška",text1="Da",text2="Ne",crveno=True):
    error_window = ctk.CTkToplevel(fg_color='#000000')
    error_window.title(title)
    error_window.geometry("350x150")
    error_window.resizable(False, False)
    centriraj_window(error_window)
+   fg_color='red' if crveno else 'black'
 
-   error_label = ctk.CTkLabel(error_window, text=poruka, fg_color="red")
+   error_label = ctk.CTkLabel(error_window, text=poruka, fg_color=fg_color)
    error_label.pack(pady=20)
 
    result = {"value": False}

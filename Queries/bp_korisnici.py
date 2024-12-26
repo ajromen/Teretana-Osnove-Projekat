@@ -210,7 +210,7 @@ def aktiviraj_paket(username,paket):
     cursor.execute(komanda, (paket,username,))
     BazaPodataka.commit()
 
-def obrisi_korisnika(username,instruktor=False):
+def obrisi_korisnika(username,instruktor=False):#mislim da ovo ne radi (menja celog obrisan_korisnik)
     if not obrisan_korisnik(username): return
     cursor=BazaPodataka.get_cursor()
     
