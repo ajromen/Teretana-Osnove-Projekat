@@ -66,7 +66,7 @@ class VrsteTreningaWindow(winTemplate):
         
         self.create_label("Šifra vrste treninga:",23,35)
         self.create_label("Naziv:",23,86)
-        self.entrySifra=self.create_entry(170,32,width=150,height=23,manual_fin_fon=(True,"Polje"))
+        self.entrySifra=self.create_entry(170,32,width=150,height=23,auto_fin_fout=(True,"Polje"))
 
         self.txtbxOpis = ctk.CTkTextbox(self.trenutni_window,width=294,height=80,corner_radius=4,fg_color="#080A17")# drugi pput
         self.txtbxOpis.place(x=26,y=112)
@@ -137,7 +137,7 @@ class VrsteTreningaWindow(winTemplate):
 
         self.create_label("Šifra vrste treninga:", 23, 35)
         self.create_label("Naziv:", 23, 86)
-        self.entrySifra = self.create_entry(170, 32, width=150, height=23, manual_fin_fon=(True, "Polje"), placeholder=slctd_id, state="disabled")
+        self.entrySifra = self.create_entry(170, 32, width=150, height=23, auto_fin_fout=(True, "Polje"), placeholder=slctd_id, state="disabled")
 
         self.txtbxOpis = ctk.CTkTextbox(self.trenutni_window, width=294, height=80, corner_radius=4, fg_color="#080A17")
         self.txtbxOpis.place(x=26, y=112)

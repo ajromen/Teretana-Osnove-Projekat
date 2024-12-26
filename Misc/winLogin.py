@@ -16,11 +16,11 @@ class LoginWindow:
             
     def create_widgets(self):
         #korisnicko ime
-        self.entryUsername = wid.create_entry(canvas=self.canvas,x=403, y=225,corner_radius=0, back_color="#1A1B20", placeholder="Korisničko ime", manual_fin_fon=(True,"Polje")) 
+        self.entryUsername = wid.create_entry(canvas=self.canvas,x=403, y=225,corner_radius=0, back_color="#1A1B20", placeholder="Korisničko ime", auto_fin_fout=(True,"Polje")) 
         self.entryUsername.bind("<KeyRelease>", self.promeni_pozdrav)
         
         #lozinka
-        self.entryPassword = wid.create_entry(self.canvas,x=403, y=281,back_color="#1A1B20",corner_radius=0, placeholder="Lozinka", manual_fin_fon=(True,"Lozinka")) 
+        self.entryPassword = wid.create_entry(self.canvas,x=403, y=281,back_color="#1A1B20",corner_radius=0, placeholder="Lozinka", auto_fin_fout=(True,"Lozinka")) 
         self.entryPassword.bind("<Return>", command=lambda event: self.prijavi_se())
         
         #login dugme

@@ -93,10 +93,10 @@ class AdminWindow(winTemplate):
         self.create_label("Lozinka:",47,164)
         self.create_label("Administrator:",27,218)
         
-        self.entryUsername=self.create_entry(141,30,width=179,height=23,manual_fin_fon=(True,"Polje"))
-        self.entryIme=self.create_entry(141,74,width=179,height=23,manual_fin_fon=(True,"Polje"))
-        self.entryPrezime=self.create_entry(141,118,width=179,height=23,manual_fin_fon=(True,"Polje"))
-        self.entryLozinka=self.create_entry(141,162,width=179,height=23,manual_fin_fon=(True,"Lozinka"),placeholder="Lozinka")
+        self.entryUsername=self.create_entry(141,30,width=179,height=23,auto_fin_fout=(True,"Polje"))
+        self.entryIme=self.create_entry(141,74,width=179,height=23,auto_fin_fout=(True,"Polje"))
+        self.entryPrezime=self.create_entry(141,118,width=179,height=23,auto_fin_fout=(True,"Polje"))
+        self.entryLozinka=self.create_entry(141,162,width=179,height=23,auto_fin_fout=(True,"Lozinka"),placeholder="Lozinka")
         
         self.switchPaket=self.create_switch(272,215)
 

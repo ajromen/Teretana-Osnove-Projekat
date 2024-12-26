@@ -74,8 +74,8 @@ class winTemplate:
         else:canvas=self.current_canvas
         return canvas
         
-    def create_entry(self, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",manual_fin_fon=(False,"Polje"),justify="left"):
-        return wid.create_entry(self.get_canvas(), x, y, on_focus_in, on_focus_out, placeholder, width, height, belo, state, corner_radius, back_color, manual_fin_fon, justify)
+    def create_entry(self, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",auto_fin_fout=(False,"Polje"),justify="left"):
+        return wid.create_entry(self.get_canvas(), x, y, on_focus_in, on_focus_out, placeholder, width, height, belo, state, corner_radius, back_color, auto_fin_fout, justify)
     
     def create_date_picker(self,x,y,variable=None):
         return wid.create_date_picker(self.get_canvas(), x, y, variable)

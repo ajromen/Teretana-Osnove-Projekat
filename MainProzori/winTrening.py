@@ -149,7 +149,7 @@ class TreningWindow(winTemplate):
         self.cmbbxSala=self.napravi_sql_cmbbx("Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala WHERE obrisana IS NOT TRUE",2,True) #Kombo box za naziv
         self.cmbbxProgram=self.napravi_sql_cmbbx("Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
         
-        self.entrySifra=self.create_entry(141, 30, width=179, height=23, placeholder="Unesite šifru",manual_fin_fon=(True,"Polje"))
+        self.entrySifra=self.create_entry(141, 30, width=179, height=23, placeholder="Unesite šifru",auto_fin_fout=(True,"Polje"))
         
         self.zajednicke_Dodaj_Izmeni(mode=0)
         self.top_level=False

@@ -106,8 +106,8 @@ class ProgramiWindow(winTemplate):
         self.slajder.set([self.trajanjeOd,self.trajanjeDo])#nema funk jedini put da se pojavljuje
         
         
-        self.entryTrajanjeOd=self.create_entry(32,166,width=59,height=18,manual_fin_fon=(True,"Polje"))
-        self.entryTrajanjeDo=self.create_entry(261,166,width=59,height=18,manual_fin_fon=(True,"Polje"))
+        self.entryTrajanjeOd=self.create_entry(32,166,width=59,height=18,auto_fin_fout=(True,"Polje"))
+        self.entryTrajanjeDo=self.create_entry(261,166,width=59,height=18,auto_fin_fout=(True,"Polje"))
         self.entryTrajanjeOd.bind("<Return>", lambda event:self.apdejtuj_slajder(self.entryTrajanjeOd.get(),self.trajanjeDo))
         self.entryTrajanjeDo.bind("<Return>", lambda event: self.apdejtuj_slajder(self.trajanjeOd, self.entryTrajanjeDo.get()))
         self.update_trajanje()

@@ -33,17 +33,17 @@ class SignupWindow:
         self.canvas.create_rectangle(41.0, 313.0, 352, 314, fill="#FFFFFF", outline="")
     
     def create_widgets(self):
-        self.entryName = wid.create_entry(self.canvas,x=41.0, y=209.0,width=312,corner_radius=0,back_color="#1A1B20", placeholder="Ime i Prezime",manual_fin_fon=(True,"Polje"))
+        self.entryName = wid.create_entry(self.canvas,x=41.0, y=209.0,width=312,corner_radius=0,back_color="#1A1B20", placeholder="Ime i Prezime",auto_fin_fout=(True,"Polje"))
         self.entryName.bind("<KeyRelease>", lambda event: self.promeni_dobrodosao())
 
-        self.entyUsername = wid.create_entry(self.canvas,x=41.0, y=253.0,width=312,corner_radius=0,back_color="#1A1B20", placeholder="Korisničko ime", manual_fin_fon=(True,"Polje"))
+        self.entyUsername = wid.create_entry(self.canvas,x=41.0, y=253.0,width=312,corner_radius=0,back_color="#1A1B20", placeholder="Korisničko ime", auto_fin_fout=(True,"Polje"))
         
         if(self.guest):
             self.entyUsername.delete(0, END)
             self.entyUsername.insert(0,self.user)
             self.entyUsername.configure(text_color="white")
 
-        self.entryPassword = wid.create_entry(self.canvas,x=41.0, y=293.0,width=312,corner_radius=0,back_color="#1A1B20", placeholder="Lozinka", manual_fin_fon=(True,"Lozinka"))
+        self.entryPassword = wid.create_entry(self.canvas,x=41.0, y=293.0,width=312,corner_radius=0,back_color="#1A1B20", placeholder="Lozinka", auto_fin_fout=(True,"Lozinka"))
         self.entryPassword.bind("<Return>", lambda event: self.dodaj_korisnika())
 
         wid.create_button(self.canvas,"src/img/Signup/button_3.png", x=121.0, y=337.0, width=160.0, height=35.0, command=self.dodaj_korisnika)

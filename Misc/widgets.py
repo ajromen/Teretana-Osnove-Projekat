@@ -14,7 +14,7 @@ def create_button(canvas,image_path, x, y, width=None, height=None, command=None
     button.place(x=x, y=y, width=width, height=height)
     return button
 
-def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",manual_fin_fon=(False,"Polje"),justify="left"):
+def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",auto_fin_fout=(False,"Polje"),justify="left"):
     entry = ctk.CTkEntry(
         canvas,border_width=0,
         fg_color= back_color,
@@ -29,8 +29,8 @@ def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder=
     not belo and entry.configure(text_color="gray")
     belo and entry.configure(text_color="white")
     entry.configure(state=state)
-    if(manual_fin_fon[0]):
-        prikazi='•' if manual_fin_fon[1]=="Lozinka" else ''
+    if(auto_fin_fout[0]):
+        prikazi='•' if auto_fin_fout[1]=="Lozinka" else ''
         entry.bind("<FocusIn>", lambda event: on_entry_click(entry,placeholder,show=prikazi))
         entry.bind("<FocusOut>", lambda event: on_entry_out(entry,placeholder))
     else:
@@ -88,7 +88,7 @@ def create_comboBox(canvas,values,x,y,width=148,variable=None):
     return combo
 
 def create_entry_search(canvas,pretrazi):
-    entrySearch = create_entry(canvas=canvas,x=28,y=59,placeholder="Pretraži",corner_radius=0,manual_fin_fon=(True,"Polje"))
+    entrySearch = create_entry(canvas=canvas,x=28,y=59,placeholder="Pretraži",corner_radius=0,auto_fin_fout=(True,"Polje"))
     entrySearch.bind("<Return>", lambda event: pretrazi())
     entrySearch.bind("<KeyRelease>", lambda event: pretrazi())
     return entrySearch
