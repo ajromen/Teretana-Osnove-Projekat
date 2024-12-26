@@ -71,6 +71,10 @@ class AdminWindow(winTemplate):
                 pretraga = 1
             elif pretraga in "neaktiviran":
                 pretraga = 0  
+            elif pretraga in "instruktor":
+                pretraga = 1
+            elif pretraga in "admin":
+                pretraga = 2
             else:
                 pass
         

@@ -149,7 +149,7 @@ class TreningWindow(winTemplate):
         self.cmbbxSala=self.napravi_sql_cmbbx("Sale:",59,75,170,69,"SELECT id_sale, naziv FROM Sala WHERE obrisana IS NOT TRUE",2,True) #Kombo box za naziv
         self.cmbbxProgram=self.napravi_sql_cmbbx("Program:",44,207,170,199,"SELECT id_programa,naziv FROM Program WHERE obrisan IS NOT TRUE",2,True) #Kombo box za naziv
         
-        self.entrySifra=self.create_entry(141, 30, width=179, height=23, belo=True, placeholder="Unesite šifru")
+        self.entrySifra=self.create_entry(141, 30, width=179, height=23, placeholder="Unesite šifru",manual_fin_fon=(True,"Polje"))
         
         self.zajednicke_Dodaj_Izmeni(mode=0)
         self.top_level=False
@@ -204,7 +204,7 @@ class TreningWindow(winTemplate):
         trajanje=bp_programi.get_trajanje(id_programa)
         vreme_pocetka,vreme_kraja=self.proveri_entry_vreme()
         
-        if vreme=="pocetak":
+        if vreme=="pocetak" and vreme_pocetka!=None:
             vreme_pocetka = datetime.datetime.strptime(vreme_pocetka, "%H:%M")
             vreme_kraja = vreme_pocetka + timedelta(minutes=trajanje)
             self.entryKrajSati.delete(0, ctk.END)  
@@ -212,7 +212,7 @@ class TreningWindow(winTemplate):
             self.entryKrajMinuti.delete(0, ctk.END)  
             self.entryKrajMinuti.insert(0, vreme_kraja.strftime("%M"))
             
-        elif vreme=="kraj":
+        elif vreme=="kraj"and vreme_kraja!=None:
             vreme_kraja = datetime.datetime.strptime(vreme_kraja, "%H:%M")
             vreme_pocetka = vreme_kraja - timedelta(minutes=trajanje)
             self.entryPocetakSati.delete(0, ctk.END)  
