@@ -137,14 +137,6 @@ class IzvestajiLogika(winTemplate):
         self.btnFilteri_onemogucen()
         self.postavi_izvestaj(kriterijumi,bp_izvestaji.e_izvestaj,"","Broj rezervacija po instruktoru (30 dana)",True,False)
     
-    def fltr_e_izvestaj(self):
-        """Nema filtere"""
-        pass
-    
-    def ret_e(self):    
-        """Nema return vrednost"""
-        pass
-    
     def e_txt(self):
         helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_E.txt", "Broj rezervacija po instruktoru (30 dana)")
     
@@ -179,25 +171,25 @@ class IzvestajiLogika(winTemplate):
         self.btnFilteri_onemogucen()
         self.postavi_izvestaj(kriterijumi,bp_izvestaji.g_izvestaj,"","Top 3 najpopularnija programa treninga",True,False)
     
-    def fltr_g_izvestaj(self):
-        """Nema filtere"""
-        pass
-    
-    def ret_g(self):
-        """Nema return vrednost"""
-        pass
-    
     def g_txt(self):
         helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_G.txt", "Top 3 najpopularnija programa treninga")
     
     # Izvestaj H
     def h_izvestaj(self,izabrano=False):
         self.trenutni_izvestaj = "H"
-        pass
+        kriterijumi = ["Dan u nedelji", "Broj rezervacija"]
+        self.btnFilteri_onemogucen()
+        self.create_table(kriterijumi, True)
+        self.btnFajl_omogucen()
+        podaci=bp_izvestaji.h_izvestaj()
+        max=0
+        for podatak in podaci:
+            if podatak[1]>max:
+                max=podatak[1]
+                self.ret=podatak[0]
+        self.info_uspesan(f"Najpopularniji dan u nedelji (1 godina) je: {self.ret}")
+        self.popuni_tabelu(self.table, podaci) 
     
-    def fltr_h_izvestaj(self):
-        pass
-    
-    def ret_h(self):
-        pass
+    def h_txt(self):
+        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_H.txt", "Najpopularniji dan u nedelji (1 godina) je: " + self.ret)
     

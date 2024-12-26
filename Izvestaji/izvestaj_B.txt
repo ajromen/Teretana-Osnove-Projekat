@@ -1,13 +1,10 @@
 |            Ime             |          Prezime           |       Datum termina        |         Broj mesta         |          Program           |
-—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-|            Akva            |           Vivić            |         2024-01-01         |             9              |   Mršavljenje uz Momira    |
-|           Rolex            |         Jovanović          |         2024-01-01         |             1              |      Milica do pobede      |
-|           Dragan           |        Nedeljković         |         2024-01-01         |             3              | Izvajajte telo uz Ljubinku |
-|         Aleksandar         |          Pavlović          |         2024-01-01         |             4              | Fontana Mladosti - Milovan |
-|          Obrisani          |          Korisnik          |         2024-01-01         |             4              | Fontana Mladosti - Milovan |
-|            Akva            |           Vivić            |         2024-01-01         |             9              |   Mršavljenje uz Momira    |
-—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+|           Dragan           |        Nedeljković         |         2024-02-01         |             3              | Izvajajte telo uz Ljubinku |
+|         Aleksandar         |          Pavlović          |         2024-02-01         |             4              | Fontana Mladosti - Milovan |
+|          Obrisani          |          Korisnik          |         2024-02-01         |             4              | Fontana Mladosti - Milovan |
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 
-Rezervacije po datumu termina za datum: 2024-01-01
+Rezervacije po datumu termina za datum: 2024-02-01
 
-Datum izrade izveštaja: 2024-12-25 18:16:07
+Datum izrade izveštaja: 2024-12-26 02:16:37

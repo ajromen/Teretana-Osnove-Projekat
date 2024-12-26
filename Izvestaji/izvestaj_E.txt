@@ -2,10 +2,10 @@
 —————————————————————————————————————————————————————————————————————————————
 |     milovan      |     Milovan      |    Arsenović     |        2         |
 |      momir       |      Momir       |    Stanojević    |        2         |
+|      milica      |      Milica      |     Adamović     |        2         |
 |      ljuba       |     Ljubinka     |    Leposavić     |        1         |
-|      milica      |      Milica      |     Adamović     |        1         |
 —————————————————————————————————————————————————————————————————————————————
 
 Broj rezervacija po instruktoru (30 dana)
 
-Datum izrade izveštaja: 2024-12-25 23:23:45
+Datum izrade izveštaja: 2024-12-26 02:15:41

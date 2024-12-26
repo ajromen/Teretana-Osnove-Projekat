@@ -1,4 +1,5 @@
 from bp_import import BazaPodataka,datetime
+import helperFunctions
 
 # a) Lista rezervacija po datumu rezervacije
 # b) Lista rezervacija po datumu termina
@@ -30,6 +31,7 @@ def a_izvestaj(datum:str):
     
     return cursor.fetchall()
 
+# b) Lista rezervacija po datumu termina
 def b_izvestaj(datum:str):
     cursor=BazaPodataka.get_cursor()
     komanda='''SELECT 
@@ -146,8 +148,6 @@ def f_izvestaj(paket:bool):
     return cursor.fetchall()
 
 # g) Top 3 najpopularnija programa treninga
-# g. Najpopularniji programi treninga. Pronaći najpopularnija 3 programa
-# treninga po broju rezervacija izvršenih u poslednjih godinu dana.
 def g_izvestaj():
     cursor=BazaPodataka.get_cursor()
     komanda='''SELECT 
@@ -164,4 +164,23 @@ def g_izvestaj():
             '''
     cursor.execute(komanda)
     return cursor.fetchall()
+
 # h) Najpopularniji dan u nedelji (1 godina)
+def h_izvestaj():
+    cursor=BazaPodataka.get_cursor()
+    komanda='''SELECT
+                    COUNT(*)
+                FROM Rezervacija
+                JOIN Termin ON Rezervacija.id_termina = Termin.id_termina
+                WHERE Termin.datum_odrzavanja > date('now','-1 year') AND
+                      strftime('%w',Termin.datum_odrzavanja) = ?
+                '''
+    podaci=[]
+    for i in range(1,8):
+        niz=[]
+        cursor.execute(komanda,(str(i),))
+        niz.append(helperFunctions.broj_u_dan(i-1))
+        niz.append(cursor.fetchone()[0])
+        podaci.append(niz)
+
+    return podaci

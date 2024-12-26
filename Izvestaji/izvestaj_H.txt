@@ -1,0 +1,14 @@
+|  Dan u nedelji   | Broj rezervacija |
+———————————————————————————————————————
+|    Ponedeljak    |        3         |
+|      Utorak      |        0         |
+|      Sreda       |        0         |
+|     Četvrtak     |        4         |
+|      Petak       |        0         |
+|      Subota      |        0         |
+|     Nedelja      |        0         |
+———————————————————————————————————————
+
+Najpopularniji dan u nedelji (1 godina) je: Četvrtak
+
+Datum izrade izveštaja: 2024-12-26 02:14:49

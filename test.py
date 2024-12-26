@@ -48,6 +48,7 @@ def main():
             staDaRadim=staDaRadim[0]
 
 if __name__ == '__main__':
+    #BazaPodataka.restart()
     azuriraj_podatke()
     window=ctk.CTk()
     
@@ -55,7 +56,7 @@ if __name__ == '__main__':
     winSignup=winSignup.SignupWindow(window)
     winMain=winMain.MainWindow(window)
     
-    main()
+    #main()
     
     winMain.start("admin",2)
     azuriraj_podatke()

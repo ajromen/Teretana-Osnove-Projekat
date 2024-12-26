@@ -62,10 +62,7 @@ class IzvestajiWindow(IzvestajiLogika):
             case "B": self.fltr_b_izvestaj(),
             case "C": self.fltr_c_izvestaj(),
             case "D": self.fltr_d_izvestaj(),
-            case "E": self.fltr_e_izvestaj(),
             case "F": self.fltr_f_izvestaj(),
-            case "G": self.fltr_g_izvestaj(),
-            case "H": self.fltr_h_izvestaj(),
             case _: self.fltr_a_izvestaj()
             
         self.top_level = False
