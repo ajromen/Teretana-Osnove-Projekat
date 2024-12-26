@@ -222,43 +222,55 @@ class TreningWindow(winTemplate):
         
     def proveri_entry_vreme(self):
         #provera unosa za vreme
-        vreme_pocetak_sat=self.entryPocetakSati.get()
-        vreme_pocetak_minuti=self.entryPocetakMinuti.get()
-        vreme_kraj_sat=self.entryKrajSati.get()
-        vreme_kraj_minuti=self.entryKrajMinuti.get()
+        vreme_pocetak_sat=self.entryPocetakSati.get().zfill(2)
+        vreme_pocetak_minuti=self.entryPocetakMinuti.get().zfill(2)
+        vreme_kraj_sat=self.entryKrajSati.get().zfill(2)
+        vreme_kraj_minuti=self.entryKrajMinuti.get().zfill(2)
         ret_val=(None,None)
         
-        if(len(vreme_pocetak_sat)!=2 or (not vreme_pocetak_sat.isdigit())):
-            helperFunctions.obavestenje("Polje vreme pocetka/sat mora sadržati tačno dve cifre.")
+        if(not vreme_pocetak_sat.isdigit()):
+            helperFunctions.obavestenje("Polje vreme pocetak-sati sme sadržati samo cifre.", crveno=True)
+            self.restartuj_vreme(self.entryPocetakSati)
             return ret_val
-        if(len(vreme_pocetak_minuti)!=2 or (not vreme_pocetak_minuti.isdigit())):
-            helperFunctions.obavestenje("Polje vreme pocetka/minuti mora sadržati tačno dve cifre.")
+        if(not vreme_pocetak_minuti.isdigit()):
+            self.restartuj_vreme(self.entryPocetakMinuti)
+            helperFunctions.obavestenje("Polje vreme pocetak-minuti sme sadržati samo cifre.", crveno=True)
             return ret_val
-        if(len(vreme_kraj_sat)!=2 or (not vreme_kraj_sat.isdigit())):
-            helperFunctions.obavestenje("Polje vreme kraja/sat mora sadržati tačno dve cifre.")
+        if(not vreme_kraj_sat.isdigit()):
+            self.restartuj_vreme(self.entryKrajSati)
+            helperFunctions.obavestenje("Polje vreme kraj-sati sme sadržati samo cifre.", crveno=True)
             return ret_val
-        if(len(vreme_kraj_minuti)!=2 or (not vreme_kraj_minuti.isdigit())):
-            helperFunctions.obavestenje("Polje vreme kraja/minuti mora sadržati tačno dve cifre.")
+        if(not vreme_kraj_minuti.isdigit()):
+            self.restartuj_vreme(self.entryKrajMinuti)
+            helperFunctions.obavestenje("Polje vreme kraj-minuti sme sadržati samo cifre.", crveno=True)
             return ret_val
         
         #proveravanje da li je uneti broj u opsegu
         if(int(vreme_pocetak_sat)>23):
-            helperFunctions.obavestenje("Polje vreme početka/sat mora biti u opsegu od 0-24.")
+            self.restartuj_vreme(self.entryPocetakSati)
+            helperFunctions.obavestenje("Polje vreme početkak-sati mora biti u opsegu od 0-24.", crveno=True)
             return ret_val
         if(int(vreme_pocetak_minuti)>59):
-            helperFunctions.obavestenje("Polje vreme početka/minuti mora biti u opsegu od 0-60.")
+            self.restartuj_vreme(self.entryPocetakMinuti)
+            helperFunctions.obavestenje("Polje vreme početak-minuti mora biti u opsegu od 0-60.", crveno=True)
             return ret_val
         if(int(vreme_kraj_sat)>23):
-            helperFunctions.obavestenje("Polje vreme kraja/sat mora biti u opsegu od 0-24.")
+            self.restartuj_vreme(self.entryKrajSati)
+            helperFunctions.obavestenje("Polje vreme kraj-sati mora biti u opsegu od 0-24.", crveno=True)
             return ret_val
         if(int(vreme_kraj_minuti)>59):
-            helperFunctions.obavestenje("Polje vreme kraja/minuti mora biti u opsegu od 0-60.")
+            self.restartuj_vreme(self.entryKrajMinuti)
+            helperFunctions.obavestenje("Polje vreme kraj-minuti mora biti u opsegu od 0-60.", crveno=True)
             return ret_val
         
         vreme_pocetka=str(vreme_pocetak_sat)+":"+str(vreme_pocetak_minuti)
         vreme_kraja=str(vreme_kraj_sat)+":"+str(vreme_kraj_minuti)
         
         return vreme_pocetka,vreme_kraja
+    
+    def restartuj_vreme(self,entry,text="00"):
+        entry.delete(0,ctk.END)
+        entry.insert(0,text)
         
     def dodaj_izmeni(self,mode=0):
         if(mode==1): 
