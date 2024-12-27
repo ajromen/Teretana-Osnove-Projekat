@@ -1,5 +1,6 @@
 import bp_rezervacije
 from imports import *
+import winTermini
 
 class winRezervacije(winTemplate):
     def __init__(self, window, main_window,uloga,username):
@@ -38,11 +39,37 @@ class winRezervacije(winTemplate):
         
     def rezervacija_dodaj(self):
         self.top_level=True
-        self.create_top_level("Dodaj rezervaciju", 400, 300)
+        self.trenutni_window=helperFunctions.napravi_toplevel(title="Rezervisi trening",height=207)
+        
+        self.create_label("Šifra termina:", 31, 31)
+        self.create_label("Broj mesta:", 39, 86)
+        fg_color="#080A17"
+        hover_color="#202020"
+        self.btnTermin=self.create_text_button("Izaberite termin", 154, 28, width=170,height=28,fg_color=fg_color,hover_color=hover_color,command=self.dodaj_termine)
+        self.btnBrojMesta=self.create_text_button("Izaberite broj mesta", 154, 83, width=170,height=28,fg_color=fg_color,hover_color=hover_color,command=None)    
+        
+        self.create_text_button("Sačuvaj", 102, 146,command=None)
+        self.create_button("./src/img/Widget/btnOtkazi.png",136,183,command=self.trenutni_window.destroy)
+        
         self.top_level=False
+    
+    def dodaj_termine(self):
+        self.dodatni_window=helperFunctions.napravi_toplevel(title="Izaberite termin",height=608,width=850)
+        termini_window=winTermini.TerminiWindow(self.dodatni_window,escfunk=self.dodaj_termine_kraj)
+        termini_window.start()
+        
+    def dodaj_termine_kraj(self,termin="Izaberite termin"):
+        self.btnTermin.configure(text=termin)
+        self.dodatni_window.destroy()
     
     def rezervacija_izmeni(self):
         pass
+    
+        
+    
+    def napravi_top(self):
+        self.btn.configure(text="top")
+        helperFunctions.obavestenje("Napravi top")
     
     def rezervacija_obrisi(self):
         pass
