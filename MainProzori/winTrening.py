@@ -45,8 +45,7 @@ class TreningWindow(winTemplate):
 
 
     def popuni_tabelu(self,tabela,kriterijum='id_treninga',pretraga=""):
-        for red in tabela.get_children():
-            tabela.delete(red)
+        for red in tabela.get_children(): tabela.delete(red)
                 
         podaci=self.izlistaj(kriterijum,pretraga)
         
@@ -65,9 +64,7 @@ class TreningWindow(winTemplate):
     def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
         kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
-        if(not kriterijum):
-            helperFunctions.obavestenje("Prvo izaberite kriterijum pretrage.")
-            return
+        
 
         for red in self.table.get_children():
             self.table.delete(red)
@@ -177,10 +174,10 @@ class TreningWindow(winTemplate):
         kraj_sati=vreme_kraja[0]
         kraj_minuti=vreme_kraja[1]
         
-        self.entryPocetakSati=self.create_entry(156,119,width=42,height=23,belo=True,placeholder=pocetak_sati,on_focus_out=lambda *args: self.sredi_sate("pocetak"))
-        self.entryPocetakMinuti=self.create_entry(241,119,width=42,height=23,belo=True,placeholder=pocetak_minuti,on_focus_out=lambda *args: self.sredi_sate("pocetak"))
-        self.entryKrajSati=self.create_entry(156,160,width=42,height=23,belo=True,placeholder=kraj_sati,on_focus_out=lambda *args: self.sredi_sate("kraj"))
-        self.entryKrajMinuti=self.create_entry(242,160,width=42,height=23,belo=True,placeholder=kraj_minuti,on_focus_out=lambda *args: self.sredi_sate("kraj"))
+        self.entryPocetakSati=self.create_entry(156,119,width=42,height=23,belo=True,placeholder=pocetak_sati,key_release=lambda *args: self.sredi_sate("pocetak"))
+        self.entryPocetakMinuti=self.create_entry(241,119,width=42,height=23,belo=True,placeholder=pocetak_minuti,key_release=lambda *args: self.sredi_sate("pocetak"))
+        self.entryKrajSati=self.create_entry(156,160,width=42,height=23,belo=True,placeholder=kraj_sati,key_release=lambda *args: self.sredi_sate("kraj"))
+        self.entryKrajMinuti=self.create_entry(242,160,width=42,height=23,belo=True,placeholder=kraj_minuti,key_release=lambda *args: self.sredi_sate("kraj"))
         
         #Kreiranje dugmadi za dane
         self.btnPon=self.button_dani("Pon",self.trenutni_window,16,272)

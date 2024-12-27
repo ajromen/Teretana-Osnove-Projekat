@@ -92,8 +92,7 @@ class IzvestajiWindow(IzvestajiLogika):
         helperFunctions.dopisi_u_fajl(putanja, "Datum izrade izveštaja: " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         
     def popuni_tabelu(self, tabela, podaci: list = None, kolonaZaBrisanje=None):
-        for red in tabela.get_children():
-            tabela.delete(red)
+        for red in tabela.get_children(): tabela.delete(red)
         if podaci is None:
             return
         i = 0

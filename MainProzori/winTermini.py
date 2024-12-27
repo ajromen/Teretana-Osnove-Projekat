@@ -42,8 +42,7 @@ class TerminiWindow(winTemplate):
         
 
     def popuni_tabelu(self, tabela, kriterijum='id_termina', pretraga=""):
-        for red in tabela.get_children():
-            tabela.delete(red)
+        for red in tabela.get_children(): tabela.delete(red)
 
         podaci = self.izlistaj(kriterijum, pretraga)
         i = 0

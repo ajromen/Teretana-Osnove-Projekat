@@ -148,7 +148,7 @@ def dan_u_broj(dan):
    }
    return dani_map.get(dan, -1)
 
-
+ 
 def sacuvaj_tabelu(podaci, imena_kolona, putanja):
    with open(putanja,'w',encoding='utf-8') as file:
       max=0

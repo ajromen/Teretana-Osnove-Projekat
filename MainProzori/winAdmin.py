@@ -34,8 +34,7 @@ class AdminWindow(winTemplate):
         
 
     def popuni_tabelu(self,tabela,kriterijum='username',pretraga=""):
-        for red in tabela.get_children():
-            tabela.delete(red)
+        for red in tabela.get_children(): tabela.delete(red)
                 
         podaci=self.izlistaj(kriterijum=kriterijum,pretraga=pretraga)
         
@@ -51,9 +50,7 @@ class AdminWindow(winTemplate):
     def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
         kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
-        if(not kriterijum):
-            helperFunctions.obavestenje("Prvo izaberite kriterijum pretrage.")
-            return
+        
 
         for red in self.table.get_children():
             self.table.delete(red)

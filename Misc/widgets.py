@@ -14,7 +14,7 @@ def create_button(canvas,image_path, x, y, width=None, height=None, command=None
     button.place(x=x, y=y, width=width, height=height)
     return button
 
-def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",auto_fin_fout=(False,"Polje"),justify="left"):
+def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",auto_fin_fout=(False,"Polje"),justify="left",key_release=None):
     entry = ctk.CTkEntry(
         canvas,border_width=0,
         fg_color= back_color,
@@ -37,6 +37,9 @@ def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder=
         entry.bind("<FocusIn>", command=on_focus_in)
         entry.bind("<FocusOut>", command=on_focus_out)
         entry.bind("<Return>",command=on_focus_out)
+        
+    if key_release is not None:
+        entry.bind("<KeyRelease>", key_release)
     return entry
 
 def on_entry_click(entry, placeholder, color_active="white",show=''):

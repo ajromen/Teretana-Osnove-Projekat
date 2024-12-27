@@ -7,6 +7,7 @@ import winTrening
 import winVrsteTreninga
 import winClanovi
 import winAdmin
+import winRezervacije
 
 class MainWindow:
     def __init__(self,window):
@@ -66,7 +67,7 @@ class MainWindow:
             "btnAdmin": lambda i: self.create_button("src/img/Main/btnAdmin.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("admin")),
             "btnClanovi": lambda i: self.create_button("src/img/Main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("clanovi")),
             "btnTermini": lambda i: self.create_button("src/img/Main/btnTermini.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("termini")),
-            "btnRezervacije": lambda i: self.create_button("src/img/Main/btnRezervacije.png", x=0, y=63*i, width=230, height=63, command=lambda: print("btnRezervacije clicked")),#
+            "btnRezervacije": lambda i: self.create_button("src/img/Main/btnRezervacije.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("rezervacije")),
             "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("programi")),
             "btnRegistrujSe": lambda i: self.create_button("src/img/Main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.registrujSe()),
             "btnOdjaviSe": lambda i: self.create_button("src/img/Main/btnOdjaviSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("login"))
@@ -162,6 +163,10 @@ class MainWindow:
         self.trenutni_window = winIzvestaji.IzvestajiWindow(self.window, self, self.uloga)
         self.trenutni_window.start()
 
+    def napravi_win_rezervacije(self):
+        self.trenutni_window = winRezervacije.winRezervacije(self.window, self, self.uloga,self.username)
+        self.trenutni_window.start()
+
     def prebaci_win(self, win):
         self.unisti_trenutni_win()
         if win == "programi": self.napravi_win_programi()
@@ -171,3 +176,4 @@ class MainWindow:
         elif win == "vrste_treninga": self.napravi_win_vrste_treninga()
         elif win == "termini": self.napravi_win_termini()
         elif win == "izvestaji": self.napravi_win_izvestaji()
+        elif win == "rezervacije": self.napravi_win_rezervacije()

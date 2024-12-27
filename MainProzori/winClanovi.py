@@ -1,6 +1,6 @@
 from imports import *
 import bp_korisnici
-
+ 
 class ClanoviWindow(winTemplate):
     def __init__(self, window, main_window,uloga):
         super().__init__(window,main_window,uloga)
@@ -56,8 +56,7 @@ class ClanoviWindow(winTemplate):
         self.popuni_tabelu(self.table)
 
     def popuni_tabelu(self,tabela,kriterijum='username',pretraga=""):
-        for red in tabela.get_children():
-            tabela.delete(red)
+        for red in tabela.get_children(): tabela.delete(red)
                 
         podaci=self.izlistaj(kriterijum=kriterijum,pretraga=pretraga)
         
@@ -77,26 +76,16 @@ class ClanoviWindow(winTemplate):
     def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
         kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
-        if(not kriterijum):
-            helperFunctions.obavestenje("Prvo izaberite kriterijum pretrage.")
-            return
 
         for red in self.table.get_children():
             self.table.delete(red)
             
-        if pretraga =="" or pretraga=="pretraži":
-            pretraga=""
+        if pretraga =="" or pretraga=="pretraži": pretraga=""
         else:
-            if pretraga in "premium":
-                pretraga = 1
-            elif pretraga in "standard":
-                pretraga = 0  
-            elif pretraga in "aktiviran":
-                pretraga = 1
-            elif pretraga in "neaktiviran":
-                pretraga = 0  
-            else:
-                pass
+            if pretraga in "premium": pretraga = 1
+            elif pretraga in "standard": pretraga = 0  
+            elif pretraga in "aktiviran": pretraga = 1
+            elif pretraga in "neaktiviran": pretraga = 0  
         
         self.popuni_tabelu(self.table,kriterijum=kriterijum,pretraga=pretraga)
 
