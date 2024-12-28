@@ -123,7 +123,7 @@ class IzvestajiWindow(IzvestajiLogika):
 
     def btnFajl_omogucen(self):
         self.btnFajl.configure(command=self.sacuvaj_u_fajl)
-        self.btnFajl.configure(fg_color=boje.dugme_normalna)
+        self.btnFajl.configure(fg_color=boje.dugme)
         
     def btnFilteri_onemogucen(self):
         self.btnFilteri.configure(command=None)
@@ -131,4 +131,4 @@ class IzvestajiWindow(IzvestajiLogika):
         
     def btnFilteri_omogucen(self):
         self.btnFilteri.configure(command=self.filteri)
-        self.btnFilteri.configure(fg_color=boje.dugme_normalna)
+        self.btnFilteri.configure(fg_color=boje.dugme)

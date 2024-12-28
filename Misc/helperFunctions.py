@@ -178,7 +178,16 @@ def sacuvaj_tabelu(podaci, imena_kolona, putanja):
    
    obavestenje(f"Podaci su uspešno sačuvani u fajl: {putanja}",title="Uspešno čuvanje")
       
-
 def dopisi_u_fajl(putanja, tekst):
    with open(putanja, 'a', encoding='utf-8') as file:
       file.write('\n'+ tekst + '\n')
+      
+def onemoguci_dugme(dugme):
+   dugme.configure(command="disabled")
+   dugme.configure(fg_color=boje.dugme_disabled)
+   dugme.configure(hover_color=boje.dugme_disabled_hover)
+   
+def omoguci_dugme(dugme, komanda):
+   dugme.configure(command=komanda)
+   dugme.configure(fg_color=boje.dugme)
+   dugme.configure(hover_color=boje.dugme_hover)

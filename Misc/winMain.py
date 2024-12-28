@@ -164,7 +164,7 @@ class MainWindow:
         self.trenutni_window.start()
 
     def napravi_win_rezervacije(self):
-        self.trenutni_window = winRezervacije.winRezervacije(self.window, self.unisti_trenutni_win, self.uloga,self.username)
+        self.trenutni_window = winRezervacije.RezervacijeWindow(self.window, self.unisti_trenutni_win, self.uloga,self.username)
         self.trenutni_window.start()
 
     def prebaci_win(self, win):

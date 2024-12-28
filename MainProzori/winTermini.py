@@ -40,6 +40,18 @@ class TerminiWindow(winTemplate):
         self.table.column("Vreme kraja", width=70)
         self.table.column("Vreme početka", width=90)
         
+        if self.u_prozoru:
+            self.create_button("./src/img/Widget/btnIzaberi.png", 577, 596, command=self.u_prozoru_selektuj)
+        
+    def u_prozoru_selektuj(self):
+        slctd_item = self.table.selection()
+        if not slctd_item:
+            helperFunctions.obavestenje(poruka="Niste odabrali nijedan termin.",crveno=True)
+            return
+        
+        slctd_data=self.table.item(slctd_item)
+        id_termina=slctd_data["values"][0]
+        self.escfunk(termin=id_termina)
 
     def popuni_tabelu(self, tabela, kriterijum='id_termina', pretraga=""):
         for red in tabela.get_children(): tabela.delete(red)

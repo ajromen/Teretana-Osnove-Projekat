@@ -22,7 +22,7 @@ text_siva = "#A19E9E"
 text_svetlo_siva = "#DFDFDF"
 text_error = "#FF1C1C"
 
-dugme_normalna="#1F6AA5"
+dugme="#1F6AA5"
 dugme_hover="#144870"
 dugme_disabled="#2B2B2B"
 dugme_disabled_hover="#6B6969"

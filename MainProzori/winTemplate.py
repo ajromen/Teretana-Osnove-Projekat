@@ -13,17 +13,12 @@ class winTemplate:
         self.top_level=False
         self.username=username
 
-    def create_canvas(self, bg_color=boje.crna, height=618, width=860,x=230,y=0):
-        if self.u_prozoru: x=0;y=-39
+    def create_canvas(self, bg_color=boje.crna, height=608, width=860,x=230,y=0):
+        if self.u_prozoru: x=0;y=-39;height+=39
         self.current_canvas = Canvas(self.window, bg=bg_color, height=height, width=width, bd=0, highlightthickness=0, relief="ridge")
         self.current_canvas.place(x=x, y=y)
 
-    def create_exit_button(self):
-        x=812
-        y=9
-        if self.u_prozoru:
-            x=18
-            y=557
+    def create_exit_button(self,x=812,y=9):
         wid.create_button(self.current_canvas, "./src/img/Widget/btnExit.png", x, y, 33, 33, self.escfunk)
 
     def create_search_button(self, command):
@@ -48,7 +43,6 @@ class winTemplate:
         self.cmbbxSearch = self.create_comboBox(values, x, y)
 
     def create_comboBox(self, values, x, y, width=148,variable=None):
-        
         return wid.create_comboBox(self.get_canvas(), values, x=x, y=y,width=width,variable=variable)
 
     def create_entry_search(self, command):
@@ -72,7 +66,7 @@ class winTemplate:
         swtch.place(x=x,y=y)
         return swtch
 
-    def create_text_button(self, text, x, y, command=None,width=140,height=28,hover_color=boje.dugme_hover,fg_color=boje.dugme_normalna):
+    def create_text_button(self, text, x, y, command=None,width=140,height=28,hover_color=boje.dugme_hover,fg_color=boje.dugme):
         btn = ctk.CTkButton(self.get_canvas(), text=text, command=command,width=width,height=height,font=("Inter", 15),fg_color=fg_color,hover_color=hover_color)
         btn.place(x=x,y=y)
         return btn
