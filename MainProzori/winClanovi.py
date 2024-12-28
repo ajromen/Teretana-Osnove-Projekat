@@ -118,9 +118,9 @@ class ClanoviWindow(winTemplate):
             self.entryBrDana=self.create_entry(151,96,width=41,height=23,placeholder=slctd_br_rez,justify="center",belo=True,state="disabled")
             za_aktivaciju=slctd_data.get("tags")[0]
             if(za_aktivaciju=='za_aktivaciju'):
-                self.create_text_button("Nagradi lojalnost", 89, 132, self.nagradi_lojalnost, width=166, height=27,hover_color="#87E175",fg_color="#3DA928")
+                self.create_text_button("Nagradi lojalnost", 89, 132, self.nagradi_lojalnost, width=166, height=27,hover_color=boje.dugme_zeleno_hover,fg_color=boje.dugme_zeleno)
             else:
-                self.create_text_button("Nagradi lojalnost", 89, 132, lambda: None, width=166, height=27,hover_color="#6B6969",fg_color="#2B2B2B")
+                self.create_text_button("Nagradi lojalnost", 89, 132, lambda: None, width=166, height=27,hover_color=boje.dugme_disabled_hover,fg_color=boje.dugme_disabled)
         
         else:
             self.create_label("Trenutni status:",22,57)

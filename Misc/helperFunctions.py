@@ -11,7 +11,7 @@ def hashPassword(password):
    return hash_object.hexdigest()
  
 def obavestenje(poruka,title="Greška",sirina=350,crveno=False):
-   error_window = ctk.CTkToplevel(fg_color='#000000')
+   error_window = ctk.CTkToplevel(fg_color=boje.crna)
    error_window.title(title)
    error_window.geometry(f"{sirina}x150")
    error_window.resizable(False, False)
@@ -24,7 +24,7 @@ def obavestenje(poruka,title="Greška",sirina=350,crveno=False):
    close_button.pack(pady=10)
 
 def pitaj(poruka,title="Greška",text1="Da",text2="Ne",crveno=True):
-   error_window = ctk.CTkToplevel(fg_color='#000000')
+   error_window = ctk.CTkToplevel(fg_color=boje.crna)
    error_window.title(title)
    error_window.geometry("350x150")
    error_window.resizable(False, False)
@@ -36,7 +36,7 @@ def pitaj(poruka,title="Greška",text1="Da",text2="Ne",crveno=True):
 
    result = {"value": False}
 
-   button_1 = ctk.CTkButton(error_window, text=text1,fg_color="#252525", command=lambda: (result.update(value=True), error_window.destroy()),width=140)
+   button_1 = ctk.CTkButton(error_window, text=text1,fg_color=boje.dugme_disabled, command=lambda: (result.update(value=True), error_window.destroy()),width=140)
    button_2 = ctk.CTkButton(error_window, text=text2, command=lambda: (result.update(value=False), error_window.destroy()),width=140)
    button_1.place(x=28,y=108)
    button_2.place(x=181,y=108)
@@ -45,7 +45,7 @@ def pitaj(poruka,title="Greška",text1="Da",text2="Ne",crveno=True):
 
    return result["value"]
    
-def setup_window(window,title,width_height,bg_color="#000000"):
+def setup_window(window,title,width_height,bg_color=boje.crna):
    ctk.set_appearance_mode("Dark")
    window.title(title)
    window.geometry(width_height)
@@ -70,7 +70,7 @@ def centriraj_window(window):
    window.grab_set()
 
 def napravi_toplevel(width=343,height=485,title=""):
-   window = ctk.CTkToplevel(fg_color='#000000')
+   window = ctk.CTkToplevel(fg_color=boje.crna)
    window.title(title)
    window.geometry(str(width)+"x"+str(height))
    window.resizable(False,False)

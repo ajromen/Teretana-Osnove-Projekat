@@ -283,7 +283,7 @@ class ProgramiWindow(winTemplate):
         #ulaz za opis
         self.create_label("Opis:",27,308)
 
-        self.txtbxOpis = ctk.CTkTextbox(self.trenutni_window,width=294,height=80,corner_radius=4,fg_color="#080A17")# i ovo se pojavljuje 2 puta ne vredi
+        self.txtbxOpis = ctk.CTkTextbox(self.trenutni_window,width=294,height=80,corner_radius=4,fg_color=boje.entry_main)# i ovo se pojavljuje 2 puta ne vredi
         self.txtbxOpis.place(x=26,y=334)
         self.txtbxOpis.insert("0.0", opis)
         

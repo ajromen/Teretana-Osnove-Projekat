@@ -105,30 +105,30 @@ class IzvestajiWindow(IzvestajiLogika):
 
     def info_uspesan(self, tekst):
         self.entryInfo.configure(state="normal")
-        self.entryInfo.configure(text_color="#A5A5A5")
+        self.entryInfo.configure(text_color=boje.text_siva)
         self.entryInfo.delete(0, END)
         self.entryInfo.insert(0, tekst)
         self.entryInfo.configure(state="disabled")
 
     def info_upozorenje(self, tekst):
         self.entryInfo.configure(state="normal")
-        self.entryInfo.configure(text_color="#FF1C1C")
+        self.entryInfo.configure(text_color=boje.text_error)
         self.entryInfo.delete(0, END)
         self.entryInfo.insert(0, tekst)
         self.entryInfo.configure(state="disabled")
 
     def btnFajl_onemogucen(self):
         self.btnFajl.configure(command=None)
-        self.btnFajl.configure(fg_color="#252525")
+        self.btnFajl.configure(fg_color=boje.dugme_disabled)
 
     def btnFajl_omogucen(self):
         self.btnFajl.configure(command=self.sacuvaj_u_fajl)
-        self.btnFajl.configure(fg_color="#1F6AA5")
+        self.btnFajl.configure(fg_color=boje.dugme_normalna)
         
     def btnFilteri_onemogucen(self):
         self.btnFilteri.configure(command=None)
-        self.btnFilteri.configure(fg_color="#252525")
+        self.btnFilteri.configure(fg_color=boje.dugme_disabled)
         
     def btnFilteri_omogucen(self):
         self.btnFilteri.configure(command=self.filteri)
-        self.btnFilteri.configure(fg_color="#1F6AA5")
+        self.btnFilteri.configure(fg_color=boje.dugme_normalna)

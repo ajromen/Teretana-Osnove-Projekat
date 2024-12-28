@@ -14,11 +14,11 @@ def create_button(canvas,image_path, x, y, width=None, height=None, command=None
     button.place(x=x, y=y, width=width, height=height)
     return button
 
-def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",auto_fin_fout=(False,"Polje"),justify="left",key_release=None):
+def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color=boje.entry_main,auto_fin_fout=(False,"Polje"),justify="left",key_release=None):
     entry = ctk.CTkEntry(
         canvas,border_width=0,
         fg_color= back_color,
-        text_color="#FFFFFF",
+        text_color=boje.bela,
         width=width,height=height,
         corner_radius=corner_radius,
         justify=justify
@@ -26,8 +26,8 @@ def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder=
     entry.place(x=x, y=y,)
     entry.delete(0,END)
     entry.insert(0, placeholder)
-    not belo and entry.configure(text_color="gray")
-    belo and entry.configure(text_color="white")
+    not belo and entry.configure(text_color=boje.text_siva)
+    belo and entry.configure(text_color=boje.bela)
     entry.configure(state=state)
     if(auto_fin_fout[0]):
         prikazi='•' if auto_fin_fout[1]=="Lozinka" else ''
@@ -81,9 +81,9 @@ def create_comboBox(canvas,values,x,y,width=148,variable=None):
         corner_radius=5,
         border_width=0,
         values=values,
-        fg_color="#080A17",
-        dropdown_fg_color="#080A17",
-        button_color="#0D1026",
+        fg_color=boje.entry_main,
+        dropdown_fg_color=boje.entry_main,
+        button_color=boje.entry_svetlija,
         state="readonly",
         variable=variable)
     combo.place(x=x,y=y)
@@ -101,28 +101,27 @@ def create_table(canvas,popuni_tabelu,kolone,x=31,y=112,width=787,height=401):
     style.theme_use("default")
     
     style.configure("Treeview",
-                    background="#121633",
+                    background=boje.tabela1,
                     foreground="white",
                     rowheight=25,
-                    fieldbackground="#080A17",
-                    bordercolor="#343638",
+                    fieldbackground=boje.entry_main,
                     borderwidth=0)
-    style.map('Treeview', background=[('selected', '#3e4cb3')])
+    style.map('Treeview', background=[('selected', boje.tabela_selected)])
     
-    style.configure("Treeview.Heading", background="#2d3680", foreground="white", relief="flat")
-    style.map("Treeview.Heading", background=[('active', '#3484F0')])
+    style.configure("Treeview.Heading", background=boje.tabela_heading, foreground="white", relief="flat")
+    style.map("Treeview.Heading", background=[('active', boje.tabela_heading_selected)])
         
     table = ttk.Treeview(canvas, columns=kolone, show="headings", height=18)
     #za aktivaciju(zelena)
-    table.tag_configure("za_aktivaciju", background="#19682D", foreground="white")
+    table.tag_configure("za_aktivaciju", background=boje.tabela_zeleno, foreground="white")
     #administrator (svetlo plava)
-    table.tag_configure("admin", background="#272D5C", foreground="white")
+    table.tag_configure("admin", background=boje.tabela_admin, foreground="white")
     #obicno boja
-    table.tag_configure("1", background="#10142D", foreground="white")
-    table.tag_configure("0", background="#121633", foreground="white")
+    table.tag_configure("1", background=boje.tabela2, foreground="white")
+    table.tag_configure("0", background=boje.tabela1, foreground="white")
     #obrisano boja
-    table.tag_configure("obrisano1", background="#5A1616", foreground="white")
-    table.tag_configure("obrisano0", background="#681919", foreground="white")
+    table.tag_configure("obrisano1", background=boje.tabela_crveno_2, foreground="white")
+    table.tag_configure("obrisano0", background=boje.tabela_crveno_1, foreground="white")
 
     for kolona in kolone:
         table.heading(kolona, text=kolona.capitalize())
@@ -167,33 +166,33 @@ def create_date_picker(canvas, x, y, variable):
     style.theme_use("default")
     
     style.configure("DateEntry",
-                    background="#080A17",
+                    background=boje.entry_main,
                     foreground="white",
-                    fieldbackground="#080A17",
-                    bordercolor="#343638",
+                    fieldbackground=boje.entry_main,
+                    bordercolor=boje.dugme_disabled,
                     borderwidth=0,
                     arrowcolor="white")
     
-    style.map('DateEntry', background=[('selected', '#3e4cb3')])
+    style.map('DateEntry', background=[('selected', boje.tabela_heading_selected)])
     
     date_picker = tkcalendar.DateEntry(
         canvas,
         width=15,
-        background='#080A17',
-        foreground='#FFFFFF',
+        background=boje.entry_main,
+        foreground=boje.bela,
         borderwidth=0,
-        headersbackground='#2d3680',
-        headersforeground='#FFFFFF',
-        selectbackground='#3e4cb3',
-        selectforeground='#FFFFFF',
-        normalbackground='#FFFFFF',
-        normalforeground='#000000',
-        weekendbackground='#FFFFFF',
-        weekendforeground='#000000',
-        othermonthbackground='#04050B',
-        othermonthforeground='#A19E9E',
-        othermonthwebackground='#04050B',
-        othermonthweforeground='#A19E9E',
+        headersbackground=boje.tabela_heading,
+        headersforeground=boje.bela,
+        selectbackground=boje.tabela_selected,
+        selectforeground=boje.bela,
+        normalbackground=boje.bela,
+        normalforeground=boje.crna,
+        weekendbackground=boje.bela,
+        weekendforeground=boje.crna,
+        othermonthbackground=boje.entry_tamnija,
+        othermonthforeground=boje.text_siva,
+        othermonthwebackground=boje.entry_tamnija,
+        othermonthweforeground=boje.text_siva,
         showweeknumbers=False,
         style="DateEntry",
         date_pattern="yyyy-mm-dd",

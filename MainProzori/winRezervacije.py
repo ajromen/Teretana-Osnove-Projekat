@@ -44,10 +44,9 @@ class winRezervacije(winTemplate):
         
         self.create_label("Šifra termina:", 31, 31)
         self.create_label("Broj mesta:", 39, 86)
-        fg_color="#080A17"
-        hover_color="#202020"
-        self.btnTermin=self.create_text_button("Izaberite termin", 154, 28, width=170,height=28,fg_color=fg_color,hover_color=hover_color,command=self.dodaj_termine)
-        self.btnBrojMesta=self.create_text_button("Izaberite broj mesta", 154, 83, width=170,height=28,fg_color=fg_color,hover_color=hover_color,command=None)    
+        
+        self.btnTermin=self.create_text_button("Izaberite termin", 154, 28, width=170,height=28,fg_color=boje.entry_main,hover_color=boje.entry_main_hover,command=self.dodaj_termine)
+        self.btnBrojMesta=self.create_text_button("Izaberite broj mesta", 154, 83, width=170,height=28,fg_color=boje.entry_main,hover_color=boje.entry_main_hover,command=None)    
         
         self.btnSacuvaj=self.create_text_button("Sačuvaj", 102, 146,command=None)
         self.create_button("./src/img/Widget/btnOtkazi.png",136,183,command=self.trenutni_window.destroy)

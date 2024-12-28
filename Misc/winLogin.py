@@ -8,7 +8,7 @@ class LoginWindow:
         
     def start(self):
         self.return_value = 0
-        helperFunctions.setup_window(self.window,"Uloguj se","760x450","#03050B")
+        helperFunctions.setup_window(self.window,"Uloguj se","760x450",boje.crna_main_window)
         self.create_canvas()
         self.create_widgets()
         self.window.mainloop()
@@ -16,11 +16,11 @@ class LoginWindow:
             
     def create_widgets(self):
         #korisnicko ime
-        self.entryUsername = wid.create_entry(canvas=self.canvas,x=403, y=225,corner_radius=0, back_color="#1A1B20", placeholder="Korisničko ime", auto_fin_fout=(True,"Polje")) 
+        self.entryUsername = wid.create_entry(canvas=self.canvas,x=403, y=225,corner_radius=0, back_color=boje.entry_login, placeholder="Korisničko ime", auto_fin_fout=(True,"Polje")) 
         self.entryUsername.bind("<KeyRelease>", self.promeni_pozdrav)
         
         #lozinka
-        self.entryPassword = wid.create_entry(self.canvas,x=403, y=281,back_color="#1A1B20",corner_radius=0, placeholder="Lozinka", auto_fin_fout=(True,"Lozinka")) 
+        self.entryPassword = wid.create_entry(self.canvas,x=403, y=281,back_color=boje.entry_login,corner_radius=0, placeholder="Lozinka", auto_fin_fout=(True,"Lozinka")) 
         self.entryPassword.bind("<Return>", command=lambda event: self.prijavi_se())
         
         #login dugme
@@ -30,14 +30,14 @@ class LoginWindow:
         wid.create_button(self.canvas,"src/img/login/button_2.png",x=513.0, y=396.0, width=80.0, height=15.0,command=lambda: self.vrati("signup"))
 
     def create_canvas(self):
-        self.canvas = Canvas(self.window, bg="#03050B", height=450, width=760, bd=0, highlightthickness=0, relief="ridge")
+        self.canvas = Canvas(self.window, bg=boje.crna_main_window, height=450, width=760, bd=0, highlightthickness=0, relief="ridge")
         self.canvas.place(x=0, y=0)
         
         self.imgPozadina=wid.create_canvas_image(self.canvas,"src/img/login/image_1.png",0, 0)
         self.imgLogo = wid.create_canvas_image(self.canvas,"src/img/Logo/TopFormLogoBeliMali2.png",565-308//2,74)
-        self.text_id = self.canvas.create_text(388.0, 171.0, anchor="nw", text="Pozdrav,", fill="#FFFFFF", font=("Inter", 24 * -1))
-        self.canvas.create_rectangle(403, 247.7, 706, 248.0, fill="#FFFFFF", outline="")
-        self.canvas.create_rectangle(403, 302.7, 706, 303.0, fill="#FFFFFF", outline="")
+        self.text_id = self.canvas.create_text(388.0, 171.0, anchor="nw", text="Pozdrav,", fill=boje.bela, font=("Inter", 24 * -1))
+        self.canvas.create_rectangle(403, 247.7, 706, 248.0, fill=boje.bela, outline="")
+        self.canvas.create_rectangle(403, 302.7, 706, 303.0, fill=boje.bela, outline="")
         
     def promeni_pozdrav(self, event):
         self.canvas.itemconfig(self.text_id, text="Pozdrav, " + str(self.entryUsername.get()))

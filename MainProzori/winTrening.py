@@ -323,8 +323,8 @@ class TreningWindow(winTemplate):
     def button_dani(self,dan,window,x,y):
         aktiviran=self.dani_dict.get(dan,False)
         button = ctk.CTkButton(window, text=dan, corner_radius=5,font=("Inter",12), width=41, height=26)
-        if aktiviran: button.configure(fg_color="#1F6AA5")
-        else: button.configure(fg_color="#080A17")
+        if aktiviran: button.configure(fg_color=boje.dugme_normalna)
+        else: button.configure(fg_color=boje.entry_main)
         button.place(x=x, y=y)
         button.configure(command=lambda: self.switch_dugme(dan, button))
         return button
@@ -353,7 +353,7 @@ class TreningWindow(winTemplate):
         
     def switch_dugme(self,dan,dugme):
         self.dani_dict[dan] = not self.dani_dict[dan]
-        if dugme.cget("fg_color")=="#1F6AA5":
-            dugme.configure(fg_color="#080A17")
+        if dugme.cget("fg_color")==boje.dugme_normalna:
+            dugme.configure(fg_color=boje.entry_main)
         else:
-            dugme.configure(fg_color="#1F6AA5")
+            dugme.configure(fg_color=boje.dugme_normalna)

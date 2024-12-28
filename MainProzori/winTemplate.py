@@ -13,7 +13,7 @@ class winTemplate:
         self.top_level=False
         self.username=username
 
-    def create_canvas(self, bg_color="#010204", height=618, width=860,x=230,y=0):
+    def create_canvas(self, bg_color=boje.crna, height=618, width=860,x=230,y=0):
         if self.u_prozoru: x=0;y=-39
         self.current_canvas = Canvas(self.window, bg=bg_color, height=height, width=width, bd=0, highlightthickness=0, relief="ridge")
         self.current_canvas.place(x=x, y=y)
@@ -72,7 +72,7 @@ class winTemplate:
         swtch.place(x=x,y=y)
         return swtch
 
-    def create_text_button(self, text, x, y, command=None,width=140,height=28,hover_color="#144870",fg_color="#1F6AA5"):
+    def create_text_button(self, text, x, y, command=None,width=140,height=28,hover_color=boje.dugme_hover,fg_color=boje.dugme_normalna):
         btn = ctk.CTkButton(self.get_canvas(), text=text, command=command,width=width,height=height,font=("Inter", 15),fg_color=fg_color,hover_color=hover_color)
         btn.place(x=x,y=y)
         return btn
@@ -82,7 +82,7 @@ class winTemplate:
         else:canvas=self.current_canvas
         return canvas
         
-    def create_entry(self, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color="#080A17",auto_fin_fout=(False,"Polje"),justify="left",key_release=None):
+    def create_entry(self, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color=boje.entry_main,auto_fin_fout=(False,"Polje"),justify="left",key_release=None):
         return wid.create_entry(self.get_canvas(), x, y, on_focus_in, on_focus_out, placeholder, width, height, belo, state, corner_radius, back_color, auto_fin_fout, justify, key_release)
     
     def create_date_picker(self,x,y,variable=None):

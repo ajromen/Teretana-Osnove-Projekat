@@ -18,7 +18,7 @@ class MainWindow:
         self.username=username
         self.uloga=self.nadji_ulogu(uloga)
         self.return_value = 0
-        helperFunctions.setup_window(self.window,"TopForm","1080x603","#04050C")
+        helperFunctions.setup_window(self.window,"TopForm","1080x603",boje.crna_main_window)
         self.create_canvas()
         self.create_widgets()
         self.window.mainloop()
@@ -27,7 +27,7 @@ class MainWindow:
     def create_canvas(self):
         self.canvas = Canvas(
             self.window,
-            bg = "#04050C",
+            bg = boje.crna_main_window,
             height = 608,
             width = 1080,
             bd = 0,
@@ -40,9 +40,9 @@ class MainWindow:
         self.imgLogo = wid.create_canvas_image(self.canvas,"src/img/Logo/TopFormLogoBeliSrednji.png",445, 190)#465142
         self.imgUser = wid.create_canvas_image(self.canvas,"src/img/Main/imgUser.png",0, 0)
 
-        self.text_id_user = self.canvas.create_text(64,25, anchor="nw", text=self.username, fill="#FFFFFF", font=("Inter Medium", 12 * -1))
-        self.text_id_date_time = self.canvas.create_text(475,313, anchor="nw", text="19:49 / Saturday /  01.11.2024", fill="#DFDFDF", font=("Inter", 24 * -1))
-        self.rect=self.canvas.create_rectangle(218.0, 0, 230.0, 63, fill="#FFFFFF",outline="", tags="rect")
+        self.text_id_user = self.canvas.create_text(64,25, anchor="nw", text=self.username, fill=boje.bela, font=("Inter Medium", 12 * -1))
+        self.text_id_date_time = self.canvas.create_text(475,313, anchor="nw", text="19:49 / Saturday /  01.11.2024", fill=boje.text_svetlo_siva, font=("Inter", 24 * -1))
+        self.rect=self.canvas.create_rectangle(218.0, 0, 230.0, 63, fill=boje.bela,outline="", tags="rect")
         
 
     def create_widgets(self):
