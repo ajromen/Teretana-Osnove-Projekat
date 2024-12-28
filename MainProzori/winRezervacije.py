@@ -55,12 +55,17 @@ class winRezervacije(winTemplate):
     
     def dodaj_termine(self):
         self.dodatni_window=helperFunctions.napravi_toplevel(title="Izaberite termin",height=608,width=850)
-        termini_window=winTermini.TerminiWindow(self.dodatni_window,escfunk=self.dodaj_termine_kraj,u_prozoru=True)
+        termini_window=winTermini.TerminiWindow(self.dodatni_window,self.dodaj_termine_kraj,u_prozoru=True)
         termini_window.start()
         
-    def dodaj_termine_kraj(self,termin="Izaberite termin"):
+    def dodaj_termine_kraj(self, termin="Izaberite termin"):
+        print("AAAAAA")
         self.btnTermin.configure(text=termin)
         self.dodatni_window.destroy()
+        self.trenutni_window.focus_set()
+        self.trenutni_window.grab_set()
+        self.trenutni_window.transient(self.window)
+        self.trenutni_window.grab_set_global()
     
     def rezervacija_izmeni(self):
         pass
