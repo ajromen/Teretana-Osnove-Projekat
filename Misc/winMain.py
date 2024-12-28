@@ -156,7 +156,7 @@ class MainWindow:
         self.trenutni_window.start()
     
     def napravi_win_termini(self):
-        self.trenutni_window = winTermini.TerminiWindow(self.window, lambda: self.unisti_trenutni_win(), self.uloga)
+        self.trenutni_window = winTermini.TerminiWindow(self.window, self.unisti_trenutni_win, self.uloga)
         self.trenutni_window.start()
         
     def napravi_win_izvestaji(self):

@@ -36,6 +36,7 @@ class winRezervacije(winTemplate):
         
         self.create_entry_search(self.pretrazi)
         self.create_cmbbxSearch(kriterijumi)
+    
         
     def rezervacija_dodaj(self):
         self.top_level=True
@@ -48,7 +49,7 @@ class winRezervacije(winTemplate):
         self.btnTermin=self.create_text_button("Izaberite termin", 154, 28, width=170,height=28,fg_color=fg_color,hover_color=hover_color,command=self.dodaj_termine)
         self.btnBrojMesta=self.create_text_button("Izaberite broj mesta", 154, 83, width=170,height=28,fg_color=fg_color,hover_color=hover_color,command=None)    
         
-        self.create_text_button("Sačuvaj", 102, 146,command=None)
+        self.btnSacuvaj=self.create_text_button("Sačuvaj", 102, 146,command=None)
         self.create_button("./src/img/Widget/btnOtkazi.png",136,183,command=self.trenutni_window.destroy)
         
         self.top_level=False
@@ -59,22 +60,17 @@ class winRezervacije(winTemplate):
         termini_window.start()
         
     def dodaj_termine_kraj(self, termin="Izaberite termin"):
-        print("AAAAAA")
         self.btnTermin.configure(text=termin)
         self.dodatni_window.destroy()
-        self.trenutni_window.focus_set()
         self.trenutni_window.grab_set()
-        self.trenutni_window.transient(self.window)
-        self.trenutni_window.grab_set_global()
     
     def rezervacija_izmeni(self):
         pass
     
-        
+    def omoguci_sacuvaj(self):
+        self.btnSacuvaj.configure(state="disabled")
     
-    def napravi_top(self):
-        self.btn.configure(text="top")
-        helperFunctions.obavestenje("Napravi top")
+        
     
     def rezervacija_obrisi(self):
         pass
