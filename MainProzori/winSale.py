@@ -1,4 +1,4 @@
-import CTkTable
+
 import bp_sale
 from imports import *
 
