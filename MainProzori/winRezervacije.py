@@ -71,9 +71,7 @@ class RezervacijeWindow(winTemplate):
             return
         self.termin=termin
         self.sala=bp_termini.get_sala(termin)
-        print(self.sala)
         helperFunctions.omoguci_dugme(self.btnBrojMesta,self.dodaj_broj_mesta)
-        
         
     def dodaj_broj_mesta(self):
         self.sale_window=winSale.SaleWindow(self.sala,lambda broj_mesta="Izaberite broj mesta":self.dodaj_broj_mesta_kraj(broj_mesta))
