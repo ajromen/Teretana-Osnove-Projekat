@@ -16,3 +16,16 @@ def izmeni_salu(id_sale,naziv=None,broj_redova=None,oznaka_mesta=None,obrisana=N
 
 def obrisi_salu(id_sale):
     pass
+
+def get_sala(id_sale):
+    cursor=BazaPodataka.get_cursor()
+    komanda='''SELECT
+                    naziv,
+                    broj_redova,
+                    oznaka_mesta
+                FROM
+                    Sala
+                WHERE
+                    id_sale=?'''
+    cursor.execute(komanda,(id_sale,))
+    return cursor.fetchone()

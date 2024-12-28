@@ -1,5 +1,7 @@
 import bp_rezervacije
+import bp_termini
 from imports import *
+import winSale
 import winTermini
 
 class RezervacijeWindow(winTemplate):
@@ -55,8 +57,8 @@ class RezervacijeWindow(winTemplate):
     
     def dodaj_termine(self):
         self.dodatni_window=helperFunctions.napravi_toplevel(title="Izaberite termin",height=608,width=850)
-        termini_window=winTermini.TerminiWindow(self.dodatni_window,lambda termin:self.dodaj_termine_kraj(termin),u_prozoru=True)
         self.dodatni_window.protocol("WM_DELETE_WINDOW", self.dodaj_termine_kraj)
+        termini_window=winTermini.TerminiWindow(self.dodatni_window,lambda termin:self.dodaj_termine_kraj(termin),u_prozoru=True)
         termini_window.start()
         
     def dodaj_termine_kraj(self, termin="Izaberite termin"):
@@ -67,17 +69,27 @@ class RezervacijeWindow(winTemplate):
             helperFunctions.onemoguci_dugme(self.btnBrojMesta)
             helperFunctions.onemoguci_dugme(self.btnSacuvaj)
             return
+        self.termin=termin
+        self.sala=bp_termini.get_sala(termin)
+        print(self.sala)
         helperFunctions.omoguci_dugme(self.btnBrojMesta,self.dodaj_broj_mesta)
         
         
+    def dodaj_broj_mesta(self):
+        self.sale_window=winSale.SaleWindow(self.sala,lambda broj_mesta="Izaberite broj mesta":self.dodaj_broj_mesta_kraj(broj_mesta))
+        self.sale_window.start()
         
-    def dodaj_broj_mesta(self,br_mesta="Izaberite broj mesta"):
+    def dodaj_broj_mesta_kraj(self,br_mesta="Izaberite broj mesta"):
+        self.btnBrojMesta.configure(text=br_mesta)
+        self.sale_window.window.destroy()
+        self.trenutni_window.grab_set()
         if br_mesta=="Izaberite broj mesta": 
             helperFunctions.onemoguci_dugme(self.btnSacuvaj)
             return
-        self.btnBrojMesta.configure(text=br_mesta)
         helperFunctions.omoguci_dugme(self.btnSacuvaj,self.rezervacija_sacuvaj)
-        self.trenutni_window.grab_set()
+        
+        
+    
     
     def rezervacija_izmeni(self):
         pass

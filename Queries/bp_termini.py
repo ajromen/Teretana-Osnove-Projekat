@@ -138,3 +138,12 @@ def postoji_termin_za_datum(datum: datetime,trening: str):
     if cursor.fetchone():
         return True
     return False
+
+def get_sala(id_termina):
+    cursor=BazaPodataka.get_cursor()
+    komanda='''SELECT Trening.id_sale 
+            FROM Termin 
+            JOIN Trening ON Termin.id_treninga = Trening.id_treninga
+            WHERE id_termina=?'''
+    cursor.execute(komanda,(id_termina,))
+    return cursor.fetchone()[0]
