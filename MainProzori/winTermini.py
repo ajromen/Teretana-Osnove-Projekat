@@ -4,11 +4,8 @@ import bp_termini
 
 
 class TerminiWindow(winTemplate):
-    def __init__(self, window, main_window=None, uloga=None, top_level=False,escfunk=None):
-        if top_level:
-            self.window=window
-        else:
-            super().__init__(window, main_window, uloga)
+    def __init__(self, window, escfunk=None, uloga=None,username=None, u_prozoru=False):
+        super().__init__(window, escfunk, uloga, u_prozoru, username)
 
     def start(self):
         self.create_canvas()

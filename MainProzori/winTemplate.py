@@ -4,22 +4,25 @@ from imports import *
 import widgets as wid
 
 class winTemplate:
-    def __init__(self, window, main_window, uloga):
+    def __init__(self, window, escfunk=None, uloga=None, u_prozoru=False, username=None):
         self.window = window
-        self.main_window = main_window
-        self.uloga = uloga
         self.current_canvas = None
+        self.uloga = uloga
+        self.u_prozoru=u_prozoru
+        self.escfunk = escfunk
         self.top_level=False
+        self.username=username
 
-    def create_canvas(self, bg_color="#010204", height=618, width=860):
+    def create_canvas(self, bg_color="#010204", height=618, width=860,x=230,y=0):
+        if self.u_prozoru: x=0;y=-45
         self.current_canvas = Canvas(self.window, bg=bg_color, height=height, width=width, bd=0, highlightthickness=0, relief="ridge")
-        self.current_canvas.place(x=230, y=0)
+        self.current_canvas.place(x=x, y=y)
 
     def create_exit_button(self):
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnExit.png", 812, 9, 33, 33, lambda: self.main_window.unisti_trenutni_win())
+        wid.create_button(self.current_canvas, "./src/img/Widget/btnExit.png", 812, 9, 33, 33, self)
 
     def create_search_button(self, command):
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnSearch.png", 358, 53, 33, 33, command)
+        wid.create_button(self.current_canvas, "./src/img/Widget/btnSearch.png", 358, 53, 33, 33, command=self.escfunk)
 
     def create_table_bg(self, velika=False)->int:
         if velika: 

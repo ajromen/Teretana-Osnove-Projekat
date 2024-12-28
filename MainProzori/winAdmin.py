@@ -4,8 +4,8 @@ import bp_korisnici
 
 
 class AdminWindow(winTemplate):
-    def __init__(self, window, main_window):
-        super().__init__(window, main_window, "admin")
+    def __init__(self, window, escfunk=None, uloga=None,username=None, u_prozoru=False):
+        super().__init__(window, escfunk, uloga, u_prozoru, username)
 
     def start(self):
         self.create_canvas()

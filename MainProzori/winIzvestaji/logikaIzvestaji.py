@@ -2,8 +2,8 @@ import bp_izvestaji
 from imports import *
 
 class IzvestajiLogika(winTemplate):
-    def __init__(self, window, main_window, uloga):
-        super().__init__(window, main_window, uloga)
+    def __init__(self, window, escfunk=None, uloga=None,username=None, u_prozoru=False):
+        super().__init__(window, escfunk, uloga, u_prozoru, username)
         self.trenutni_izvestaj = None 
         self.ret = None
         

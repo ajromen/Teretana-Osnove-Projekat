@@ -4,8 +4,8 @@ from ctk_rangeslider import *
 import bp_programi
 
 class ProgramiWindow(winTemplate):
-    def __init__(self, window, main_window,uloga):
-        super().__init__(window, main_window,uloga)
+    def __init__(self, window, escfunk=None, uloga=None,username=None, u_prozoru=False):
+        super().__init__(window, escfunk, uloga, u_prozoru, username)
         self.promenljive_filteri()
 
     def start(self):

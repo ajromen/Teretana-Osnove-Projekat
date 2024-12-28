@@ -3,8 +3,8 @@ from imports import *
 import winTermini
 
 class winRezervacije(winTemplate):
-    def __init__(self, window, main_window,uloga,username):
-        super().__init__(window,main_window,uloga)
+    def __init__(self, window, escfunk=None, uloga=None,username=None, u_prozoru=False):
+        super().__init__(window, escfunk, uloga, u_prozoru, username)
         self.username=username
         
     def start(self):
@@ -55,7 +55,7 @@ class winRezervacije(winTemplate):
     
     def dodaj_termine(self):
         self.dodatni_window=helperFunctions.napravi_toplevel(title="Izaberite termin",height=608,width=850)
-        termini_window=winTermini.TerminiWindow(self.dodatni_window,escfunk=self.dodaj_termine_kraj)
+        termini_window=winTermini.TerminiWindow(self.dodatni_window,escfunk=self.dodaj_termine_kraj,u_prozoru=True)
         termini_window.start()
         
     def dodaj_termine_kraj(self,termin="Izaberite termin"):

@@ -2,8 +2,8 @@ from imports import *
 import bp_korisnici
  
 class ClanoviWindow(winTemplate):
-    def __init__(self, window, main_window,uloga):
-        super().__init__(window,main_window,uloga)
+    def __init__(self, window, escfunk=None, uloga=None,username=None, u_prozoru=False):
+        super().__init__(window, escfunk, uloga, u_prozoru, username)
         
         self.broj_rez_kluc="potreban_broj_za_rezervacije"
         broj_rez=helperFunctions.ucitaj_iz_setup(self.broj_rez_kluc)

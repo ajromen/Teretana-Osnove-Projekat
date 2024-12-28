@@ -3,8 +3,8 @@ from imports import *
 from logikaIzvestaji import IzvestajiLogika
 
 class IzvestajiWindow(IzvestajiLogika):
-    def __init__(self, window, main_window, uloga):
-        super().__init__(window, main_window, uloga)
+    def __init__(self, window, escfunk=None, uloga=None,username=None, u_prozoru=False):
+        super().__init__(window, escfunk, uloga, u_prozoru, username)
 
     def start(self):
         self.create_canvas()
