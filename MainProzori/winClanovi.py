@@ -15,10 +15,10 @@ class ClanoviWindow(winTemplate):
         self.create_exit_button()
         self.create_search_button(self.pretrazi)
         
-        self.uloga=="admin" and self.create_button("./src/img/Widget/btnNagradi.png",23,541,252,40,lambda: self.winClan_Izmeni("Nagradi")) # Dodaj Dugme
+        self.uloga=="admin" and self.create_button("./src/img/widget/btnNagradi.png",23,541,252,40,lambda: self.winClan_Izmeni("Nagradi")) # Dodaj Dugme
         
-        self.create_button("./src/img/Widget/btnAktiviraj.png",300,541,252,40,lambda: self.winClan_Izmeni("Aktiviraj"))
-        self.create_button("./src/img/Widget/btnObrisi.png", 576, 541, 252, 40, self.clan_delete)
+        self.create_button("./src/img/widget/btnAktiviraj.png",300,541,252,40,lambda: self.winClan_Izmeni("Aktiviraj"))
+        self.create_button("./src/img/widget/btnObrisi.png", 576, 541, 252, 40, self.clan_delete)
         
         self.kriterijumiMap={
             "Korisničko ime" : "username",
@@ -131,7 +131,7 @@ class ClanoviWindow(winTemplate):
             else: self.switchPaket.deselect()
             self.create_text_button("Aktiviraj status", 89, 132, self.aktiviraj_paket, width=166, height=27)
             
-        self.create_button("./src/img/Widget/btnOtkazi.png",x=136,y=166,width=72,height=17,command=self.trenutni_window.destroy)
+        self.create_button("./src/img/widget/btnOtkazi.png",x=136,y=166,width=72,height=17,command=self.trenutni_window.destroy)
         self.top_level=False
     
     def clan_delete(self):

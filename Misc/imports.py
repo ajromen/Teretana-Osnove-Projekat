@@ -1,8 +1,8 @@
 import sys
-sys.path.append('MainProzori')
-sys.path.append('MainProzori/winIzvestaji')
-sys.path.append('Queries')
-sys.path.append('Misc')
+sys.path.append('mainProzori')
+sys.path.append('mainProzori/winIzvestaji')
+sys.path.append('queries')
+sys.path.append('misc')
 
 
 from tkinter import *

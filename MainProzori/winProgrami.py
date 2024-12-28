@@ -12,13 +12,13 @@ class ProgramiWindow(winTemplate):
         self.create_canvas()
         self.create_exit_button()
         self.create_search_button(self.pretrazi)
-        self.create_button("./src/img/Widget/btnFilteri.png", 687, 53, 142, 33, self.winProgramiFilteri)
+        self.create_button("./src/img/widget/btnFilteri.png", 687, 53, 142, 33, self.winProgramiFilteri)
         
         visoki=True
         if self.uloga=="admin": 
-            self.create_button("./src/img/Widget/btnDodaj.png", 23, 543, 252, 40, lambda: self.winProgrami_Dodaj())
-            self.create_button("./src/img/Widget/btnIzmeni.png", 300, 543, 252, 40, lambda: self.winProgrami_Izmeni())
-            self.create_button("./src/img/Widget/btnObrisi.png", 577, 543, 252, 40, self.obrisi_program)
+            self.create_button("./src/img/widget/btnDodaj.png", 23, 543, 252, 40, lambda: self.winProgrami_Dodaj())
+            self.create_button("./src/img/widget/btnIzmeni.png", 300, 543, 252, 40, lambda: self.winProgrami_Izmeni())
+            self.create_button("./src/img/widget/btnObrisi.png", 577, 543, 252, 40, self.obrisi_program)
             visoki=False
             
         self.create_entry_search(self.pretrazi)
@@ -114,7 +114,7 @@ class ProgramiWindow(winTemplate):
         
         self.create_text_button("Sačuvaj",102,323,self.ugasi_filteri)
         
-        self.create_button("./src/img/Widget/btnObrisiFiltere.png", 135, 357, 72, 17, self.restartuj_filtere)
+        self.create_button("./src/img/widget/btnObrisiFiltere.png", 135, 357, 72, 17, self.restartuj_filtere)
         self.top_level=False
         
     def on_entry_trajanjeOd_click(self,event):
@@ -289,7 +289,7 @@ class ProgramiWindow(winTemplate):
         
         self.create_text_button("Sačuvaj",102,424,lambda: self.dodaj_izmeni_program(mode=mode))
         #dugme za otkazivanje
-        self.create_button("./src/img/Widget/btnOtkazi.png", 136, 461, 72, 17, self.trenutni_window.destroy)
+        self.create_button("./src/img/widget/btnOtkazi.png", 136, 461, 72, 17, self.trenutni_window.destroy)
         self.top_level=False
 
         

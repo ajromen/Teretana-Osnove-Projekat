@@ -1,4 +1,4 @@
-# MainProzori/winTemplate.py
+# mainProzori/winTemplate.py
 import os
 from imports import *
 import widgets as wid
@@ -19,17 +19,17 @@ class winTemplate:
         self.current_canvas.place(x=x, y=y)
 
     def create_exit_button(self,x=812,y=9):
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnExit.png", x, y, 33, 33, self.escfunk)
+        wid.create_button(self.current_canvas, "./src/img/widget/btnExit.png", x, y, 33, 33, self.escfunk)
 
     def create_search_button(self, command):
-        wid.create_button(self.current_canvas, "./src/img/Widget/btnSearch.png", 358, 53, 33, 33, command=command)
+        wid.create_button(self.current_canvas, "./src/img/widget/btnSearch.png", 358, 53, 33, 33, command=command)
 
     def create_table_bg(self, velika=False)->int:
         if velika: 
-            self.tabelaPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/tabelaPozadina_duza.png", 23, 102)
+            self.tabelaPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/widget/tabelaPozadina_duza.png", 23, 102)
             return 470
         else: 
-            self.tabelaPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/tabelaPozadina.png", 23, 102)
+            self.tabelaPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/widget/tabelaPozadina.png", 23, 102)
             return 400
             
     def create_table(self, columns, velika=False):
@@ -46,7 +46,7 @@ class winTemplate:
         return wid.create_comboBox(self.get_canvas(), values, x=x, y=y,width=width,variable=variable)
 
     def create_entry_search(self, command):
-        self.searchPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/Widget/searchPozadina.png", 23, 53)
+        self.searchPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/widget/searchPozadina.png", 23, 53)
         self.entrySearch = wid.create_entry_search(self.current_canvas, command)
 
     def create_label(self, text, x, y, font_size=12):

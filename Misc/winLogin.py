@@ -34,7 +34,7 @@ class LoginWindow:
         self.canvas.place(x=0, y=0)
         
         self.imgPozadina=wid.create_canvas_image(self.canvas,"src/img/login/image_1.png",0, 0)
-        self.imgLogo = wid.create_canvas_image(self.canvas,"src/img/Logo/TopFormLogoBeliMali2.png",565-308//2,74)
+        self.imgLogo = wid.create_canvas_image(self.canvas,"src/img/logo/TopFormLogoBeliMali2.png",565-308//2,74)
         self.text_id = self.canvas.create_text(388.0, 171.0, anchor="nw", text="Pozdrav,", fill=boje.bela, font=("Inter", 24 * -1))
         self.canvas.create_rectangle(403, 247.7, 706, 248.0, fill=boje.bela, outline="")
         self.canvas.create_rectangle(403, 302.7, 706, 303.0, fill=boje.bela, outline="")

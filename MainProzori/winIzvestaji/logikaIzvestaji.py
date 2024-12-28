@@ -56,7 +56,7 @@ class IzvestajiLogika(winTemplate):
         self.a_izvestaj(izabrano=True)
         
     def a_txt(self):
-        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_A.txt", "Rezervacije za datum: " + self.ret)
+        helperFunctions.dopisi_u_fajl("izvestaji/izvestaj_A.txt", "Rezervacije za datum: " + self.ret)
 
     # Izvestaj B
     def b_izvestaj(self,izabrano=False):
@@ -78,7 +78,7 @@ class IzvestajiLogika(winTemplate):
         self.b_izvestaj(izabrano=True)
     
     def b_txt(self):
-        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_B.txt", "Rezervacije po datumu termina za datum: " + self.ret)
+        helperFunctions.dopisi_u_fajl("izvestaji/izvestaj_B.txt", "Rezervacije po datumu termina za datum: " + self.ret)
 
 
     # Izvestaj C
@@ -105,7 +105,7 @@ class IzvestajiLogika(winTemplate):
         self.c_izvestaj(izabrano=True)
     
     def c_txt(self):
-        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_C.txt", "Rezervacije po datumu i instruktoru: " + self.ret)
+        helperFunctions.dopisi_u_fajl("izvestaji/izvestaj_C.txt", "Rezervacije po datumu i instruktoru: " + self.ret)
 
     # Izvestaj D
     def d_izvestaj(self,izabrano=False):
@@ -127,7 +127,7 @@ class IzvestajiLogika(winTemplate):
         self.d_izvestaj(izabrano=True)
     
     def d_txt(self):
-        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_D.txt", "Rezervacije po danu: " + helperFunctions.broj_u_dan(self.ret))
+        helperFunctions.dopisi_u_fajl("izvestaji/izvestaj_D.txt", "Rezervacije po danu: " + helperFunctions.broj_u_dan(self.ret))
 
 
     # Izvestaj E
@@ -138,7 +138,7 @@ class IzvestajiLogika(winTemplate):
         self.postavi_izvestaj(kriterijumi,bp_izvestaji.e_izvestaj,"","Broj rezervacija po instruktoru (30 dana)",True,False)
     
     def e_txt(self):
-        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_E.txt", "Broj rezervacija po instruktoru (30 dana)")
+        helperFunctions.dopisi_u_fajl("izvestaji/izvestaj_E.txt", "Broj rezervacija po instruktoru (30 dana)")
     
     
     # Izvestaj F
@@ -162,7 +162,7 @@ class IzvestajiLogika(winTemplate):
     
     def f_txt(self):
         pak = "Premium" if self.ret else "Standard"
-        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_F.txt", f"Za odabrani paket: '{pak}', broj realizovanih rezervacija u poslednjih 30 dana je: {self.broj_redova}")
+        helperFunctions.dopisi_u_fajl("izvestaji/izvestaj_F.txt", f"Za odabrani paket: '{pak}', broj realizovanih rezervacija u poslednjih 30 dana je: {self.broj_redova}")
     
     # Izvestaj G
     def g_izvestaj(self,izabrano=False):
@@ -172,7 +172,7 @@ class IzvestajiLogika(winTemplate):
         self.postavi_izvestaj(kriterijumi,bp_izvestaji.g_izvestaj,"","Top 3 najpopularnija programa treninga",True,False)
     
     def g_txt(self):
-        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_G.txt", "Top 3 najpopularnija programa treninga")
+        helperFunctions.dopisi_u_fajl("izvestaji/izvestaj_G.txt", "Top 3 najpopularnija programa treninga")
     
     # Izvestaj H
     def h_izvestaj(self,izabrano=False):
@@ -191,5 +191,5 @@ class IzvestajiLogika(winTemplate):
         self.popuni_tabelu(self.table, podaci) 
     
     def h_txt(self):
-        helperFunctions.dopisi_u_fajl("Izvestaji/izvestaj_H.txt", "Najpopularniji dan u nedelji (1 godina) je: " + self.ret)
+        helperFunctions.dopisi_u_fajl("izvestaji/izvestaj_H.txt", "Najpopularniji dan u nedelji (1 godina) je: " + self.ret)
     

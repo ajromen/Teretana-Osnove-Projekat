@@ -12,8 +12,8 @@ class AdminWindow(winTemplate):
         self.create_exit_button()
         self.create_search_button(self.pretrazi)       
         
-        self.create_button("./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winAdmin_Dodaj()) # Dodaj Dugme
-        self.create_button("./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi) # Obrisi Dugme
+        self.create_button("./src/img/widget/btnDodaj.png",23,543,252,40,lambda: self.winAdmin_Dodaj()) # Dodaj Dugme
+        self.create_button("./src/img/widget/btnObrisi.png",577,543,252,40,self.obrisi) # Obrisi Dugme
         
         self.kriterijumiMap={
             "Korisničko ime" : "username",
@@ -98,7 +98,7 @@ class AdminWindow(winTemplate):
         self.switchPaket=self.create_switch(272,215)
 
         self.create_text_button("Napravi nalog",88,268,self.napravi_nalog,width=166)
-        self.create_button("./src/img/Widget/btnOtkazi.png",136,303,72,17,command=self.trenutni_window.destroy)
+        self.create_button("./src/img/widget/btnOtkazi.png",136,303,72,17,command=self.trenutni_window.destroy)
         self.top_level=False
         
     def napravi_nalog(self):

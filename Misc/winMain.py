@@ -36,9 +36,9 @@ class MainWindow:
         )
         self.canvas.place(x=0, y=0)
         
-        self.imgPozadina = wid.create_canvas_image(self.canvas,"src/img/Main/imgPozadina2.png",230, 0)
-        self.imgLogo = wid.create_canvas_image(self.canvas,"src/img/Logo/TopFormLogoBeliSrednji.png",445, 190)#465142
-        self.imgUser = wid.create_canvas_image(self.canvas,"src/img/Main/imgUser.png",0, 0)
+        self.imgPozadina = wid.create_canvas_image(self.canvas,"src/img/main/imgPozadina2.png",230, 0)
+        self.imgLogo = wid.create_canvas_image(self.canvas,"src/img/logo/TopFormLogoBeliSrednji.png",445, 190)#465142
+        self.imgUser = wid.create_canvas_image(self.canvas,"src/img/main/imgUser.png",0, 0)
 
         self.text_id_user = self.canvas.create_text(64,25, anchor="nw", text=self.username, fill=boje.bela, font=("Inter Medium", 12 * -1))
         self.text_id_date_time = self.canvas.create_text(475,313, anchor="nw", text="19:49 / Saturday /  01.11.2024", fill=boje.text_svetlo_siva, font=("Inter", 24 * -1))
@@ -61,16 +61,16 @@ class MainWindow:
         }
 
         dugmad = {
-            "btnVrsteTreninga": lambda i: self.create_button("src/img/Main/btnVrsteTreninga.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("vrste_treninga")),
-            "btnTreninzi": lambda i: self.create_button("src/img/Main/btnTreninzi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("trening")),
-            "btnIzvestaji": lambda i: self.create_button("src/img/Main/btnIzvestaji.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("izvestaji")),
-            "btnAdmin": lambda i: self.create_button("src/img/Main/btnAdmin.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("admin")),
-            "btnClanovi": lambda i: self.create_button("src/img/Main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("clanovi")),
-            "btnTermini": lambda i: self.create_button("src/img/Main/btnTermini.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("termini")),
-            "btnRezervacije": lambda i: self.create_button("src/img/Main/btnRezervacije.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("rezervacije")),
-            "btnProgrami": lambda i: self.create_button("src/img/Main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("programi")),
-            "btnRegistrujSe": lambda i: self.create_button("src/img/Main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.registrujSe()),
-            "btnOdjaviSe": lambda i: self.create_button("src/img/Main/btnOdjaviSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("login"))
+            "btnVrsteTreninga": lambda i: self.create_button("src/img/main/btnVrsteTreninga.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("vrste_treninga")),
+            "btnTreninzi": lambda i: self.create_button("src/img/main/btnTreninzi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("trening")),
+            "btnIzvestaji": lambda i: self.create_button("src/img/main/btnIzvestaji.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("izvestaji")),
+            "btnAdmin": lambda i: self.create_button("src/img/main/btnAdmin.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("admin")),
+            "btnClanovi": lambda i: self.create_button("src/img/main/btnClanovi.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("clanovi")),
+            "btnTermini": lambda i: self.create_button("src/img/main/btnTermini.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("termini")),
+            "btnRezervacije": lambda i: self.create_button("src/img/main/btnRezervacije.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("rezervacije")),
+            "btnProgrami": lambda i: self.create_button("src/img/main/btnProgrami.png", x=0, y=63*i, width=230, height=63, command=lambda: self.prebaci_win("programi")),
+            "btnRegistrujSe": lambda i: self.create_button("src/img/main/btnRegistrujSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.registrujSe()),
+            "btnOdjaviSe": lambda i: self.create_button("src/img/main/btnOdjaviSe.png", x=35.0, y=559.0, width=160.0, height=35.0, command=lambda: self.vrati("login"))
         }
 
         i = 1

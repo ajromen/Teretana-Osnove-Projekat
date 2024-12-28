@@ -25,9 +25,9 @@ class TreningWindow(winTemplate):
         
         velika=True
         if self.uloga == "admin":
-            self.create_button("./src/img/Widget/btnDodaj.png", 23, 543, 252, 40, lambda: self.winTrening_Dodaj())
-            self.create_button("./src/img/Widget/btnIzmeni.png", 300, 543, 252, 40, lambda: self.winTrening_Izmeni())
-            self.create_button("./src/img/Widget/btnObrisi.png", 577, 543, 252, 40, self.obrisi_trening)
+            self.create_button("./src/img/widget/btnDodaj.png", 23, 543, 252, 40, lambda: self.winTrening_Dodaj())
+            self.create_button("./src/img/widget/btnIzmeni.png", 300, 543, 252, 40, lambda: self.winTrening_Izmeni())
+            self.create_button("./src/img/widget/btnObrisi.png", 577, 543, 252, 40, self.obrisi_trening)
             velika=False
         
         self.kriterijumi=["Šifra", "Sala", "Vreme početka", "Vreme kraja", "Dani nedelje", "Program"]
@@ -191,7 +191,7 @@ class TreningWindow(winTemplate):
         btnSacuvaj = ctk.CTkButton(self.trenutni_window, text="Sačuvaj", command=lambda: self.dodaj_izmeni(mode=mode))
         btnSacuvaj.place(x=102,y=325)
         #dugme za otkazivanje
-        self.create_button("./src/img/Widget/btnOtkazi.png",x=136,y=362,width=72,height=17,command=self.trenutni_window.destroy)
+        self.create_button("./src/img/widget/btnOtkazi.png",x=136,y=362,width=72,height=17,command=self.trenutni_window.destroy)
         self.top_level=False
         
         

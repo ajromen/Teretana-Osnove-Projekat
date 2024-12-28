@@ -24,8 +24,8 @@ class SignupWindow:
         self.canvas = Canvas(self.window, bg=boje.crna_main_window, height=450, width=760, bd=0, highlightthickness=0, relief="ridge")
         self.canvas.place(x=0, y=0)
         
-        self.imgPozadina=wid.create_canvas_image(self.canvas,"src/img/Signup/image_1.png",0, 0)
-        self.imgLogo=wid.create_canvas_image(self.canvas,"src/img/Logo/TopFormLogoBeliMali2.png",201-303//2, 76.0)
+        self.imgPozadina=wid.create_canvas_image(self.canvas,"src/img/signup/image_1.png",0, 0)
+        self.imgLogo=wid.create_canvas_image(self.canvas,"src/img/logo/TopFormLogoBeliMali2.png",201-303//2, 76.0)
 
         self.text_id = self.canvas.create_text(39,172, anchor="nw", text="Dobrodošao/la, ", fill=boje.bela, font=("Inter SemiBold", 24 * -1))
         self.canvas.create_rectangle(41.0, 230, 352.0, 231, fill=boje.bela,outline="")
@@ -46,10 +46,10 @@ class SignupWindow:
         self.entryPassword = wid.create_entry(self.canvas,x=41.0, y=293.0,width=312,corner_radius=0,back_color=boje.entry_login, placeholder="Lozinka", auto_fin_fout=(True,"Lozinka"))
         self.entryPassword.bind("<Return>", lambda event: self.dodaj_korisnika())
 
-        wid.create_button(self.canvas,"src/img/Signup/button_3.png", x=121.0, y=337.0, width=160.0, height=35.0, command=self.dodaj_korisnika)
-        wid.create_button(self.canvas,"src/img/Signup/button_2.png", x=588.0, y=394.0, width=153.0, height=40.0, command=lambda: self.vrati("gost"))
-        wid.create_button(self.canvas,"src/img/Signup/button_1.png", x=163.0, y=379.0, width=76.0, height=15.0, command=lambda: self.vrati("login"))
-        #wid.create_button(self.canvas,"src/img/Signup/button_3.png", x=0, y=0.0, width=160.0, height=35, command=lambda: self.izlistaj())
+        wid.create_button(self.canvas,"src/img/signup/button_3.png", x=121.0, y=337.0, width=160.0, height=35.0, command=self.dodaj_korisnika)
+        wid.create_button(self.canvas,"src/img/signup/button_2.png", x=588.0, y=394.0, width=153.0, height=40.0, command=lambda: self.vrati("gost"))
+        wid.create_button(self.canvas,"src/img/signup/button_1.png", x=163.0, y=379.0, width=76.0, height=15.0, command=lambda: self.vrati("login"))
+        #wid.create_button(self.canvas,"src/img/signup/button_3.png", x=0, y=0.0, width=160.0, height=35, command=lambda: self.izlistaj())
     
 
     def promeni_dobrodosao(self):

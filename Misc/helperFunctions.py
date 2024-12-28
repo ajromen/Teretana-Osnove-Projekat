@@ -52,7 +52,7 @@ def setup_window(window,title,width_height,bg_color=boje.crna):
    window.configure(bg = bg_color)
    window.resizable(False, False)
    centriraj_window(window)
-   window.iconbitmap("src/img/Logo/TFLogo.ico")
+   window.iconbitmap("src/img/logo/TFLogo.ico")
    if os.name == "nt":
       app_id = "mycompany.myapp.subapp"
       ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)

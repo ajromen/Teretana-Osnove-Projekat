@@ -17,15 +17,15 @@ class RezervacijeWindow(winTemplate):
         kriterijumi=["Šifra termina","Datum održavanja","Broj mesta","Datum rezervacije"]
         if self.uloga=="instruktor" or self.uloga=="admin":
             kriterijumi.append("Korisnik")#username ime i prezime
-            self.create_button("./src/img/Widget/btnIzmeni.png",300,541,252,40,self.rezervacija_izmeni)
+            self.create_button("./src/img/widget/btnIzmeni.png",300,541,252,40,self.rezervacija_izmeni)
         else:
             kriterijumi.append("Instruktor")#ime i prezime
-            self.create_button("./src/img/Widget/btnPregled.png",300,541,252,40,self.rezervacija_pregledaj)
+            self.create_button("./src/img/widget/btnPregled.png",300,541,252,40,self.rezervacija_pregledaj)
         
         self.create_table(kriterijumi) 
         
-        self.create_button("./src/img/Widget/btnObrisi.png", 576, 541, 252, 40, self.rezervacija_obrisi)
-        self.create_button("./src/img/Widget/btnDodaj.png", 23, 541, 252, 40, self.rezervacija_dodaj)  
+        self.create_button("./src/img/widget/btnObrisi.png", 576, 541, 252, 40, self.rezervacija_obrisi)
+        self.create_button("./src/img/widget/btnDodaj.png", 23, 541, 252, 40, self.rezervacija_dodaj)  
          
         self.kriterijumiMap={
             "Šifra termina" : "Rezervacija.id_termina",
@@ -51,7 +51,7 @@ class RezervacijeWindow(winTemplate):
         self.btnBrojMesta=self.create_text_button("Izaberite broj mesta", 154, 83, width=170,height=28,fg_color=boje.dugme_disabled,hover_color=boje.dugme_disabled_hover,command=None)    
         
         self.btnSacuvaj=self.create_text_button("Sačuvaj", 102, 146,command=None,hover_color=boje.dugme_disabled_hover,fg_color=boje.dugme_disabled)
-        self.create_button("./src/img/Widget/btnOtkazi.png",136,183,command=self.trenutni_window.destroy)
+        self.create_button("./src/img/widget/btnOtkazi.png",136,183,command=self.trenutni_window.destroy)
         
         self.top_level=False
     

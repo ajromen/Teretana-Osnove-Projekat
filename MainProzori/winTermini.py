@@ -41,7 +41,7 @@ class TerminiWindow(winTemplate):
         self.table.column("Vreme početka", width=90)
         
         if self.u_prozoru:
-            self.create_button("./src/img/Widget/btnIzaberi.png", 577, 596, command=self.u_prozoru_selektuj)
+            self.create_button("./src/img/widget/btnIzaberi.png", 577, 596, command=self.u_prozoru_selektuj)
         
     def u_prozoru_selektuj(self):
         slctd_item = self.table.selection()

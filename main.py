@@ -1,5 +1,5 @@
 import sys
-sys.path.append('./Misc')
+sys.path.append('./misc')
 from imports import *
 import winLogin
 import winSignup

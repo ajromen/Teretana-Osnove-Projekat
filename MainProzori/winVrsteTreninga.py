@@ -12,9 +12,9 @@ class VrsteTreningaWindow(winTemplate):
         
         velika=True
         if(self.uloga=="admin"):
-            self.create_button("./src/img/Widget/btnDodaj.png",23,543,252,40,lambda: self.winVrste_dodaj()) # Dodaj Dugme
-            self.create_button("./src/img/Widget/btnIzmeni.png",300,543,252,40,lambda: self.winVrste_izmeni()) # Izmeni Dugme
-            self.create_button("./src/img/Widget/btnObrisi.png",577,543,252,40,self.obrisi) # Obrisi Dugme
+            self.create_button("./src/img/widget/btnDodaj.png",23,543,252,40,lambda: self.winVrste_dodaj()) # Dodaj Dugme
+            self.create_button("./src/img/widget/btnIzmeni.png",300,543,252,40,lambda: self.winVrste_izmeni()) # Izmeni Dugme
+            self.create_button("./src/img/widget/btnObrisi.png",577,543,252,40,self.obrisi) # Obrisi Dugme
             velika=False
         
         self.kriterijumiMap={
@@ -70,7 +70,7 @@ class VrsteTreningaWindow(winTemplate):
         self.txtbxOpis.insert("0.0", "")
 
         self.create_text_button("Dodaj",88,202,self.napravi,width=166)
-        self.create_button("./src/img/Widget/btnOtkazi.png",136,239,72,17,self.trenutni_window.destroy)
+        self.create_button("./src/img/widget/btnOtkazi.png",136,239,72,17,self.trenutni_window.destroy)
         self.top_level=False
         
     def napravi(self):
@@ -141,7 +141,7 @@ class VrsteTreningaWindow(winTemplate):
         self.txtbxOpis.insert("0.0", slctd_naziv)
 
         self.create_text_button("Sačuvaj", 88, 202, lambda: self.izmeni_vrstu_treninga(slctd_id), width=166)
-        self.create_button("./src/img/Widget/btnOtkazi.png", 136, 239, 72, 17, self.trenutni_window.destroy)
+        self.create_button("./src/img/widget/btnOtkazi.png", 136, 239, 72, 17, self.trenutni_window.destroy)
         self.top_level=False
 
     def izmeni_vrstu_treninga(self, id_vrste_treninga):
