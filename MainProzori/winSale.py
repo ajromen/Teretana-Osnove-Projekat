@@ -3,13 +3,14 @@ import bp_sale
 from imports import *
 
 class SaleWindow(winTemplate):
-    def __init__(self,sala,escfunk=None,oznaka_mesta=None):
+    def __init__(self,sala,escfunk=None,oznaka_mesta=None,id_termina=None):
         super().__init__(window=None,escfunk=escfunk)
         self.id_sale=sala
         self.window=None
         self.btn_width=50
         self.btn_prostor=6
         self.selektovano_dugme=oznaka_mesta
+        self.id_termina=id_termina
         
     def start(self):
         self.get_sala_info()
@@ -27,7 +28,7 @@ class SaleWindow(winTemplate):
     def get_sala_info(self):
         self.sala_naziv,self.br_redoova,self.oznaka_kolona=bp_sale.get_sala(self.id_sale)
         self.br_kolona=len(self.oznaka_kolona)
-        self.iskoriscena_mesta=bp_sale.get_mesta(self.id_sale)
+        self.iskoriscena_mesta=bp_sale.get_mesta(self.id_sale,self.id_termina)
         
     def napravi_dugmad(self):
         x=20
