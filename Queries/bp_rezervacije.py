@@ -13,7 +13,7 @@ FOREIGN KEY (id_termina) REFERENCES Termin(id_termina)
 
 # "Šifra" : "id_rezervacije",
 #             "Šifra termina" : "id_termina",
-#             "Broj mesta" : "oznaka_reda_kolone",
+#             "Oznaka mesta" : "oznaka_reda_kolone",
 #             "Datum" : "datum",
 #             "Korisničko ime" : "id_korisnika",
 #             "Instruktor" : "instruktor"

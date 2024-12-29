@@ -34,7 +34,14 @@ def azuriraj_podatke():
     bp_korisnici.obrisi_goste()
     BazaPodataka.commit()
     
-def main():
+
+if __name__ == '__main__':
+    azuriraj_podatke()
+
+    window=ctk.CTk()
+    winLogin=winLogin.LoginWindow(window)
+    winSignup=winSignup.SignupWindow(window)
+    winMain=winMain.MainWindow(window)
     staDaRadim="login"
     user=''
     lista=[]
@@ -46,18 +53,7 @@ def main():
         if(type(staDaRadim)==type(lista)):
             user=staDaRadim[1]
             staDaRadim=staDaRadim[0]
-
-if __name__ == '__main__':
-    azuriraj_podatke()
-    window=ctk.CTk()
     
-    winLogin=winLogin.LoginWindow(window)
-    winSignup=winSignup.SignupWindow(window)
-    winMain=winMain.MainWindow(window)
-    
-    main()
-    
-    winMain.start("admin",2)
     azuriraj_podatke()
         
     

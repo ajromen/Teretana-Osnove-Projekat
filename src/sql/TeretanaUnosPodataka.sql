@@ -27,7 +27,6 @@ INSERT INTO Sala(id_sale, naziv, broj_redova, oznaka_mesta)
 			(4, "Sala 4", 3, "1234567"),
 			(5, "Sala 5", 7, "AB"),
 			(6, "Sala 6", 1, "KLMN");
-			
 
 INSERT INTO Vrste_treninga(id_vrste_treninga, naziv)
 	VALUES	(1, "Sagorite masnoće: Trening za mršavljenje"),
@@ -60,11 +59,11 @@ INSERT INTO Termin(id_termina, datum_odrzavanja, id_treninga)
 			("9435AA",'2024-12-21',"9435");
 
 INSERT INTO Rezervacija(id_rezervacije, id_korisnika, id_termina, oznaka_reda_kolone, datum)
-	VALUES  (1,'aqua',"1111AA",9,'2024-11-11'),
-			(6,'aqua',"6421KM",9,'2024-11-11'),
-			(2,'rolex',"6421KM",1,'2024-01-01'),
-			(3,'dragan',"9909PJ",3,'2024-01-09'),
-			(4,'nekoime',"1245MK",4,'2024-01-10'),
-			(5,'gost',"1245MK",4,'2020-01-10'),
-			(7,'rolex',"9435AA",1,'2024-02-15');
+	VALUES  (1,'aqua',"1111AA",'22','2024-11-11'),
+			(6,'aqua',"6421KM",'L1','2024-11-11'),
+			(2,'rolex',"6421KM",'M1','2024-01-01'),
+			(3,'dragan',"9909PJ",'A3','2024-01-09'),
+			(4,'nekoime',"1245MK",'B6','2024-01-10'),
+			(5,'gost',"1245MK",'B3','2020-01-10'),
+			(7,'rolex',"9435AA",'C2','2024-02-15');
 

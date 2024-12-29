@@ -38,7 +38,7 @@ class IzvestajiLogika(winTemplate):
     # Izvestaj A
     def a_izvestaj(self,izabrano=False):
         self.trenutni_izvestaj = "A"
-        kriterijumi = ["Ime", "Prezime", "Datum rezervacije", "Broj mesta", "Program"]
+        kriterijumi = ["Ime", "Prezime", "Datum rezervacije", "Oznaka mesta", "Program"]
         self.postavi_izvestaj(kriterijumi,bp_izvestaji.a_izvestaj,"Molimo Vas prvo izaberite datum u filterima.","Datum: " + str(self.ret),uslov=izabrano)
         
     def fltr_a_izvestaj(self):
@@ -61,7 +61,7 @@ class IzvestajiLogika(winTemplate):
     # Izvestaj B
     def b_izvestaj(self,izabrano=False):
         self.trenutni_izvestaj = "B"
-        kriterijumi = ["Ime", "Prezime", "Datum termina", "Broj mesta", "Program"]
+        kriterijumi = ["Ime", "Prezime", "Datum termina", "Oznaka mesta", "Program"]
         self.postavi_izvestaj(kriterijumi,bp_izvestaji.b_izvestaj,"Molimo Vas prvo izaberite datum termina u filterima.","Datum termina: " + str(self.ret),uslov=izabrano)
     
     def fltr_b_izvestaj(self):
@@ -84,7 +84,7 @@ class IzvestajiLogika(winTemplate):
     # Izvestaj C
     def c_izvestaj(self,izabrano=False):
         self.trenutni_izvestaj = "C"
-        kriterijumi = ["Ime", "Prezime", "Datum rezervacije","Broj mesta", "Program"]
+        kriterijumi = ["Ime", "Prezime", "Datum rezervacije","Oznaka mesta", "Program"]
         self.postavi_izvestaj(kriterijumi,bp_izvestaji.c_izvestaj,"Molimo Vas prvo izaberite datum i instruktora u filterima.","Datum, Instruktor: " + str(self.ret),uslov=izabrano)
 
     def fltr_c_izvestaj(self):
@@ -109,7 +109,7 @@ class IzvestajiLogika(winTemplate):
 
     # Izvestaj D
     def d_izvestaj(self,izabrano=False):
-        kriterijumi=["Ime","Prezime","Datum rezervacije","Broj mesta","Program"]
+        kriterijumi=["Ime","Prezime","Datum rezervacije","Oznaka mesta","Program"]
         self.trenutni_izvestaj = "D"
         self.postavi_izvestaj(kriterijumi,bp_izvestaji.d_izvestaj,"Molimo Vas prvo izaberite dan u filterima.","Dan: " + helperFunctions.broj_u_dan(self.ret),uslov=izabrano)
     
@@ -144,7 +144,7 @@ class IzvestajiLogika(winTemplate):
     # Izvestaj F
     def f_izvestaj(self,izabrano=False):
         self.trenutni_izvestaj = "F"
-        kriterijumi = ["Ime", "Prezime", "Datum rezervacije", "Broj mesta", "Program"]
+        kriterijumi = ["Ime", "Prezime", "Datum rezervacije", "Oznaka mesta", "Program"]
         pak = "Premium" if self.ret else "Standard"
         self.postavi_izvestaj(kriterijumi,bp_izvestaji.f_izvestaj,"Molimo Vas prvo izaberite paket u filterima.",f"Paket: {pak}, Broj realizovanih rezervacija(30 dana): ",uslov=izabrano,izbroj=True)
     

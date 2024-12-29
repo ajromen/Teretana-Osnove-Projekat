@@ -33,7 +33,7 @@ CREATE TABLE Sala
 	( id_sale INTEGER PRIMARY KEY NOT NULL,
 	  naziv CHAR(15),
 	  broj_redova SMALLINT,
-	  oznaka_mesta CHAR(15),
+	  oznaka_mesta CHAR(20),
 	  obrisana BOOLEAN
 	);
 	
@@ -72,7 +72,7 @@ CREATE TABLE Rezervacija
 	( id_rezervacije INTEGER PRIMARY KEY NOT NULL,
 	  id_korisnika CHAR(25),
 	  id_termina CHAR(6),
-	  oznaka_reda_kolone INTEGER,
+	  oznaka_reda_kolone CHAR(5),--iixjj
 	  datum DATE,
 	  FOREIGN KEY (id_korisnika) REFERENCES Korisnici(username)
 	  FOREIGN KEY (id_termina) REFERENCES Termin(id_termina)
