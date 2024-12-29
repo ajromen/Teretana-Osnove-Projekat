@@ -1,4 +1,5 @@
 from datetime import timedelta
+import bp_korisnici
 from imports import *
 import bp_termini 
 
@@ -48,8 +49,14 @@ class TerminiWindow(winTemplate):
         if not slctd_item:
             helperFunctions.obavestenje(poruka="Niste odabrali nijedan termin.",crveno=True)
             return
-        
         slctd_data=self.table.item(slctd_item)
+        
+        potreban_premium=True if slctd_data["values"][8]=="Premium" else False
+        paket_korisnika=bp_korisnici.get_paket(self.username)
+        if paket_korisnika==0 and potreban_premium:
+            helperFunctions.obavestenje(poruka="Za ovaj termin je potreban Premium paket.",crveno=True)
+            return
+        
         id_termina=slctd_data["values"][0]
         self.escfunk(termin=id_termina)
 

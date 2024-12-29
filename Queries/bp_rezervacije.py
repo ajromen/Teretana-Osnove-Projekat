@@ -18,8 +18,10 @@ FOREIGN KEY (id_termina) REFERENCES Termin(id_termina)
 #             "Korisničko ime" : "id_korisnika",
 #             "Instruktor" : "instruktor"
 
-def dodaj_rezervaciju(id_rezervacije,id_korisnika,id_termina,oznaka_reda_kolone,datum):
-    pass
+def dodaj_rezervaciju(id_korisnika,id_termina,oznaka_reda_kolone,datum):
+    cursor=BazaPodataka.get_cursor()
+    cursor.execute("INSERT INTO Rezervacija (id_korisnika,id_termina,oznaka_reda_kolone,datum) VALUES (?,?,?,?)",(id_korisnika,id_termina,oznaka_reda_kolone,datum))
+    BazaPodataka.commit()
 
 def azuriraj_rezervaciju(id_rezervacije,id_korisnika=None,id_termina=None,oznaka_reda_kolone=None,datum=None):
     pass
@@ -37,7 +39,8 @@ def izlistaj_po_korisniku(kriterijum='id_rezervacije',pretraga="",id_korisnika=N
                     Termin.datum_odrzavanja,
                     Rezervacija.oznaka_reda_kolone,
                     Rezervacija.datum,
-                    Korisnici.ime || ' ' || Korisnici.prezime AS instruktor
+                    Korisnici.ime || ' ' || Korisnici.prezime AS instruktor,
+                    Rezervacija.id_rezervacije
                 FROM Rezervacija 
                 JOIN Termin ON Rezervacija.id_termina=Termin.id_termina
                 JOIN Trening ON Termin.id_treninga=Trening.id_treninga
@@ -57,7 +60,8 @@ def izlistaj_po_instruktoru(kriterijum='id_rezervacije',pretraga="",instruktor=N
                     Termin.datum_odrzavanja,
                     Rezervacija.oznaka_reda_kolone,
                     Rezervacija.datum,
-                    Korisnici.username || ' ' || Korisnici.ime || ' ' || Korisnici.prezime AS korisnik
+                    Korisnici.username || ' ' || Korisnici.ime || ' ' || Korisnici.prezime AS korisnik,
+                    Rezervacija.id_rezervacije
                 FROM Rezervacija 
                 JOIN Termin ON Rezervacija.id_termina=Termin.id_termina
                 JOIN Korisnici ON Rezervacija.id_korisnika=Korisnici.username

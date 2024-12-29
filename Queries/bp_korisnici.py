@@ -240,3 +240,13 @@ def obrisan_korisnik(username,obavesti=True):
         obavesti and helperFunctions.obavestenje("Obrisani korisnik sluzi za evidenciju i nije ga dozvoljeno menjati.")
         return False
     return True
+
+def get_paket(username):
+    cursor=BazaPodataka.get_cursor()
+    cursor.execute("SELECT uplacen_paket FROM Korisnici WHERE username=?",(username,))
+    return cursor.fetchone()[0]
+
+def obnovljena_clanarina(username):
+    cursor=BazaPodataka.get_cursor()
+    cursor.execute("SELECT status_clanstva FROM Korisnici WHERE username=?",(username,))
+    return cursor.fetchone()[0]

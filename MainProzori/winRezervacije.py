@@ -1,3 +1,4 @@
+import bp_korisnici
 import bp_rezervacije
 import bp_termini
 from imports import *
@@ -14,14 +15,12 @@ class RezervacijeWindow(winTemplate):
         self.create_exit_button()
         self.create_search_button(self.pretrazi)
         
-        kriterijumi=["Šifra termina","Datum održavanja","Oznaka mesta","Datum rezervacije"]
+        kriterijumi=["Šifra termina","Datum održavanja","Oznaka mesta","Datum rezervacije","Šifra rezervacije"]
         if self.uloga=="instruktor" or self.uloga=="admin":
-            kriterijumi.append("Korisnik")#username ime i prezime
+            kriterijumi.insert(4,"Korisnik")#username ime i prezime
             self.create_button("./src/img/widget/btnIzmeni.png",300,541,252,40,self.rezervacija_izmeni)
         else:
-            kriterijumi.append("Instruktor")#ime i prezime
-            self.sala=5
-            self.create_button("./src/img/widget/btnPregled.png",300,541,252,40,self.dodaj_oznaka_mesta)
+            kriterijumi.insert(4,"Instruktor")#ime i prezime
         
         self.create_table(kriterijumi) 
         
@@ -34,7 +33,8 @@ class RezervacijeWindow(winTemplate):
             "Oznaka mesta" : "Rezervacija.oznaka_reda_kolone",
             "Datum rezervacije" : "Rezervacija.datum",
             "Korisnik" : "korisnik",
-            "Instruktor" : "instruktor"
+            "Instruktor" : "instruktor",
+            "Šifra rezervacije" : "Rezervacija.id_rezervacije",
         }
         
         self.create_entry_search(self.pretrazi)
@@ -42,6 +42,9 @@ class RezervacijeWindow(winTemplate):
     
         
     def rezervacija_dodaj(self):
+        if bp_korisnici.obnovljena_clanarina(self.username)==False:
+            helperFunctions.obavestenje(poruka="Vaša članarina je istekla. Molimo vas da obnovite članarinu.",crveno=True)
+            return
         self.top_level=True
         self.trenutni_window=helperFunctions.napravi_toplevel(title="Rezervisi trening",height=207)
         
@@ -59,7 +62,7 @@ class RezervacijeWindow(winTemplate):
     def dodaj_termine(self):
         self.dodatni_window=helperFunctions.napravi_toplevel(title="Izaberite termin",height=608,width=850)
         self.dodatni_window.protocol("WM_DELETE_WINDOW", self.dodaj_termine_kraj)
-        termini_window=winTermini.TerminiWindow(self.dodatni_window,lambda termin:self.dodaj_termine_kraj(termin),u_prozoru=True)
+        termini_window=winTermini.TerminiWindow(self.dodatni_window,lambda termin:self.dodaj_termine_kraj(termin),u_prozoru=True,username=self.username)
         termini_window.start()
         
     def dodaj_termine_kraj(self, termin="Izaberite termin"):
@@ -73,7 +76,7 @@ class RezervacijeWindow(winTemplate):
         self.btnOznakaMesta.configure(command=None)
         if termin=="Izaberite termin":
             return
-        self.termin=termin
+        self.termin=termin.strip()
         self.sala=bp_termini.get_sala(termin)
         helperFunctions.omoguci_dugme(self.btnOznakaMesta,self.dodaj_oznaka_mesta)
         
@@ -81,18 +84,22 @@ class RezervacijeWindow(winTemplate):
         self.sale_window=winSale.SaleWindow(self.sala,lambda oznaka_mesta="Izaberite oznaku mesta":self.dodaj_oznaka_mesta_kraj(oznaka_mesta))
         self.sale_window.start()
         
-    def dodaj_oznaka_mesta_kraj(self,br_mesta="Izaberite oznaku mesta"):
-        self.btnOznakaMesta.configure(text=br_mesta)
+    def dodaj_oznaka_mesta_kraj(self,oznaka_mesta="Izaberite oznaku mesta"):
+        self.btnOznakaMesta.configure(text=oznaka_mesta)
         self.sale_window.window.destroy()
         self.trenutni_window.grab_set()
         
-        if br_mesta=="Izaberite oznaku mesta": 
+        if oznaka_mesta=="Izaberite oznaku mesta": 
             helperFunctions.onemoguci_dugme(self.btnSacuvaj)
             return
+        self.oznaka_mesta=oznaka_mesta.strip()
         helperFunctions.omoguci_dugme(self.btnSacuvaj,self.rezervacija_dodaj_kraj)
          
     def rezervacija_dodaj_kraj(self):
-        pass
+        danas=datetime.datetime.now().strftime("%Y-%m-%d")
+        bp_rezervacije.dodaj_rezervaciju(self.username,self.termin,self.oznaka_mesta,danas)
+        self.trenutni_window.destroy()
+        self.pretrazi()
     
     def rezervacija_izmeni(self):
         pass
@@ -100,14 +107,23 @@ class RezervacijeWindow(winTemplate):
     def omoguci_sacuvaj(self):
         self.btnSacuvaj.configure(state="disabled")
     
-        
-    
     def rezervacija_obrisi(self):
-        pass
-    
-    def rezervacija_pregledaj(self):
-        pass
-    
+        slctd_item=self.table.selection()
+        if not slctd_item:
+            helperFunctions.obavestenje(poruka="Niste odabrali nijednu rezervaciju za brisanje.",crveno=True)
+            return
+        slctd_data=self.table.item(slctd_item)
+        id_rezervacije=slctd_data["values"][5]
+        datum_termina=slctd_data["values"][1]
+        if datetime.datetime.strptime(datum_termina,"%Y-%m-%d")<datetime.datetime.now():
+            helperFunctions.obavestenje(poruka="Nije moguće obrisati rezervaciju koja je već prošla.",crveno=True)
+            return
+        if not helperFunctions.pitaj(poruka="Da li ste sigurni da želite da obrišete rezervaciju?"):
+            return
+        bp_rezervacije.obrisi_rezervaciju(id_rezervacije)
+        self.pretrazi()
+        helperFunctions.obavestenje(poruka="Uspešno ste obrisali rezervaciju.")
+        
     def popuni_tabelu(self,tabela,kriterijum='username',pretraga=""):
         for red in tabela.get_children(): tabela.delete(red)
                 
