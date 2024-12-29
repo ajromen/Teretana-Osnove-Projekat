@@ -24,6 +24,7 @@ text_error = "#FF1C1C"
 
 dugme="#1F6AA5"
 dugme_hover="#144870"
+dugme_selected='#0D324E'
 dugme_disabled="#2B2B2B"
 dugme_disabled_hover="#6B6969"
 dugme_zeleno ="#3DA928"

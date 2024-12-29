@@ -23,9 +23,18 @@ def get_sala(id_sale):
                     naziv,
                     broj_redova,
                     oznaka_mesta
-                FROM
-                    Sala
-                WHERE
-                    id_sale=?'''
+                FROM Sala
+                WHERE id_sale=?'''
     cursor.execute(komanda,(id_sale,))
     return cursor.fetchone()
+
+def get_mesta(id_sale):
+    cursor=BazaPodataka.get_cursor()
+    komanda='''SELECT 
+                    Rezervacija.oznaka_reda_kolone 
+                FROM Rezervacija
+                JOIN Termin ON Rezervacija.id_termina=Termin.id_termina
+                JOIN Trening ON Termin.id_treninga=Trening.id_treninga
+                WHERE Trening.id_sale=?'''
+    cursor.execute(komanda,(id_sale,))
+    return cursor.fetchall()

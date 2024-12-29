@@ -20,7 +20,7 @@ class RezervacijeWindow(winTemplate):
             self.create_button("./src/img/widget/btnIzmeni.png",300,541,252,40,self.rezervacija_izmeni)
         else:
             kriterijumi.append("Instruktor")#ime i prezime
-            self.sala=3
+            self.sala=5
             self.create_button("./src/img/widget/btnPregled.png",300,541,252,40,self.dodaj_oznaka_mesta)
         
         self.create_table(kriterijumi) 
@@ -49,7 +49,7 @@ class RezervacijeWindow(winTemplate):
         self.create_label("Oznaka mesta:", 39, 86)
         
         self.btnTermin=self.create_text_button("Izaberite termin", 154, 28, width=170,height=28, command=self.dodaj_termine)
-        self.btnOznakaMesta=self.create_text_button("Izaberite oznaka mesta", 154, 83, width=170,height=28,fg_color=boje.dugme_disabled,hover_color=boje.dugme_disabled_hover,command=None)    
+        self.btnOznakaMesta=self.create_text_button("Izaberite oznaku mesta", 154, 83, width=170,height=28,fg_color=boje.dugme_disabled,hover_color=boje.dugme_disabled_hover,command=None)    
         
         self.btnSacuvaj=self.create_text_button("Sačuvaj", 102, 146,command=None,hover_color=boje.dugme_disabled_hover,fg_color=boje.dugme_disabled)
         self.create_button("./src/img/widget/btnOtkazi.png",136,183,command=self.trenutni_window.destroy)
@@ -66,27 +66,33 @@ class RezervacijeWindow(winTemplate):
         self.dodatni_window.destroy()
         self.trenutni_window.grab_set()
         self.btnTermin.configure(text=termin)
-        if termin=="Izaberite termin": 
-            helperFunctions.onemoguci_dugme(self.btnOznakaMesta)
-            helperFunctions.onemoguci_dugme(self.btnSacuvaj)
+        helperFunctions.onemoguci_dugme(self.btnOznakaMesta)
+        helperFunctions.onemoguci_dugme(self.btnSacuvaj)
+        self.btnOznakaMesta.configure(text="Izaberite oznaku mesta")
+        self.sala=None
+        self.btnOznakaMesta.configure(command=None)
+        if termin=="Izaberite termin":
             return
         self.termin=termin
         self.sala=bp_termini.get_sala(termin)
         helperFunctions.omoguci_dugme(self.btnOznakaMesta,self.dodaj_oznaka_mesta)
         
     def dodaj_oznaka_mesta(self):
-        self.sale_window=winSale.SaleWindow(self.sala,lambda oznaka_mesta="Izaberite oznaka mesta":self.dodaj_oznaka_mesta_kraj(oznaka_mesta),oznaka_mesta=2)
+        self.sale_window=winSale.SaleWindow(self.sala,lambda oznaka_mesta="Izaberite oznaku mesta":self.dodaj_oznaka_mesta_kraj(oznaka_mesta))
         self.sale_window.start()
         
-    def dodaj_oznaka_mesta_kraj(self,br_mesta="Izaberite oznaka mesta"):
+    def dodaj_oznaka_mesta_kraj(self,br_mesta="Izaberite oznaku mesta"):
         self.btnOznakaMesta.configure(text=br_mesta)
         self.sale_window.window.destroy()
         self.trenutni_window.grab_set()
-        if br_mesta=="Izaberite oznaka mesta": 
+        
+        if br_mesta=="Izaberite oznaku mesta": 
             helperFunctions.onemoguci_dugme(self.btnSacuvaj)
             return
-        helperFunctions.omoguci_dugme(self.btnSacuvaj,self.rezervacija_sacuvaj)
+        helperFunctions.omoguci_dugme(self.btnSacuvaj,self.rezervacija_dodaj_kraj)
          
+    def rezervacija_dodaj_kraj(self):
+        pass
     
     def rezervacija_izmeni(self):
         pass

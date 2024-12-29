@@ -25,7 +25,7 @@ INSERT INTO Sala(id_sale, naziv, broj_redova, oznaka_mesta)
 			(2, "Sala 2", 2, "ABC"),
 			(3, "Sala 3", 4, "123"),
 			(4, "Sala 4", 3, "1234567"),
-			(5, "Sala 5", 7, "AB"),
+			(5, "Sala 5", 11, "AB"),
 			(6, "Sala 6", 1, "KLMN");
 
 INSERT INTO Vrste_treninga(id_vrste_treninga, naziv)

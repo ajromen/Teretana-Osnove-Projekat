@@ -72,7 +72,7 @@ CREATE TABLE Rezervacija
 	( id_rezervacije INTEGER PRIMARY KEY NOT NULL,
 	  id_korisnika CHAR(25),
 	  id_termina CHAR(6),
-	  oznaka_reda_kolone CHAR(5),--iixjj
+	  oznaka_reda_kolone CHAR(5),--A123548
 	  datum DATE,
 	  FOREIGN KEY (id_korisnika) REFERENCES Korisnici(username)
 	  FOREIGN KEY (id_termina) REFERENCES Termin(id_termina)
