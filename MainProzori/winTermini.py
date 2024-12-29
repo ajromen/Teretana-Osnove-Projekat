@@ -117,7 +117,7 @@ class TerminiWindow(winTemplate):
             pocetni_datum = danas + timedelta(days=7)
             krajnji_datum = pocetni_datum + timedelta(days=6)
 
-        return bp_termini.izlistaj_termini(pretraga, kriterijum, pocetni_datum, krajnji_datum)
+        return bp_termini.izlistaj_termini(pretraga, kriterijum, pocetni_datum, krajnji_datum,self.uloga, self.username)
     
     
 

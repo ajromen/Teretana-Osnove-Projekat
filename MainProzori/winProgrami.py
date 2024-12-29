@@ -155,7 +155,7 @@ class ProgramiWindow(winTemplate):
         self.popuni_tabelu(self.table)
 
     def izlistaj_programe(self,kriterijum='id_programa',pretraga=""):              
-        return bp_programi.izlistaj_programe(pretraga,kriterijum,self.potrebanPaket,self.id_programa,self.naziv,self.naziv_vrste_treninga,self.trajanjeOd,self.trajanjeDo,self.instruktor)
+        return bp_programi.izlistaj_programe(pretraga,kriterijum,self.potrebanPaket,self.id_programa,self.naziv,self.naziv_vrste_treninga,self.trajanjeOd,self.trajanjeDo,self.instruktor,self.uloga,self.username)
     
     def promenljive_filteri(self):
         self.trajanjeOd, self.trajanjeDo=bp_programi.get_trajanje_range()

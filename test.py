@@ -58,7 +58,7 @@ if __name__ == '__main__':
     
     #main()
     
-    winMain.start("aqua",0)
+    winMain.start("momir",1)
     azuriraj_podatke()
         
     

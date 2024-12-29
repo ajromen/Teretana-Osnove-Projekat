@@ -25,7 +25,9 @@ class RezervacijeWindow(winTemplate):
         self.create_table(kriterijumi) 
         
         self.create_button("./src/img/widget/btnObrisi.png", 576, 541, 252, 40, self.rezervacija_obrisi)
-        self.create_button("./src/img/widget/btnDodaj.png", 23, 541, 252, 40, self.rezervacija_dodaj)  
+        btnDodaj=self.create_button("./src/img/widget/btnDodaj.png", 23, 541, 252, 40, self.rezervacija_dodaj)  
+        if self.uloga=="instruktor":
+            btnDodaj.configure(command=self.rezervacija_dodaj_instruktor)
          
         self.kriterijumiMap={
             "Šifra termina" : "Rezervacija.id_termina",
@@ -101,11 +103,13 @@ class RezervacijeWindow(winTemplate):
         self.trenutni_window.destroy()
         self.pretrazi()
     
+    def rezervacija_dodaj_instruktor(self):
+        self.top_level=True
+        self.top_level=False
+    
     def rezervacija_izmeni(self):
         pass
     
-    def omoguci_sacuvaj(self):
-        self.btnSacuvaj.configure(state="disabled")
     
     def rezervacija_obrisi(self):
         slctd_item=self.table.selection()

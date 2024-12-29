@@ -56,7 +56,7 @@ class MainWindow:
         imena_dugmadi_po_ulozi = {
             "gost": ["btnProgrami", "btnTermini", "btnRezervacije", "btnRegistrujSe"],
             "admin": ["btnVrsteTreninga", "btnTreninzi", "btnProgrami", "btnClanovi", "btnTermini", "btnIzvestaji", "btnAdmin", "btnOdjaviSe"],
-            "instruktor": ["btnRezervacije", "btnClanovi", "btnOdjaviSe"],
+            "instruktor": ["btnRezervacije", "btnClanovi","btnTermini", "btnProgrami","btnOdjaviSe"],
             "korisnik": ["btnProgrami", "btnTermini", "btnRezervacije", "btnOdjaviSe"]
         }
 
@@ -136,7 +136,7 @@ class MainWindow:
             self.trenutni_window = None
 
     def napravi_win_programi(self):
-        self.trenutni_window = winProgrami.ProgramiWindow(self.window, self.unisti_trenutni_win,self.uloga)
+        self.trenutni_window = winProgrami.ProgramiWindow(self.window, self.unisti_trenutni_win,self.uloga,self.username)
         self.trenutni_window.start()
         
     def napravi_win_trening(self):
@@ -156,7 +156,7 @@ class MainWindow:
         self.trenutni_window.start()
     
     def napravi_win_termini(self):
-        self.trenutni_window = winTermini.TerminiWindow(self.window, self.unisti_trenutni_win, self.uloga)
+        self.trenutni_window = winTermini.TerminiWindow(self.window, self.unisti_trenutni_win, self.uloga, self.username)
         self.trenutni_window.start()
         
     def napravi_win_izvestaji(self):

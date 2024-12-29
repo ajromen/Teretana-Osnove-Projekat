@@ -12,7 +12,7 @@ obrisan             BOOLEAN,
 FOREIGN KEY (id_treninga) REFERENCES Trening(id_treninga)
 '''
 
-def izlistaj_termini(pretraga="", kriterijum="Termin.id_termina",pocetni_datum=None, krajnji_datum=None):
+def izlistaj_termini(pretraga="", kriterijum="Termin.id_termina",pocetni_datum=None, krajnji_datum=None,uloga=None,username=None):
     cursor=BazaPodataka.get_cursor()
 
     pretraga,kriterijum = helperFunctions.ocisti_string(pretraga, kriterijum)
@@ -40,14 +40,19 @@ def izlistaj_termini(pretraga="", kriterijum="Termin.id_termina",pocetni_datum=N
     WHERE 
         {kriterijum} LIKE ?
     """
+    parametri = (f"%{pretraga}%",)
+    if uloga=="instruktor":
+        komanda += " AND Program.id_instruktora = ?"
+        parametri+=(username,)
     
-    parametri=[f'%{pretraga}%']
+    
     
     if pocetni_datum and krajnji_datum:
         komanda += " AND Termin.datum_odrzavanja BETWEEN ? AND ?"
-        parametri.extend([pocetni_datum.strftime('%Y-%m-%d'), krajnji_datum.strftime('%Y-%m-%d')])
+        parametri+=(pocetni_datum.strftime('%Y-%m-%d'),)
+        parametri+=(krajnji_datum.strftime('%Y-%m-%d'),)
 
-    cursor.execute(komanda, tuple(parametri))
+    cursor.execute(komanda, parametri)
     return cursor.fetchall()
     
 

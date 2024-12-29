@@ -15,7 +15,7 @@ FOREIGN KEY (id_vrste_treninga) REFERENCES Vrste_treninga(id_vrste_treninga),
 FOREIGN KEY (id_instruktora) REFERENCES Korisnici(username)
 '''
 
-def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_vrste_treninga,trajanjeOd,trajanjeDo,instruktor):
+def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_vrste_treninga,trajanjeOd,trajanjeDo,instruktor,uloga,username):
     pretraga, kriterijum, id_programa, naziv, naziv_vrste_treninga, instruktor = helperFunctions.ocisti_string(
         pretraga, kriterijum, id_programa, naziv, naziv_vrste_treninga, instruktor
     )
@@ -34,10 +34,8 @@ def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_
                         Program.obrisan AS Obrisan
                     FROM 
                         Program
-                    JOIN 
-                        Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
-                    JOIN 
-                        Korisnici ON Program.id_instruktora = Korisnici.username'''
+                    JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
+                    JOIN Korisnici ON Program.id_instruktora = Korisnici.username'''
        
     komanda += f''' WHERE {kriterijum} LIKE ? 
                         AND id_programa LIKE ? 
@@ -46,9 +44,13 @@ def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_
                         AND trajanje >= ?
                         AND trajanje <= ?
                         AND instruktor_ime LIKE ?'''
+    argumenti=(f'%{pretraga}%',f'%{id_programa}%',f'%{naziv}%',f'%{naziv_vrste_treninga}%',trajanjeOd,trajanjeDo,f'%{instruktor}%',)
+    if(uloga=="instruktor"):
+        komanda += "AND id_instruktora = ?"
+        argumenti+=(username,)
     if(potrebanPaket==0):
         komanda += "AND potreban_paket = 0"
-    cursor.execute(komanda, (f'%{pretraga}%',f'%{id_programa}%',f'%{naziv}%',f'%{naziv_vrste_treninga}%',trajanjeOd,trajanjeDo,f'%{instruktor}%',))
+    cursor.execute(komanda, argumenti)
 
     return cursor.fetchall()
 
