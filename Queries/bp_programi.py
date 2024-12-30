@@ -56,12 +56,12 @@ def izlistaj_programe(pretraga,kriterijum,potrebanPaket,id_programa,naziv,naziv_
 
 def azuriraj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
     cursor=BazaPodataka.get_cursor()
-    cursor.execute("SELECT * FROM Vrste_treninga WHERE id_vrste_treninga=?",(vrsta_treninga,))
-    if(len(cursor.fetchall())==0): 
+    cursor.execute("SELECT id_vrste_treninga FROM Vrste_treninga WHERE id_vrste_treninga=?",(vrsta_treninga,))
+    if(cursor.fetchone() is None): 
         helperFunctions.obavestenje("Ne postoji odabrana vrsta treninga.")
         return True
-    cursor.execute("SELECT * FROM Korisnici WHERE username=?",(instruktor,))
-    if(len(cursor.fetchall())==0): 
+    cursor.execute("SELECT username FROM Korisnici WHERE username=?",(instruktor,))
+    if(cursor.fetchone() is None): 
         helperFunctions.obavestenje("Ne postoji odabrani instruktor.")
         return True
     
@@ -79,16 +79,16 @@ def azuriraj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
     
 def dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
     cursor=BazaPodataka.get_cursor()
-    cursor.execute("SELECT * FROM Vrste_treninga WHERE id_vrste_treninga=?",(vrsta_treninga,))
-    if(len(cursor.fetchall())==0): 
+    cursor.execute("SELECT id_vrste_treninga FROM Vrste_treninga WHERE id_vrste_treninga=?",(vrsta_treninga,))
+    if(cursor.fetchone() is None): 
         helperFunctions.obavestenje("Ne postoji odabrana vrsta treninga.")
         return True
-    cursor.execute("SELECT * FROM Korisnici WHERE username=?",(instruktor,))
-    if(len(cursor.fetchall())==0): 
+    cursor.execute("SELECT username FROM Korisnici WHERE username=?",(instruktor,))
+    if(cursor.fetchone() is None): 
         helperFunctions.obavestenje("Ne postoji odabrani instruktor.")
         return True
-    cursor.execute("SELECT * FROM Program WHERE id_programa=?",(id,))
-    if(len(cursor.fetchall())>0): 
+    cursor.execute("SELECT id_programa FROM Program WHERE id_programa=?",(id,))
+    if(cursor.fetchone()): 
         helperFunctions.obavestenje("Već postoji korisnik sa datom šifrom.")
         return True
     
@@ -128,7 +128,6 @@ def get_trajanje(id_programa: str)->int:
     cursor.execute("SELECT trajanje FROM Program WHERE id_programa=?",(id_programa,))
     vrati=cursor.fetchone()
     return vrati[0]
-
 
 def query_koriscene_vrste_treninga():
     return  '''SELECT DISTINCT Vrste_treninga.naziv FROM Program JOIN Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga WHERE Vrste_treninga.obrisan IS NOT TRUE'''

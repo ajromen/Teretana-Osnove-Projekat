@@ -43,8 +43,8 @@ def izlistaj_trening(pretraga,kriterijum):
 
 def dodaj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa):
     cursor=BazaPodataka.get_cursor()
-    cursor.execute("SELECT * FROM Trening WHERE id_treninga=?",(id,))
-    if(len(cursor.fetchall())>0): 
+    cursor.execute("SELECT id_treninga FROM Trening WHERE id_treninga=?",(id,))
+    if(cursor.fetchone()): 
         helperFunctions.obavestenje("Već postoji trening sa datom šifrom.")
         return True
     

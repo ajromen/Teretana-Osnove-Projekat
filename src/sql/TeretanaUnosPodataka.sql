@@ -17,8 +17,6 @@ INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplace
 			('gost', '612a1fe34b1ca6b77952919d4a96e80bdd29baa44f1d0cb22d1333b405a25e75', NULL, NULL, -1, NULL, NULL, NULL, NULL),
 			--Svi obrisani korisnici sa rezervacijom--
 			('obrisan_korisnik', '89104ddb8160b3c10c8e74600eb8ba1bcb91553aad4ae3ec66abcfd9d8c69c82', "Obrisani", "Korisnik", 0, NULL, NULL, NULL, NULL);
-
-
 			
 INSERT INTO Sala(id_sale, naziv, broj_redova, oznaka_mesta)
 	VALUES	(1, "Sala 1", 4, "ABCDEF"),

@@ -85,8 +85,3 @@ class SignupWindow:
         else:
             nalog=bp_korisnici.azuriraj_korisnika(self.user, username, lozinka, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije,obnova_clanarine)
         self.vrati(nalog)
-
-    def izlistaj(self):
-        cursor=BazaPodataka.get_cursor()
-        cursor.execute("SELECT * FROM Rezervacija")
-        print(cursor.fetchall())

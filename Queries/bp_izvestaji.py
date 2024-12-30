@@ -10,7 +10,6 @@ import helperFunctions
 # g) Top 3 najpopularnija treninga
 # h) Najpopularniji dan u nedelji (1 godina)
 
-
 #a) Lista rezervacija po datumu rezervacije
 def a_izvestaj(datum:str):
     cursor=BazaPodataka.get_cursor()

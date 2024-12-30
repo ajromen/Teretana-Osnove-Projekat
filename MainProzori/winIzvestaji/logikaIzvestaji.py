@@ -80,7 +80,6 @@ class IzvestajiLogika(winTemplate):
     def b_txt(self):
         helperFunctions.dopisi_u_fajl("izvestaji/izvestaj_B.txt", "Rezervacije po datumu termina za datum: " + self.ret)
 
-
     # Izvestaj C
     def c_izvestaj(self,izabrano=False):
         self.trenutni_izvestaj = "C"
@@ -95,7 +94,6 @@ class IzvestajiLogika(winTemplate):
         self.cmbbxInstruktor=self.napravi_sql_cmbbx("Odaberite instruktora:", 25, 80,177,69,"SELECT username,ime,prezime FROM Korisnici WHERE uloga = 1",2,True,12)
         self.entryDatum = self.create_date_picker(197, 29)
         self.top_level = False
-
 
     def ret_c(self):
         instruktor=self.cmbbxInstruktor.get().strip().split(" ")[0]
@@ -128,7 +126,6 @@ class IzvestajiLogika(winTemplate):
     
     def d_txt(self):
         helperFunctions.dopisi_u_fajl("izvestaji/izvestaj_D.txt", "Rezervacije po danu: " + helperFunctions.broj_u_dan(self.ret))
-
 
     # Izvestaj E
     def e_izvestaj(self):

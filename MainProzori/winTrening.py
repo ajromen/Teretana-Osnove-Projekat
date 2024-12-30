@@ -43,7 +43,6 @@ class TreningWindow(winTemplate):
         self.create_cmbbxSearch(self.kriterijumi)
         self.create_table(self.kriterijumi, velika=velika)
 
-
     def popuni_tabelu(self,tabela,kriterijum='id_treninga',pretraga=""):
         for red in tabela.get_children(): tabela.delete(red)
                 

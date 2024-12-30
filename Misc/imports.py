@@ -4,7 +4,6 @@ sys.path.append('mainProzori/winIzvestaji')
 sys.path.append('queries')
 sys.path.append('misc')
 
-
 from tkinter import *
 import customtkinter as ctk
 import datetime

@@ -14,10 +14,9 @@ obnova_clanarine    DATE,
 obrisan             BOOLEAN
 '''
 
-
 def dodaj_korisnika(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine):
     cursor=BazaPodataka.get_cursor()
-    cursor.execute("SELECT * FROM Korisnici WHERE username=?",(username,))
+    cursor.execute("SELECT username FROM Korisnici WHERE username=?",(username,))
     if cursor.fetchone() is not None:
         helperFunctions.obavestenje("Nalog sa korisničkim imenom već postoji")
         return 0
@@ -39,16 +38,16 @@ def dodaj_gosta():
         dodaj_korisnika(username,"","","",-1,0,0,datum,None)
     return username
 
-def azuriraj_korisnika(stariUsername,username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine):
-    if not obrisan_korisnik(stariUsername): return
+def azuriraj_korisnika(stari_username,username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine):
+    if not obrisan_korisnik(stari_username): return
     cursor=BazaPodataka.get_cursor()
-    cursor.execute("SELECT * FROM Korisnici WHERE username=?",(stariUsername,))
-    if(len(cursor.fetchall())>0):
+    cursor.execute("SELECT username FROM Korisnici WHERE username=?",(stari_username,))
+    if(cursor.fetchone()):
         password=helperFunctions.hashPassword(password)
-        komanda='''UPDATE Korisnici 
+        komanda='''UPDATE Korisnici
                     SET username=?, 
-                        password=?, 
-                        ime=?, 
+                        password=?,
+                        ime=?,
                         prezime=?, 
                         uloga=?,
                         status_clanstva=?,
@@ -57,7 +56,7 @@ def azuriraj_korisnika(stariUsername,username,password,ime,prezime,uloga,status_
                         obnova_clanarine=?
                    WHERE username=?
                    '''
-        cursor.execute(komanda,(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine,stariUsername,))
+        cursor.execute(komanda,(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine,stari_username,))
         
         cursor.execute("SELECT username, uloga FROM Korisnici WHERE username=?", (username,))
         return cursor.fetchall()
@@ -227,7 +226,6 @@ def obrisi_korisnika(username,instruktor=False):#mislim da ovo ne radi (menja ce
         cursor.execute("UPDATE Program SET id_instruktora='obrisan_korisnik' WHERE id_instruktora = ?", (username,))
         for program in id_programa:
             obrisi_program(program[0])
-
 
     #brisanje iz baze
     cursor.execute("DELETE FROM Korisnici WHERE username=?", (username,))

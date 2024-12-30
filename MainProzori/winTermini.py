@@ -3,7 +3,6 @@ import bp_korisnici
 from imports import *
 import bp_termini 
 
-
 class TerminiWindow(winTemplate):
     def __init__(self, window, escfunk=None, uloga=None, username=None, u_prozoru=False,username_korisnika=None,selektovani_termin=None):
         super().__init__(window, escfunk, uloga, u_prozoru, username)
@@ -58,7 +57,6 @@ class TerminiWindow(winTemplate):
         if self.uloga=="instruktor":
             korisnik=self.username_korisnika
         
-        print(korisnik)
         if(not bp_korisnici.get_status(korisnik)):
             helperFunctions.obavestenje(poruka="Vaša članarina je istekla. Molimo vas da obnovite članarinu.",crveno=True)
             return    

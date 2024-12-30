@@ -8,8 +8,8 @@ import winTermini
 class RezervacijeWindow(winTemplate):
     def __init__(self, window, escfunk=None, uloga=None,username=None, u_prozoru=False):
         super().__init__(window, escfunk, uloga, u_prozoru, username)
-        self.username=username
         self.termin=None
+        self.sala=None
         self.oznaka_mesta=None
         self.odabrani_korisnik=None
         self.odabrana_rezervacija=None
@@ -31,7 +31,7 @@ class RezervacijeWindow(winTemplate):
         self.create_button("./src/img/widget/btnObrisi.png", 576, 541, 252, 40, self.rezervacija_obrisi)
         btnDodaj=self.create_button("./src/img/widget/btnDodaj.png", 23, 541, 252, 40, self.rezervacija_dodaj)  
         if self.uloga=="instruktor":
-            btnDodaj.configure(command=self.promeni_rezervaciju)
+            btnDodaj.configure(command=self.rezervacija_dodaj_instruktor)
          
         self.kriterijumiMap={
             "Šifra termina" : "Rezervacija.id_termina",
@@ -100,8 +100,11 @@ class RezervacijeWindow(winTemplate):
             helperFunctions.onemoguci_dugme(self.btnSacuvaj)
             return
         self.oznaka_mesta=oznaka_mesta.strip()
-        helperFunctions.omoguci_dugme(self.btnSacuvaj,self.rezervacija_dodaj_kraj)
-         
+        if self.mode=='dodaj':
+            helperFunctions.omoguci_dugme(self.btnSacuvaj,self.rezervacija_dodaj_kraj)
+        else: 
+            helperFunctions.omoguci_dugme(self.btnSacuvaj,self.rezervacija_izmeni_kraj)
+            
     def rezervacija_dodaj_kraj(self):
         danas=datetime.datetime.now().strftime("%Y-%m-%d")
         bp_rezervacije.dodaj_rezervaciju(self.username,self.termin,self.oznaka_mesta,danas)
@@ -151,6 +154,9 @@ class RezervacijeWindow(winTemplate):
             return
         self.odabrani_korisnik=korisnik
         
+    def rezervacija_dodaj_instruktor(self):
+        self.mode='dodaj'
+        self.promeni_rezervaciju()
     
     def rezervacija_izmeni(self):
         slctd_item=self.table.selection()
@@ -161,14 +167,13 @@ class RezervacijeWindow(winTemplate):
         if datetime.datetime.strptime(slctd_data["values"][1],"%Y-%m-%d")<datetime.datetime.now():
             helperFunctions.obavestenje(poruka="Nije moguće izmeniti rezervaciju koja je već prošla.",crveno=True)
             return
+        self.mode='izmeni'
         self.promeni_rezervaciju()
         self.odabrani_korisnik=slctd_data["values"][4].split(" ")[0]
         self.termin=slctd_data["values"][0]
         self.oznaka_mesta=str(slctd_data["values"][2])
         self.odabrana_rezervacija=slctd_data["values"][5]
         self.sala=bp_termini.get_sala(self.termin)
-        
-        
         
         self.selektuj_vrednost_comboBox(self.cmbbxKorisnici,self.odabrani_korisnik)
         
@@ -196,7 +201,7 @@ class RezervacijeWindow(winTemplate):
         slctd_data=self.table.item(slctd_item)
         id_rezervacije=slctd_data["values"][5]
         datum_termina=slctd_data["values"][1]
-        if datetime.datetime.strptime(datum_termina,"%Y-%m-%d")<datetime.datetime.now():
+        if datetime.datetime.strptime(datum_termina,"%Y-%m-%d")<datetime.datetime.today():
             helperFunctions.obavestenje(poruka="Nije moguće obrisati rezervaciju koja je već prošla.",crveno=True)
             return
         if not helperFunctions.pitaj(poruka="Da li ste sigurni da želite da obrišete rezervaciju?"):

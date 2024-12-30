@@ -13,16 +13,15 @@ def izlistaj_vrste_treninga(pretraga,kriterijum):
         kriterijum,pretraga
     )
 
-    komanda=''' SELECT * FROM Vrste_treninga WHERE '''
-    cursor=BazaPodataka.get_cursor()
+    komanda=''' SELECT id_vrste_treninga FROM Vrste_treninga WHERE '''
     komanda += f'''{kriterijum} LIKE ?;'''
     cursor.execute(komanda, (f'%{pretraga}%',))
     return cursor.fetchall()
 
 def dodaj_vrstu_treninga(sifra,naziv):
     cursor=BazaPodataka.get_cursor()
-    cursor.execute("SELECT * FROM Vrste_treninga WHERE id_vrste_treninga=?",(sifra,))
-    if(len(cursor.fetchall())>0):
+    cursor.execute("SELECT id_vrste_treninga FROM Vrste_treninga WHERE id_vrste_treninga=?",(sifra,))
+    if(cursor.fetchone()):
         helperFunctions.obavestenje("Vrsta treninga sa izabranom šifrom već postoji.")
         return 0
     komanda='''INSERT INTO Vrste_treninga(id_vrste_treninga, naziv)
