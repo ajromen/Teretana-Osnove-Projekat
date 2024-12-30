@@ -13,7 +13,7 @@ def izlistaj_vrste_treninga(pretraga,kriterijum):
         kriterijum,pretraga
     )
 
-    komanda=''' SELECT id_vrste_treninga FROM Vrste_treninga WHERE '''
+    komanda=''' SELECT id_vrste_treninga,naziv,obrisan FROM Vrste_treninga WHERE '''
     komanda += f'''{kriterijum} LIKE ?;'''
     cursor.execute(komanda, (f'%{pretraga}%',))
     return cursor.fetchall()

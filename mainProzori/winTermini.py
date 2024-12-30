@@ -52,6 +52,10 @@ class TerminiWindow(winTemplate):
             return
         slctd_data=self.table.item(slctd_item)
         
+        if datetime.datetime.strptime(slctd_data["values"][5], "%Y-%m-%d").date() < datetime.date.today():
+            helperFunctions.obavestenje(poruka="Ne možete izabrati termin koji je već održan.",crveno=True)
+            return
+        
         potreban_premium=True if slctd_data["values"][8]=="Premium" else False
         korisnik=self.username
         if self.uloga=="instruktor":

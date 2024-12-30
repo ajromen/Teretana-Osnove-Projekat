@@ -11,7 +11,7 @@ status_clanstva     BOOLEAN,
 uplacen_paket       BOOLEAN,
 datum_registracije  DATE,
 obnova_clanarine    DATE,
-obrisan             BOOLEAN
+nagradjen           BOOLEAN
 '''
 
 def dodaj_korisnika(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine):
@@ -34,7 +34,7 @@ def dodaj_gosta():
     cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT username FROM Korisnici where username=?", (username,))
     if(cursor.fetchone() is None):
-        datum=datetime.datetime.now().strftime("%Y-%m-%d")
+        datum=datetime.date.today().strftime("%Y-%m-%d")
         dodaj_korisnika(username,"","","",-1,0,0,datum,None)
     return username
 
@@ -153,16 +153,16 @@ def broj_rezervacija_za_mesec(username):#promeniti da se gleda vreme termina a n
     username,=helperFunctions.ocisti_string(username)
     komanda = """SELECT COUNT(*) FROM 
                     Rezervacija
-                JOIN 
-                    Korisnici ON Rezervacija.id_korisnika = Korisnici.username
-                JOIN
-                    Termin ON Rezervacija.id_termina = Termin.id_termina
+                JOIN Korisnici ON Rezervacija.id_korisnika = Korisnici.username
+                JOIN Termin ON Rezervacija.id_termina = Termin.id_termina
                 WHERE 
                     Rezervacija.id_korisnika = ? AND
                     Termin.datum_odrzavanja > Korisnici.obnova_clanarine AND
                     Termin.datum_odrzavanja <= DATE('now') AND
                     Termin.datum_odrzavanja <= DATE(Korisnici.obnova_clanarine, '+1 month') AND
-                    Termin.obrisan IS NOT TRUE;
+                    Termin.obrisan IS NOT TRUE AND
+                    Korisnici.status_clanstva = 1 AND
+                    Korisnici.obnova_clanarine >= DATE('now', '-1 month')
                 """
     
     cursor.execute(komanda, (username,))
@@ -173,9 +173,19 @@ def proveri_status_korisnika():
     cursor=BazaPodataka.get_cursor()
     
     komanda = '''UPDATE Korisnici
-                 SET status_clanstva = 0, uplacen_paket = 0, obnova_clanarine = NULL
+                 SET status_clanstva = 0
                  WHERE uloga = 0 AND obnova_clanarine < DATE('now', '-1 month')'''
     cursor.execute(komanda)
+    
+    komanda ='''UPDATE Korisnici
+                SET 
+                    status_clanstva = 1,
+                    uplacen_paket = 1, 
+                    obnova_clanarine = DATE('now'),
+                    nagradjen = 0
+                WHERE nagradjen = 1 AND obnova_clanarine = DATE('now')'''
+    
+    cursor.execute(komanda)  
     BazaPodataka.commit()
         
 def nagradi_lojalnost(username):
@@ -184,13 +194,12 @@ def nagradi_lojalnost(username):
     
     komanda='''UPDATE Korisnici
                 SET 
-                    status_clanstva = 1,
-                    uplacen_paket = 1,
+                    nagradjen = 1,
                     obnova_clanarine = CASE
-                WHEN obnova_clanarine IS NOT NULL AND obnova_clanarine > DATE('now', '-1 month')
-                THEN DATE(obnova_clanarine, '+1 month')
-                ELSE DATE('now')
-                END 
+                        WHEN obnova_clanarine IS NOT NULL AND obnova_clanarine > DATE('now', '-1 month')
+                        THEN DATE(obnova_clanarine, '+1 month')
+                        ELSE DATE('now')
+                    END
                 WHERE username = ?;'''
     cursor.execute(komanda,(username,))
     BazaPodataka.commit()

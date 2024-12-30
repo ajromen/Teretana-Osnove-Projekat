@@ -97,8 +97,15 @@ class ClanoviWindow(winTemplate):
         self.top_level=True
         slctd_item = self.table.selection()
         if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijednog korisnika.")
-            return
+            if(mode=="Nagradi" and helperFunctions.pitaj('Niste izabrali ni jednog korisnika, \n želite li da nagradite lojalnost svima sa uslovom?\n( Koji su trenutni prikazni u tabeli )')):
+                for podatak in self.table.get_children():
+                    data=self.table.item(podatak)
+                    if data['values'][7]>=self.broj_rezervacija_za_nagradjivanje:
+                        bp_korisnici.nagradi_lojalnost(data['values'][0])
+                self.pretrazi()
+                helperFunctions.obavestenje(poruka="Korisnici koji ispunjavaju uslov su nagradjeni.")
+            else: helperFunctions.obavestenje(poruka="Niste odabrali nijednog korisnika.")     
+            return         
         
         self.trenutni_window=helperFunctions.napravi_toplevel(height=193,title="Izmeni trening")
         

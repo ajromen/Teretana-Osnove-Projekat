@@ -48,6 +48,10 @@ class RezervacijeWindow(winTemplate):
     
         
     def rezervacija_dodaj(self):
+        self.mode='dodaj'
+        self.termin=None
+        self.sala=None
+        self.oznaka_mesta=None
         if bp_korisnici.get_status(self.username)==False:
             helperFunctions.obavestenje(poruka="Vaša članarina je istekla. Molimo vas da obnovite članarinu.",crveno=True)
             return
@@ -155,6 +159,11 @@ class RezervacijeWindow(winTemplate):
         self.odabrani_korisnik=korisnik
         
     def rezervacija_dodaj_instruktor(self):
+        self.termin=None
+        self.sala=None
+        self.oznaka_mesta=None
+        self.odabrani_korisnik=None
+        self.odabrana_rezervacija=None
         self.mode='dodaj'
         self.promeni_rezervaciju()
     
@@ -164,7 +173,7 @@ class RezervacijeWindow(winTemplate):
             helperFunctions.obavestenje(poruka="Niste odabrali nijednu rezervaciju za izmenu.",crveno=True)
             return
         slctd_data=self.table.item(slctd_item)
-        if datetime.datetime.strptime(slctd_data["values"][1],"%Y-%m-%d")<datetime.datetime.now():
+        if datetime.date.strptime(slctd_data["values"][1],"%Y-%m-%d").date()<datetime.date.today():
             helperFunctions.obavestenje(poruka="Nije moguće izmeniti rezervaciju koja je već prošla.",crveno=True)
             return
         self.mode='izmeni'
@@ -186,7 +195,7 @@ class RezervacijeWindow(winTemplate):
         
     
     def rezervacija_izmeni_kraj(self):
-        danas=datetime.datetime.now().strftime('%Y-%m-%d')
+        danas=datetime.date.today().strftime('%Y-%m-%d')
         bp_rezervacije.azuriraj_rezervaciju(self.odabrana_rezervacija,self.odabrani_korisnik,self.termin,self.oznaka_mesta,danas)
         self.trenutni_window.destroy()
         self.pretrazi()
@@ -201,7 +210,7 @@ class RezervacijeWindow(winTemplate):
         slctd_data=self.table.item(slctd_item)
         id_rezervacije=slctd_data["values"][5]
         datum_termina=slctd_data["values"][1]
-        if datetime.datetime.strptime(datum_termina,"%Y-%m-%d")<datetime.datetime.today():
+        if datetime.datetime.strptime(datum_termina,"%Y-%m-%d").date()<datetime.date.today():
             helperFunctions.obavestenje(poruka="Nije moguće obrisati rezervaciju koja je već prošla.",crveno=True)
             return
         if not helperFunctions.pitaj(poruka="Da li ste sigurni da želite da obrišete rezervaciju?"):

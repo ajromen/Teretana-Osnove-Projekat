@@ -54,7 +54,7 @@ CREATE TABLE Program
 DROP TABLE IF EXISTS Vrste_treninga;
 CREATE TABLE Vrste_treninga 
 	( id_vrste_treninga INTEGER PRIMARY KEY NOT NULL,
-	  naziv BLOB,
+	  naziv BLOB, 
 	  obrisan BOOLEAN
 	  );
 

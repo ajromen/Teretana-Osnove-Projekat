@@ -42,7 +42,6 @@ class VrsteTreningaWindow(winTemplate):
     def pretrazi(self):
         pretraga = self.entrySearch.get().strip().lower()
         kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
-        
 
         for red in self.table.get_children():
             self.table.delete(red)
