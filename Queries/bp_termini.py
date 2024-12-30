@@ -152,3 +152,13 @@ def get_sala(id_termina):
             WHERE id_termina=?'''
     cursor.execute(komanda,(id_termina,))
     return cursor.fetchone()[0]
+
+def get_paket(id_termina):
+    cursor=BazaPodataka.get_cursor()
+    komanda='''SELECT 
+                        Program.potreban_paket 
+                    FROM Termin 
+                    JOIN Trening ON Termin.id_treninga = Trening.id_treninga 
+                    JOIN Program ON Trening.id_programa = Program.id_programa WHERE id_termina=?'''
+    cursor.execute(komanda,(id_termina,))
+    return cursor.fetchone()[0]

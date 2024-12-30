@@ -28,13 +28,15 @@ def get_sala(id_sale):
     cursor.execute(komanda,(id_sale,))
     return cursor.fetchone()
 
-def get_mesta(id_sale,id_termina):
+def get_mesta(id_sale,id_termina,id_rezervacije=None):
     cursor=BazaPodataka.get_cursor()
     komanda='''SELECT 
                     Rezervacija.oznaka_reda_kolone 
                 FROM Rezervacija
                 JOIN Termin ON Rezervacija.id_termina=Termin.id_termina
                 JOIN Trening ON Termin.id_treninga=Trening.id_treninga
-                WHERE Trening.id_sale=? AND Termin.id_termina=?'''
-    cursor.execute(komanda,(id_sale,id_termina,))
+                WHERE Trening.id_sale=? AND 
+                      Termin.id_termina=? AND
+                      Rezervacija.id_rezervacije!=?'''
+    cursor.execute(komanda,(id_sale,id_termina,id_rezervacije,))
     return cursor.fetchall()

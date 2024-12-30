@@ -56,7 +56,7 @@ def on_entry_out(entry, placeholder, color_inactive="gray",show=''):
         if placeholder == "Lozinka":
             entry.configure(show=show)
 
-def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=1,specificni=False,font_size=15):
+def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=1,specificni=False,font_size=15,variable=None):
     lblSifra = ctk.CTkLabel(canvas, text=text, font=("Inter",font_size * -1),anchor='nw')
     lblSifra.place(x=labelX,y=labelY)
     listaSifre=[]
@@ -71,7 +71,7 @@ def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=
     for sifra in listaSifre:
         tekst = " ".join(str(sifra[i]) for i in range(broj_kolona))
         lista.append(tekst)
-    cmbbx=create_comboBox(canvas, values=lista,x=comboX,y=comboY)
+    cmbbx=create_comboBox(canvas, values=lista,x=comboX,y=comboY,variable=variable)
     return cmbbx
 
 def create_comboBox(canvas,values,x,y,width=148,variable=None):

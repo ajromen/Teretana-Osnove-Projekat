@@ -24,7 +24,17 @@ def dodaj_rezervaciju(id_korisnika,id_termina,oznaka_reda_kolone,datum):
     BazaPodataka.commit()
 
 def azuriraj_rezervaciju(id_rezervacije,id_korisnika=None,id_termina=None,oznaka_reda_kolone=None,datum=None):
-    pass
+    cursor=BazaPodataka.get_cursor()
+    komanda='''UPDATE Rezervacija 
+                SET 
+                    id_korisnika=?,
+                    id_termina=?,
+                    oznaka_reda_kolone=?,
+                    datum=?
+                    WHERE id_rezervacije=?'''
+                    
+    
+    cursor.execute(komanda,(id_korisnika,id_termina,oznaka_reda_kolone,datum,id_rezervacije))
 
 def obrisi_rezervaciju(id_rezervacije):
     cursor=BazaPodataka.get_cursor()

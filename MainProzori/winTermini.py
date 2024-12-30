@@ -5,8 +5,10 @@ import bp_termini
 
 
 class TerminiWindow(winTemplate):
-    def __init__(self, window, escfunk=None, uloga=None,username=None, u_prozoru=False):
+    def __init__(self, window, escfunk=None, uloga=None, username=None, u_prozoru=False,username_korisnika=None,selektovani_termin=None):
         super().__init__(window, escfunk, uloga, u_prozoru, username)
+        self.username_korisnika=username_korisnika
+        self.selektovani_termin=selektovani_termin
 
     def start(self):
         self.create_canvas()
@@ -52,9 +54,18 @@ class TerminiWindow(winTemplate):
         slctd_data=self.table.item(slctd_item)
         
         potreban_premium=True if slctd_data["values"][8]=="Premium" else False
-        paket_korisnika=bp_korisnici.get_paket(self.username)
+        korisnik=self.username
+        if self.uloga=="instruktor":
+            korisnik=self.username_korisnika
+        
+        if(not bp_korisnici.get_status(korisnik)):
+            print(korisnik)
+            helperFunctions.obavestenje(poruka="Vaša članarina je istekla. Molimo vas da obnovite članarinu.",crveno=True)
+            return    
+        
+        paket_korisnika=bp_korisnici.get_paket(korisnik)
         if paket_korisnika==0 and potreban_premium:
-            helperFunctions.obavestenje(poruka="Za ovaj termin je potreban Premium paket.",crveno=True)
+            helperFunctions.obavestenje(poruka="Za ovaj termin je potreban Premium paket, a Vi imate Standard.",crveno=True)
             return
         
         id_termina=slctd_data["values"][0]
@@ -80,6 +91,11 @@ class TerminiWindow(winTemplate):
                     tabela.insert("", "end", values=podatak, tags="obrisano" + str(i % 2))
             else:
                 tabela.insert("", "end", values=podatak, tags=str(i % 2))
+                
+            if podatak[0] == self.selektovani_termin:
+                item_id = tabela.get_children()[-1]
+                tabela.selection_set(item_id)
+                tabela.see(item_id)
             i += 1
 
     def pretrazi(self):

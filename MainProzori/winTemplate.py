@@ -55,8 +55,8 @@ class winTemplate:
     def create_button(self, image_path, x, y, width=None, height=None, command=None):
         return wid.create_button(self.get_canvas(), image_path, x, y, width, height, command)
         
-    def napravi_sql_cmbbx(self, text, labelX, labelY, comboX, comboY, query, broj_kolona=1, specificni=False,font_size=15):  
-        return wid.napravi_sql_cmbbx(self.get_canvas(), text, labelX, labelY, comboX, comboY, query, broj_kolona, specificni,font_size)
+    def napravi_sql_cmbbx(self, text, labelX, labelY, comboX, comboY, query, broj_kolona=1, specificni=False,font_size=15,variable=None):  
+        return wid.napravi_sql_cmbbx(self.get_canvas(), text, labelX, labelY, comboX, comboY, query, broj_kolona, specificni,font_size,variable)
         
     def selektuj_vrednost_comboBox(self, cmbbx, vrednost):
         wid.selektuj_vrednost_comboBox(cmbbx, vrednost)

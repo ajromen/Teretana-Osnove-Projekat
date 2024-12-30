@@ -246,7 +246,7 @@ def get_paket(username):
     cursor.execute("SELECT uplacen_paket FROM Korisnici WHERE username=?",(username,))
     return cursor.fetchone()[0]
 
-def obnovljena_clanarina(username):
+def get_status(username):
     cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT status_clanstva FROM Korisnici WHERE username=?",(username,))
     return cursor.fetchone()[0]
