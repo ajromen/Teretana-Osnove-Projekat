@@ -190,7 +190,7 @@ def nagradi_lojalnost(username):
                 WHEN obnova_clanarine IS NOT NULL AND obnova_clanarine > DATE('now', '-1 month')
                 THEN DATE(obnova_clanarine, '+1 month')
                 ELSE DATE('now')
-                END
+                END 
                 WHERE username = ?;'''
     cursor.execute(komanda,(username,))
     BazaPodataka.commit()

@@ -2,7 +2,7 @@ PRAGMA foreign_keys = ON;
 
 --RESTARTOVANJE TABELA 
 DROP TABLE IF EXISTS Korisnici;
-CREATE TABLE Korisnici 
+CREATE TABLE Korisnici
 	( username CHAR(25) PRIMARY KEY NOT NULL,
 	  password CHAR(64),
 	  ime CHAR(25),
@@ -12,7 +12,7 @@ CREATE TABLE Korisnici
 	  uplacen_paket BOOLEAN,
 	  datum_registracije DATE,
 	  obnova_clanarine DATE,
-	  obrisan BOOLEAN
+	  nagradjen BOOLEAN
 	  );
 
 DROP TABLE IF EXISTS Trening;
