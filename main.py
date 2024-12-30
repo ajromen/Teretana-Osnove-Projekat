@@ -36,7 +36,7 @@ def azuriraj_podatke():
     
 
 if __name__ == '__main__':
-    #BazaPodataka.restart()
+    BazaPodataka.restart()
     azuriraj_podatke()
     
     window=ctk.CTk()

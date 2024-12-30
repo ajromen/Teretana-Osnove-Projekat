@@ -158,11 +158,11 @@ def broj_rezervacija_za_mesec(username):#promeniti da se gleda vreme termina a n
                 WHERE 
                     Rezervacija.id_korisnika = ? AND
                     Termin.datum_odrzavanja > Korisnici.obnova_clanarine AND
-                    Termin.datum_odrzavanja <= DATE('now') AND
+                    Termin.datum_odrzavanja <= DATE('now','localtime') AND
                     Termin.datum_odrzavanja <= DATE(Korisnici.obnova_clanarine, '+1 month') AND
                     Termin.obrisan IS NOT TRUE AND
                     Korisnici.status_clanstva = 1 AND
-                    Korisnici.obnova_clanarine >= DATE('now', '-1 month')
+                    Korisnici.obnova_clanarine >= DATE('now', '-1 month','localtime')
                 """
     
     cursor.execute(komanda, (username,))
@@ -174,18 +174,16 @@ def proveri_status_korisnika():
     
     komanda = '''UPDATE Korisnici
                  SET status_clanstva = 0
-                 WHERE uloga = 0 AND obnova_clanarine < DATE('now', '-1 month')'''
+                 WHERE uloga = 0 AND obnova_clanarine < DATE('now', '-1 month','localtime')'''
     cursor.execute(komanda)
     
     komanda ='''UPDATE Korisnici
                 SET 
                     status_clanstva = 1,
-                    uplacen_paket = 1, 
-                    obnova_clanarine = DATE('now'),
+                    uplacen_paket = 1,
                     nagradjen = 0
-                WHERE nagradjen = 1 AND obnova_clanarine = DATE('now')'''
-    
-    cursor.execute(komanda)  
+                WHERE nagradjen = 1 AND obnova_clanarine = DATE('now','localtime')'''
+    cursor.execute(komanda)
     BazaPodataka.commit()
         
 def nagradi_lojalnost(username):
@@ -196,9 +194,9 @@ def nagradi_lojalnost(username):
                 SET 
                     nagradjen = 1,
                     obnova_clanarine = CASE
-                        WHEN obnova_clanarine IS NOT NULL AND obnova_clanarine > DATE('now', '-1 month')
+                        WHEN obnova_clanarine IS NOT NULL AND obnova_clanarine > DATE('now', '-1 month','localtime')
                         THEN DATE(obnova_clanarine, '+1 month')
-                        ELSE DATE('now')
+                        ELSE DATE('now','localtime')
                     END
                 WHERE username = ?;'''
     cursor.execute(komanda,(username,))
@@ -212,7 +210,7 @@ def aktiviraj_paket(username,paket):
                 SET 
                     status_clanstva = 1,
                     uplacen_paket = ?,
-                    obnova_clanarine = DATE('now')
+                    obnova_clanarine = DATE('now','localtime')
                 WHERE username = ?;'''
     
     cursor.execute(komanda, (paket,username,))

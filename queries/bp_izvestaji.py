@@ -116,7 +116,7 @@ def e_izvestaj():
                     JOIN Trening ON Termin.id_treninga = Trening.id_treninga
                     JOIN Program ON Trening.id_programa = Program.id_programa
                     WHERE Program.id_instruktora = ? AND
-                          Termin.datum_odrzavanja < date('now')
+                          Termin.datum_odrzavanja < date('now','localtime')
                 '''
         cursor.execute(komanda,(instruktor[0],))
         instruktor.append(cursor.fetchone()[0])
@@ -140,8 +140,8 @@ def f_izvestaj(paket:bool):
                 JOIN Korisnici ON Rezervacija.id_korisnika = Korisnici.username
                 WHERE 
                     Program.potreban_paket = ? AND
-                    Termin.datum_odrzavanja < date('now') AND
-                    Termin.datum_odrzavanja > date('now','-30 day')
+                    Termin.datum_odrzavanja < date('now','localtime') AND
+                    Termin.datum_odrzavanja > date('now','-30 day','localtime')
             '''
     cursor.execute(komanda,(paket,))
     return cursor.fetchall()
@@ -156,7 +156,7 @@ def g_izvestaj():
                 JOIN Termin ON Rezervacija.id_termina = Termin.id_termina
                 JOIN Trening ON Termin.id_treninga = Trening.id_treninga
                 JOIN Program ON Trening.id_programa = Program.id_programa
-                WHERE Termin.datum_odrzavanja > date('now','-1 year')
+                WHERE Termin.datum_odrzavanja > date('now','-1 year','localtime')
                 GROUP BY Program.naziv
                 ORDER BY COUNT(*) DESC
                 LIMIT 3
