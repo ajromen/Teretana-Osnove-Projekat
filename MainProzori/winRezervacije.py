@@ -12,6 +12,7 @@ class RezervacijeWindow(winTemplate):
         self.termin=None
         self.oznaka_mesta=None
         self.odabrani_korisnik=None
+        self.odabrana_rezervacija=None
         
     def start(self):
         self.create_canvas()
@@ -79,7 +80,7 @@ class RezervacijeWindow(winTemplate):
         self.btnOznakaMesta.configure(text="Izaberite oznaku mesta")
         self.sala=None
         self.btnOznakaMesta.configure(command=None)
-        if termin=="Izaberite termin":
+        if termin=="Izaberite termin" or termin==None:
             return
         self.termin=termin.strip()
         self.sala=bp_termini.get_sala(termin)
@@ -119,6 +120,8 @@ class RezervacijeWindow(winTemplate):
         self.varKorisnik.trace_add("write",self.promenjen_korisnik)
         if self.odabrani_korisnik:
             self.selektuj_vrednost_comboBox(self.cmbbxKorisnici,self.odabrani_korisnik)
+        else:
+            self.odabrani_korisnik=self.cmbbxKorisnici.get().split(" ")[0]
         
         self.btnTermin=self.create_text_button("Izaberite termin", 154, 82, width=170,height=28, command=self.izaberi_termine)
         self.btnOznakaMesta=self.create_text_button("Izaberite oznaku mesta", 154, 137, width=170,height=28,fg_color=boje.dugme_disabled,hover_color=boje.dugme_disabled_hover,command=None)    

@@ -58,8 +58,8 @@ class TerminiWindow(winTemplate):
         if self.uloga=="instruktor":
             korisnik=self.username_korisnika
         
+        print(korisnik)
         if(not bp_korisnici.get_status(korisnik)):
-            print(korisnik)
             helperFunctions.obavestenje(poruka="Vaša članarina je istekla. Molimo vas da obnovite članarinu.",crveno=True)
             return    
         

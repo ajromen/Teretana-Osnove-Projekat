@@ -36,7 +36,10 @@ def get_mesta(id_sale,id_termina,id_rezervacije=None):
                 JOIN Termin ON Rezervacija.id_termina=Termin.id_termina
                 JOIN Trening ON Termin.id_treninga=Trening.id_treninga
                 WHERE Trening.id_sale=? AND 
-                      Termin.id_termina=? AND
-                      Rezervacija.id_rezervacije!=?'''
-    cursor.execute(komanda,(id_sale,id_termina,id_rezervacije,))
+                      Termin.id_termina=?'''
+    argumenti=(id_sale,id_termina,)
+    if id_rezervacije is not None:
+        komanda+='AND Rezervacija.id_rezervacije!=?'
+        argumenti+=(id_rezervacije,)
+    cursor.execute(komanda,argumenti)
     return cursor.fetchall()
