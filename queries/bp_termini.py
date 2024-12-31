@@ -87,7 +87,8 @@ def obrisi_termin(id_termina,totalno=True):
     BazaPodataka.commit()
 
     
-def generisi_termine(za_naredne_sedmice=2):
+def generisi_termine():
+    za_naredne_sedmice=int(helperFunctions.ucitaj_iz_setup('broj_sedmica_za_generisanje_termina'))
     cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT id_treninga FROM Trening")
     

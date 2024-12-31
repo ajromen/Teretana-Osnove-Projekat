@@ -42,7 +42,6 @@ def pitaj(poruka,title="Greška",text1="Da",text2="Ne",crveno=True):
    button_2.place(x=181,y=108)
 
    error_window.wait_window()
-
    return result["value"]
    
 def setup_window(window,title,width_height,bg_color=boje.crna):

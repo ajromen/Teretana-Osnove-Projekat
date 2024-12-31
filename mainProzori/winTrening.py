@@ -1,5 +1,6 @@
 from datetime import timedelta
 import bp_programi
+import bp_termini
 from imports import *
 import bp_trening
 
@@ -307,6 +308,8 @@ class TreningWindow(winTemplate):
         else:
             if(bp_trening.dodaj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani, id_programa)): return
             helperFunctions.obavestenje(title="Dodaj program", poruka="Uspešno dodat program.")
+            if helperFunctions.pitaj("Da li želite da sada generišete termine za ovaj trening?\n( Ako odaberete ne termini će biti generisani po izlasku iz\n aplikacije )."):
+                bp_termini.generisi_termine()
         
         self.popuni_tabelu(self.table)
 

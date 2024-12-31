@@ -81,15 +81,15 @@ def dodaj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
     cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT id_vrste_treninga FROM Vrste_treninga WHERE id_vrste_treninga=?",(vrsta_treninga,))
     if(cursor.fetchone() is None): 
-        helperFunctions.obavestenje("Ne postoji odabrana vrsta treninga.")
+        helperFunctions.obavestenje("Ne postoji odabrana vrsta treninga.",crveno=True)
         return True
     cursor.execute("SELECT username FROM Korisnici WHERE username=?",(instruktor,))
     if(cursor.fetchone() is None): 
-        helperFunctions.obavestenje("Ne postoji odabrani instruktor.")
+        helperFunctions.obavestenje("Ne postoji odabrani instruktor.",crveno=True)
         return True
     cursor.execute("SELECT id_programa FROM Program WHERE id_programa=?",(id,))
     if(cursor.fetchone()): 
-        helperFunctions.obavestenje("Već postoji korisnik sa datom šifrom.")
+        helperFunctions.obavestenje("Već postoji korisnik sa datom šifrom.",crveno=True)
         return True
     
     cursor.execute('''INSERT INTO Program(id_programa, naziv, id_vrste_treninga, trajanje, id_instruktora, potreban_paket, opis)

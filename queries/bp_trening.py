@@ -45,7 +45,7 @@ def dodaj_trening(id, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_prog
     cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT id_treninga FROM Trening WHERE id_treninga=?",(id,))
     if(cursor.fetchone()): 
-        helperFunctions.obavestenje("Već postoji trening sa datom šifrom.")
+        helperFunctions.obavestenje("Već postoji trening sa datom šifrom.",crveno=True)
         return True
     
     cursor.execute('''INSERT INTO Trening(id_treninga, id_sale, vreme_pocetka, vreme_kraja, dani_nedelje, id_programa)

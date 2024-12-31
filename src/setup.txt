@@ -1,2 +1,2 @@
 potreban_broj_za_rezervacije: 1
-nesto: 0
+broj_sedmica_za_generisanje_termina: 2

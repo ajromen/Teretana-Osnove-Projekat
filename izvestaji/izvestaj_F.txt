@@ -1,8 +1,8 @@
 |           Ime           |         Prezime         |    Datum rezervacije    |       Oznaka mesta      |         Program         |
 ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-|          Rolex          |        Jovanović        |        2024-02-15       |            C2           | Od mama za mame - Momir |
+|          Rolex          |        Jovanović        |        2024-12-30       |            C2           | Od mama za mame - Momir |
 ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 
 Za odabrani paket: 'Premium', broj realizovanih rezervacija u poslednjih 30 dana je: 1
 
-Datum izrade izveštaja: 2024-12-29 19:59:51
+Datum izrade izveštaja: 2024-12-31 00:41:03

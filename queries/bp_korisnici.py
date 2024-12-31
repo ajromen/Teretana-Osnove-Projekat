@@ -18,7 +18,7 @@ def dodaj_korisnika(username,password,ime,prezime,uloga,status_clanstva,uplacen_
     cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT username FROM Korisnici WHERE username=?",(username,))
     if cursor.fetchone() is not None:
-        helperFunctions.obavestenje("Nalog sa korisničkim imenom već postoji")
+        helperFunctions.obavestenje("Nalog sa korisničkim imenom već postoji",crveno=True)
         return 0
     password=helperFunctions.hashPassword(password)
     komanda='''INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine)

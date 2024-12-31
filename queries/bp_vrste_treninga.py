@@ -22,7 +22,7 @@ def dodaj_vrstu_treninga(sifra,naziv):
     cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT id_vrste_treninga FROM Vrste_treninga WHERE id_vrste_treninga=?",(sifra,))
     if(cursor.fetchone()):
-        helperFunctions.obavestenje("Vrsta treninga sa izabranom šifrom već postoji.")
+        helperFunctions.obavestenje("Vrsta treninga sa izabranom šifrom već postoji.",crveno=True)
         return 0
     komanda='''INSERT INTO Vrste_treninga(id_vrste_treninga, naziv)
 	        VALUES	(?,?);'''
