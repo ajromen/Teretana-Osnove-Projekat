@@ -40,10 +40,14 @@ class winTemplate:
 
     def create_cmbbxSearch(self, values, x=681, y=53):
         self.create_label("Pretraži po:", x-71, 62)
-        self.cmbbxSearch = self.create_comboBox(values, x, y)
+        self.cmbbxSearchVar = StringVar()
+        self.cmbbxSearch = self.create_comboBox(values, x, y,variable=self.cmbbxSearchVar,on_change=self.pretrazi)
 
-    def create_comboBox(self, values, x, y, width=148,variable=None):
-        return wid.create_comboBox(self.get_canvas(), values, x=x, y=y,width=width,variable=variable)
+    def create_comboBox(self, values, x, y, width=148,variable=None,on_change=None):
+        return wid.create_comboBox(self.get_canvas(), values,x, y,width,variable,on_change)
+    
+    def napravi_sql_cmbbx(self, text, labelX, labelY, comboX, comboY, query, broj_kolona=1, specificni=False,font_size=15,variable=None,on_change=None):  
+        return wid.napravi_sql_cmbbx(self.get_canvas(), text, labelX, labelY, comboX, comboY, query, broj_kolona, specificni,font_size,variable,on_change)
 
     def create_entry_search(self, command):
         self.searchPozadina = wid.create_canvas_image(self.current_canvas, "./src/img/widget/searchPozadina.png", 23, 53)
@@ -54,9 +58,6 @@ class winTemplate:
 
     def create_button(self, image_path, x, y, width=None, height=None, command=None):
         return wid.create_button(self.get_canvas(), image_path, x, y, width, height, command)
-        
-    def napravi_sql_cmbbx(self, text, labelX, labelY, comboX, comboY, query, broj_kolona=1, specificni=False,font_size=15,variable=None):  
-        return wid.napravi_sql_cmbbx(self.get_canvas(), text, labelX, labelY, comboX, comboY, query, broj_kolona, specificni,font_size,variable)
         
     def selektuj_vrednost_comboBox(self, cmbbx, vrednost):
         wid.selektuj_vrednost_comboBox(cmbbx, vrednost)

@@ -56,7 +56,7 @@ def on_entry_out(entry, placeholder, color_inactive="gray",show=''):
         if placeholder == "Lozinka":
             entry.configure(show=show)
 
-def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=1,specificni=False,font_size=15,variable=None):
+def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=1,specificni=False,font_size=15,variable=None,on_change=None):
     lblSifra = ctk.CTkLabel(canvas, text=text, font=("Inter",font_size * -1),anchor='nw')
     lblSifra.place(x=labelX,y=labelY)
     listaSifre=[]
@@ -71,10 +71,10 @@ def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=
     for sifra in listaSifre:
         tekst = " ".join(str(sifra[i]) for i in range(broj_kolona))
         lista.append(tekst)
-    cmbbx=create_comboBox(canvas, values=lista,x=comboX,y=comboY,variable=variable)
+    cmbbx=create_comboBox(canvas, values=lista,x=comboX,y=comboY,variable=variable,on_change=on_change)
     return cmbbx
 
-def create_comboBox(canvas,values,x,y,width=148,variable=None):
+def create_comboBox(canvas,values,x,y,width=148,variable=None,on_change=None):
     combo= ctk.CTkComboBox(
         canvas,
         width=width,height=33,
@@ -88,7 +88,14 @@ def create_comboBox(canvas,values,x,y,width=148,variable=None):
         variable=variable)
     combo.place(x=x,y=y)
     combo.set(values[0])
+    if variable and on_change:
+        variable.trace_add("write",lambda *args:on_change_funk(variable,on_change))
     return combo
+
+def on_change_funk(varOnChange,on_change):
+    if not varOnChange.get():
+        return
+    on_change()
 
 def create_entry_search(canvas,pretrazi):
     entrySearch = create_entry(canvas=canvas,x=28,y=59,placeholder="Pretraži",corner_radius=0,auto_fin_fout=(True,"Polje"))

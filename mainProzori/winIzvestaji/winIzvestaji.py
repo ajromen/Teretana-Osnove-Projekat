@@ -22,8 +22,7 @@ class IzvestajiWindow(IzvestajiLogika):
             "H": "Najpopularniji dan u nedelji (1 godina)"
         }
         self.varIzvestaj = StringVar()
-        self.cmbbxIzvestaj = self.create_comboBox([slovo + ". " + self.izvestajiMap[slovo] for slovo in "ABCDEFGH"], 23, 54, width=184, variable=self.varIzvestaj)
-        self.varIzvestaj.trace_add("write", self.on_combo_change)
+        self.cmbbxIzvestaj = self.create_comboBox([slovo + ". " + self.izvestajiMap[slovo] for slovo in "ABCDEFGH"], 23, 54, width=184, variable=self.varIzvestaj, on_change=self.on_combo_change)
 
         self.btnFilteri = self.create_text_button("Filteri", 214, 54, width=150, height=33, command=self.filteri)
         self.entryInfo = self.create_entry(374, 54, width=296, height=33, placeholder="", state="normal")
@@ -31,9 +30,7 @@ class IzvestajiWindow(IzvestajiLogika):
         self.btnFajl_onemogucen()
         self.a_izvestaj()
 
-    def on_combo_change(self, *args):
-        if self.varIzvestaj.get() == "":
-            return
+    def on_combo_change(self):
         self.ret = None
         self.btnFajl_onemogucen()
         self.btnFilteri_omogucen()

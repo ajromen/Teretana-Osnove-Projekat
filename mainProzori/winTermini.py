@@ -32,7 +32,8 @@ class TerminiWindow(winTemplate):
 
         opcije=[kriterijum for kriterijum in self.kriterijumi if kriterijum != "Dan"]
         self.create_cmbbxSearch(opcije,)
-        self.cmbbxSedmica = self.create_comboBox(["Ova nedelja", "Sledeća nedelja","SVE"], 423, 53)
+        self.cmbbxSedmicaVar=StringVar()
+        self.cmbbxSedmica = self.create_comboBox(["Ova nedelja", "Sledeća nedelja","SVE"], 423, 53,variable=self.cmbbxSedmicaVar,on_change=self.pretrazi)
         
         self.create_table(self.kriterijumi, velika=True)
         self.table.column("Vrsta treninga", width=100)

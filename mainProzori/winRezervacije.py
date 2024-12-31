@@ -123,8 +123,7 @@ class RezervacijeWindow(winTemplate):
         self.create_label("Oznaka mesta:", 33, 140)
         
         self.varKorisnik=StringVar()
-        self.cmbbxKorisnici=self.napravi_sql_cmbbx("Izaberite korisnika:", 21, 32, 174, 24, "SELECT username,ime,prezime FROM Korisnici WHERE uloga=0 AND username IS NOT 'obrisan_korisnik'",3,True,variable=self.varKorisnik,font_size=12)
-        self.varKorisnik.trace_add("write",self.promenjen_korisnik)
+        self.cmbbxKorisnici=self.napravi_sql_cmbbx("Izaberite korisnika:", 21, 32, 174, 24, "SELECT username,ime,prezime FROM Korisnici WHERE uloga=0 AND username IS NOT 'obrisan_korisnik'",3,True,variable=self.varKorisnik,font_size=12,on_change=self.promenjen_korisnik)
         if self.odabrani_korisnik:
             self.selektuj_vrednost_comboBox(self.cmbbxKorisnici,self.odabrani_korisnik)
         else:
@@ -137,9 +136,7 @@ class RezervacijeWindow(winTemplate):
         self.create_button("./src/img/widget/btnOtkazi.png",136,236,command=self.trenutni_window.destroy)
         self.top_level=False
     
-    def promenjen_korisnik(self,*args):
-        if self.varKorisnik.get()=='':
-            return
+    def promenjen_korisnik(self):
         korisnik=self.cmbbxKorisnici.get().split(" ")[0]
         status_korisnika=bp_korisnici.get_status(korisnik)
         if status_korisnika==False:
