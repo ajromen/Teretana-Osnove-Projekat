@@ -18,35 +18,34 @@ def izlistaj_termini(pretraga="", kriterijum="Termin.id_termina",pocetni_datum=N
     pretraga,kriterijum = helperFunctions.ocisti_string(pretraga, kriterijum)
 
     komanda = f"""SELECT 
-        Termin.id_termina, 
-        Program.naziv, 
-        Vrste_treninga.naziv, 
-        Sala.naziv, 
-        Termin.datum_odrzavanja, 
-        Trening.vreme_pocetka, 
-        Trening.vreme_kraja, 
-        program.potreban_paket, 
-        Termin.obrisan
-    FROM 
-        Termin
-    JOIN 
-        Trening ON Termin.id_treninga = Trening.id_treninga
-    JOIN 
-        Program ON Trening.id_programa = Program.id_programa
-    JOIN 
-        Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
-    JOIN 
-        Sala ON Trening.id_sale = Sala.id_sale
-    WHERE 
-        {kriterijum} LIKE ?
-    """
+                        Termin.id_termina, 
+                        Program.naziv, 
+                        Vrste_treninga.naziv, 
+                        Sala.naziv, 
+                        strftime('%w', Termin.datum_odrzavanja) AS dan,
+                        Termin.datum_odrzavanja, 
+                        Trening.vreme_pocetka, 
+                        Trening.vreme_kraja, 
+                        program.potreban_paket, 
+                        Termin.obrisan
+                    FROM 
+                        Termin
+                    JOIN 
+                        Trening ON Termin.id_treninga = Trening.id_treninga
+                    JOIN 
+                        Program ON Trening.id_programa = Program.id_programa
+                    JOIN 
+                        Vrste_treninga ON Program.id_vrste_treninga = Vrste_treninga.id_vrste_treninga
+                    JOIN 
+                        Sala ON Trening.id_sale = Sala.id_sale
+                    WHERE 
+                        {kriterijum} LIKE ?
+                    """
     parametri = (f"%{pretraga}%",)
     if uloga=="instruktor":
         komanda += " AND Program.id_instruktora = ?"
         parametri+=(username,)
-    
-    
-    
+ 
     if pocetni_datum and krajnji_datum:
         komanda += " AND Termin.datum_odrzavanja BETWEEN ? AND ?"
         parametri+=(pocetni_datum.strftime('%Y-%m-%d'),)
@@ -54,10 +53,6 @@ def izlistaj_termini(pretraga="", kriterijum="Termin.id_termina",pocetni_datum=N
 
     cursor.execute(komanda, parametri)
     return cursor.fetchall()
-    
-
-def dodaj_termin(id_termina,datum_odrzavanja,id_treninga,obrisan):
-    pass
 
 def izmeni_termin(id_termina,datum_odrzavanja=None,id_treninga=None,obrisan=None):
     pass

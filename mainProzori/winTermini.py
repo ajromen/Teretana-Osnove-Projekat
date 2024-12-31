@@ -21,7 +21,7 @@ class TerminiWindow(winTemplate):
             "Naziv programa": "Program.naziv",
             "Vrsta treninga": "Vrste_treninga.naziv",
             "Sala": "Sala.naziv",
-            "Dan": "Termin.datum_odrzavanja",
+            "Dan": "dan",
             "Datum održavanja": "Termin.datum_odrzavanja",
             "Vreme početka": "Trening.vreme_pocetka",
             "Vreme kraja": "Trening.vreme_kraja",
@@ -30,8 +30,7 @@ class TerminiWindow(winTemplate):
         
         self.create_entry_search(self.pretrazi)
 
-        opcije=[kriterijum for kriterijum in self.kriterijumi if kriterijum != "Dan"]
-        self.create_cmbbxSearch(opcije,)
+        self.create_cmbbxSearch(self.kriterijumi)
         self.cmbbxSedmicaVar=StringVar()
         self.cmbbxSedmica = self.create_comboBox(["Ova nedelja", "Sledeća nedelja","SVE"], 423, 53,variable=self.cmbbxSedmicaVar,on_change=self.pretrazi)
         
@@ -81,14 +80,16 @@ class TerminiWindow(winTemplate):
         i = 0
         for podatak in podaci:
             podatak=list(podatak)
-            dan = datetime.datetime.strptime(podatak[4], "%Y-%m-%d")
-            dan = helperFunctions.eng_dani_u_srp(dan.strftime("%A"))
-            if(podatak[7]):
-                podatak[7]="Premium"
+            # dan = datetime.datetime.strptime(podatak[4], "%Y-%m-%d")
+            # dan = helperFunctions.eng_dani_u_srp(dan.strftime("%A"))
+            print(podatak[4])
+            podatak[4] = helperFunctions.broj_u_dan(int(podatak[4]))
+            if(podatak[8]):
+                podatak[8]="Premium"
             else:
-                podatak[7]="Standard"
+                podatak[8]="Standard"
                 
-            podatak.insert(4, dan)
+            #podatak.insert(4, dan)
             if podatak[9] == 1:
                 if self.uloga == "admin":
                     tabela.insert("", "end", values=podatak, tags="obrisano" + str(i % 2))
