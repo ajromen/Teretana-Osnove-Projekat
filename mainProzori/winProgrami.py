@@ -338,7 +338,8 @@ class ProgramiWindow(winTemplate):
         self.cmbbxInstruktor=None
         self.cmbbxVrsteTreninga=None
         
-        self.popuni_tabelu(self.table)
+        self.pretrazi()
+        self.promenljive_filteri()
         
     def napravi_dodaj_izmeni_prozor(self):
         self.trenutni_window = helperFunctions.napravi_toplevel(height=485,title="Program")

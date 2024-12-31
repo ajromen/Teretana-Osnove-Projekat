@@ -82,7 +82,7 @@ class TerminiWindow(winTemplate):
             podatak=list(podatak)
             # dan = datetime.datetime.strptime(podatak[4], "%Y-%m-%d")
             # dan = helperFunctions.eng_dani_u_srp(dan.strftime("%A"))
-            print(podatak[4])
+            
             podatak[4] = helperFunctions.broj_u_dan(int(podatak[4]))
             if(podatak[8]):
                 podatak[8]="Premium"
@@ -121,6 +121,9 @@ class TerminiWindow(winTemplate):
                 pretraga = 0  
             else:
                 pass
+            
+        if kriterijum == "Dan":
+            pretraga = helperFunctions.dan_in_broj(pretraga)
 
         self.popuni_tabelu(self.table, pretraga=pretraga, kriterijum=kriterijum)
 

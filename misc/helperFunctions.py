@@ -147,6 +147,19 @@ def dan_u_broj(dan):
    }
    return dani_map.get(dan, -1)
 
+def dan_in_broj(dan):
+   dani_map = {
+      "Ponedeljak": 1,
+      "Utorak": 2,
+      "Sreda": 3,
+      "Četvrtak": 4,
+      "Petak": 5,
+      "Subota": 6,
+      "Nedelja": 7
+   }
+   for key, value in dani_map:
+      if dan in key:
+         return value
  
 def sacuvaj_tabelu(podaci, imena_kolona, putanja):
    with open(putanja,'w',encoding='utf-8') as file:
