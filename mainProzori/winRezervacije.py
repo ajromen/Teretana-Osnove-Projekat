@@ -13,6 +13,7 @@ class RezervacijeWindow(winTemplate):
         self.oznaka_mesta=None
         self.odabrani_korisnik=None
         self.odabrana_rezervacija=None
+        self.title="Rezervacije"
         
     def start(self):
         self.create_canvas()

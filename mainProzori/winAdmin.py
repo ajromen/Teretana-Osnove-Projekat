@@ -5,6 +5,7 @@ import bp_korisnici
 class AdminWindow(winTemplate):
     def __init__(self, window, escfunk=None, uloga=None,username=None, u_prozoru=False):
         super().__init__(window, escfunk, uloga, u_prozoru, username)
+        self.title="Administratori i instruktori"
 
     def start(self):
         self.create_canvas()

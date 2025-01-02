@@ -16,6 +16,7 @@ class TreningWindow(winTemplate):
             "Sub": False,
             "Ned": False,
         }
+        self.title="Treninzi"
 
     def start(self):
         self.create_canvas()  

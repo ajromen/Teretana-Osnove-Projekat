@@ -4,8 +4,9 @@ from logikaIzvestaji import IzvestajiLogika
 
 class IzvestajiWindow(IzvestajiLogika):
     def __init__(self, window, escfunk=None, uloga=None,username=None, u_prozoru=False):
-        super().__init__(window, escfunk, uloga, u_prozoru, username)
-
+        super().__init__(window, escfunk, uloga, username,u_prozoru)
+        self.title = "Izveštaji"
+        
     def start(self):
         self.create_canvas()
         self.create_exit_button()

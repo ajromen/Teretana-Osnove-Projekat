@@ -11,6 +11,7 @@ class SaleWindow(winTemplate):
         self.selektovano_dugme=oznaka_mesta
         self.id_termina=id_termina
         self.id_rezervacije=id_rezervacije
+        self.title="Sala"
         
     def start(self):
         self.get_sala_info()

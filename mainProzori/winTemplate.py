@@ -12,11 +12,56 @@ class winTemplate:
         self.escfunk = escfunk
         self.top_level=False
         self.username=username
+        self.pozicija_pomeranje={"x":0,"y":0}
+        self.pomeranje_window=None
+        self.height=608
+        self.width=860
 
     def create_canvas(self, bg_color=boje.crna, height=608, width=860,x=230,y=0):
         if self.u_prozoru: x=0;y=-39;height+=39
         self.current_canvas = Canvas(self.window, bg=bg_color, height=height, width=width, bd=0, highlightthickness=0, relief="ridge")
         self.current_canvas.place(x=x, y=y)
+        if not self.u_prozoru:
+            self.pomeranje_ikona=PhotoImage(file="src/img/main/pomeranje.png")
+            self.current_canvas.bind("<ButtonPress-1>", self.pomeranje_start)
+            self.current_canvas.bind("<B1-Motion>", self.pomeranje)
+            self.current_canvas.bind("<ButtonRelease-1>", self.pomeranje_kraj)
+            
+    def pomeranje_start(self, event):
+        self.pozicija_pomeranje["x"]=event.x
+        self.pozicija_pomeranje["y"]=event.y
+        x=self.window.winfo_pointerx()
+        y=self.window.winfo_pointery()
+        self.pomeranje_window=ctk.CTkToplevel(self.window)
+        self.pomeranje_window.geometry(f"118x25+{x}+{y}")
+        self.pomeranje_window.overrideredirect(True)
+        # self.pomeranje_window.attributes("-transparentcolor", "white")
+        canv=Canvas(self.pomeranje_window, width=118, height=25, bd=0, highlightthickness=0, bg="white")
+        canv.create_image(0,0,anchor="nw",image=self.pomeranje_ikona)
+        canv.pack()
+        
+    def pomeranje(self, event):
+        if self.pomeranje_window:
+            x=self.window.winfo_pointerx()
+            y=self.window.winfo_pointery()
+            self.pomeranje_window.geometry(f"+{x}+{y}")
+        
+    def pomeranje_kraj(self, event):
+        if self.pomeranje_window:
+            self.pomeranje_window.destroy()
+            self.pomeranje_window=None
+        width=self.current_canvas.winfo_width()
+        height=self.current_canvas.winfo_height()
+        if event.x<0 or event.y<0 or event.x>width or event.y>height:
+            self.prebaci_u_prozor()
+            self.escfunk()
+            
+    def prebaci_u_prozor(self):
+        x=self.window.winfo_pointerx()
+        y=self.window.winfo_pointery() 
+        novi_window=helperFunctions.napravi_toplevel(width=self.width,height=self.height-50,title=self.title,x=x,y=y)
+        prozorski=self.__class__(window=novi_window,escfunk=self.escfunk,uloga=self.uloga,u_prozoru=True,username=self.username)
+        prozorski.start()
 
     def create_exit_button(self,x=812,y=9):
         wid.create_button(self.current_canvas, "./src/img/widget/btnExit.png", x, y, 33, 33, self.escfunk)

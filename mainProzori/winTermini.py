@@ -4,10 +4,12 @@ from imports import *
 import bp_termini 
 
 class TerminiWindow(winTemplate):
-    def __init__(self, window, escfunk=None, uloga=None, username=None, u_prozoru=False,username_korisnika=None,selektovani_termin=None):
+    def __init__(self, window, escfunk=None, uloga=None, username=None, u_prozoru=False,username_korisnika=None,selektovani_termin=None,za_rezervaciju=False):
         super().__init__(window, escfunk, uloga, u_prozoru, username)
         self.username_korisnika=username_korisnika
         self.selektovani_termin=selektovani_termin
+        self.title="Termini"
+        self.za_rezervaciju=za_rezervaciju
 
     def start(self):
         self.create_canvas()
@@ -42,10 +44,10 @@ class TerminiWindow(winTemplate):
         self.table.column("Vreme kraja", width=70)
         self.table.column("Vreme početka", width=90)
         
-        if self.u_prozoru:
+        if self.za_rezervaciju:
             self.create_button("./src/img/widget/btnIzaberi.png", 577, 596, command=self.u_prozoru_selektuj)
         
-    def u_prozoru_selektuj(self):
+    def za_rezervaciju_selektuj(self):
         slctd_item = self.table.selection()
         if not slctd_item:
             helperFunctions.obavestenje(poruka="Niste odabrali nijedan termin.",crveno=True)
