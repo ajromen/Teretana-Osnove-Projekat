@@ -71,13 +71,11 @@ def centriraj_window(window):
 def napravi_toplevel(width=343,height=485,title="",x=None,y=None):
    window = ctk.CTkToplevel(fg_color=boje.crna)
    window.title(title)
-   if(x==None or y==None):
-      window.geometry(str(width)+"x"+str(height))
-      centriraj_window(window)
-   else:
-      window.geometry(f"{width}x{height}+{x}+{y}")
-      
+   x=0 if x is None else x
+   y=0 if y is None else y
+   window.geometry(f"{width}x{height}+{x}+{y}")
    window.resizable(False,False)
+   centriraj_window(window)
    return window
 
 def ucitaj_iz_setup(text):

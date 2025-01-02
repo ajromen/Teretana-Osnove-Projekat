@@ -73,7 +73,7 @@ class RezervacijeWindow(winTemplate):
     def izaberi_termine(self):
         self.dodatni_window=helperFunctions.napravi_toplevel(title="Izaberite termin",height=608,width=850)
         self.dodatni_window.protocol("WM_DELETE_WINDOW", lambda:self.izaberi_termine_kraj(self.termin))
-        termini_window=winTermini.TerminiWindow(self.dodatni_window,lambda termin:self.izaberi_termine_kraj(termin),self.uloga,u_prozoru=True,username=self.username,username_korisnika=self.odabrani_korisnik,selektovani_termin=self.termin)
+        termini_window=winTermini.TerminiWindow(self.dodatni_window,lambda termin:self.izaberi_termine_kraj(termin),self.uloga,u_prozoru=True,za_rezervaciju=True,username=self.username,username_korisnika=self.odabrani_korisnik,selektovani_termin=self.termin)
         termini_window.start()
         
     def izaberi_termine_kraj(self, termin="Izaberite termin"):
@@ -112,7 +112,8 @@ class RezervacijeWindow(winTemplate):
             
     def rezervacija_dodaj_kraj(self):
         danas=datetime.datetime.now().strftime("%Y-%m-%d")
-        bp_rezervacije.dodaj_rezervaciju(self.username,self.termin,self.oznaka_mesta,danas)
+        korIme= self.odabrani_korisnik if self.uloga=="instruktor" else self.username
+        bp_rezervacije.dodaj_rezervaciju(korIme,self.termin,self.oznaka_mesta,danas)
         self.trenutni_window.destroy()
         self.pretrazi()
     
@@ -171,7 +172,7 @@ class RezervacijeWindow(winTemplate):
             helperFunctions.obavestenje(poruka="Niste odabrali nijednu rezervaciju za izmenu.",crveno=True)
             return
         slctd_data=self.table.item(slctd_item)
-        if datetime.date.strptime(slctd_data["values"][1],"%Y-%m-%d").date()<datetime.date.today():
+        if datetime.datetime.strptime(slctd_data["values"][1],"%Y-%m-%d").date()<datetime.date.today():
             helperFunctions.obavestenje(poruka="Nije moguće izmeniti rezervaciju koja je već prošla.",crveno=True)
             return
         self.mode='izmeni'

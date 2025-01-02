@@ -261,6 +261,19 @@ class TreningWindow(winTemplate):
             helperFunctions.obavestenje("Polje vreme kraj-minuti mora biti u opsegu od 0-60.", crveno=True)
             return ret_val
         
+        if len(vreme_pocetak_sat) > 2:
+            self.restartuj_vreme(self.entryPocetakSati)
+            return ret_val
+        if len(vreme_pocetak_minuti) > 2:
+            self.restartuj_vreme(self.entryPocetakMinuti)
+            return ret_val
+        if len(vreme_kraj_sat) > 2:
+            self.restartuj_vreme(self.entryKrajSati)
+            return ret_val
+        if len(vreme_kraj_minuti) > 2:
+            self.restartuj_vreme(self.entryKrajMinuti)
+            return ret_val
+        
         vreme_pocetka=str(vreme_pocetak_sat)+":"+str(vreme_pocetak_minuti)
         vreme_kraja=str(vreme_kraj_sat)+":"+str(vreme_kraj_minuti)
         

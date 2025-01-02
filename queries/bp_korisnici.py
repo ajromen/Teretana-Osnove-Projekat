@@ -24,6 +24,7 @@ def dodaj_korisnika(username,password,ime,prezime,uloga,status_clanstva,uplacen_
     komanda='''INSERT INTO Korisnici(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine)
 	 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);'''
     cursor.execute(komanda, (username, password, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije, obnova_clanarine))
+    BazaPodataka.commit()
     
     cursor.execute("SELECT username, uloga FROM Korisnici WHERE username=?",(username,))
     return cursor.fetchall()
@@ -35,7 +36,8 @@ def dodaj_gosta():
     cursor.execute("SELECT username FROM Korisnici where username=?", (username,))
     if(cursor.fetchone() is None):
         datum=datetime.date.today().strftime("%Y-%m-%d")
-        dodaj_korisnika(username,"","","",-1,0,0,datum,None)
+        dodaj_korisnika(username,"","","",-1,1,0,datum,None)
+    BazaPodataka.commit()
     return username
 
 def azuriraj_korisnika(stari_username,username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine):
@@ -43,6 +45,10 @@ def azuriraj_korisnika(stari_username,username,password,ime,prezime,uloga,status
     cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT username FROM Korisnici WHERE username=?",(stari_username,))
     if(cursor.fetchone()):
+        cursor.execute("SELECT username FROM Korisnici WHERE username=?",(username,))
+        if cursor.fetchone() is not None:
+            helperFunctions.obavestenje("Nalog sa korisničkim imenom već postoji",crveno=True)
+            return 0
         password=helperFunctions.hashPassword(password)
         komanda='''UPDATE Korisnici
                     SET username=?, 
@@ -57,7 +63,11 @@ def azuriraj_korisnika(stari_username,username,password,ime,prezime,uloga,status
                    WHERE username=?
                    '''
         cursor.execute(komanda,(username,password,ime,prezime,uloga,status_clanstva,uplacen_paket,datum_registracije,obnova_clanarine,stari_username,))
-        
+        komanda2='''UPDATE Rezervacija
+                    SET id_korisnika=?
+                    WHERE id_korisnika=?'''
+        cursor.execute(komanda2,(username,stari_username,))
+        BazaPodataka.commit()
         cursor.execute("SELECT username, uloga FROM Korisnici WHERE username=?", (username,))
         return cursor.fetchall()
     else:

@@ -49,12 +49,9 @@ class SignupWindow:
         wid.create_button(self.canvas,"src/img/signup/button_3.png", x=121.0, y=337.0, width=160.0, height=35.0, command=self.dodaj_korisnika)
         wid.create_button(self.canvas,"src/img/signup/button_2.png", x=588.0, y=394.0, width=153.0, height=40.0, command=lambda: self.vrati("gost"))
         wid.create_button(self.canvas,"src/img/signup/button_1.png", x=163.0, y=379.0, width=76.0, height=15.0, command=lambda: self.vrati("login"))
-        #wid.create_button(self.canvas,"src/img/signup/button_3.png", x=0, y=0.0, width=160.0, height=35, command=lambda: self.izlistaj())
-    
-
+        
     def promeni_dobrodosao(self):
         self.canvas.itemconfig(self.text_id, text="Dobrodošao/la, "+str((self.entryName.get().split(' '))[0]))
-        
     
     def vrati(self,text):
         self.return_value=text
@@ -64,24 +61,30 @@ class SignupWindow:
         username=self.entyUsername.get()
         imeIPrezime=self.entryName.get().split(" ")
         if(len(imeIPrezime)!=2):
-            helperFunctions.obavestenje("Polje ime i prezime mora da ima samo 2 argumenta")
+            helperFunctions.obavestenje("Polje ime i prezime mora sadržati i ime i prezime",crveno=True)
             return
         ime=imeIPrezime[0]
         prezime=imeIPrezime[1]
+        if(ime[0].islower() or prezime[0].islower()):
+            helperFunctions.obavestenje("Ime i prezime moraju počinjati velikim slovom",crveno=True)
+            return 
         lozinka=self.entryPassword.get()
         if(len(lozinka)<6):
-            helperFunctions.obavestenje("Lozinka mora da sadrži više od 6 karaktera")
-            return 0
+            helperFunctions.obavestenje("Lozinka mora da sadrži više od 6 karaktera",crveno=True)
+            return 
         if(not re.search(r'\d', lozinka)):
-            helperFunctions.obavestenje("Lozinka mora sadržati bar jednu cifru")
-            return 0
+            helperFunctions.obavestenje("Lozinka mora sadržati bar jednu cifru",crveno=True)
+            return 
         uloga=0
         status_clanstva=1
         uplacen_paket=0
         datum_registracije=datetime.date.today().strftime("%Y-%m-%d")
         obnova_clanarine=datum_registracije
+        
         if(not self.guest):
             nalog=bp_korisnici.dodaj_korisnika(username, lozinka, ime, prezime, uloga,status_clanstva, uplacen_paket,datum_registracije,obnova_clanarine)
+            if nalog==0: return
         else:
             nalog=bp_korisnici.azuriraj_korisnika(self.user, username, lozinka, ime, prezime, uloga, status_clanstva, uplacen_paket, datum_registracije,obnova_clanarine)
+            if nalog==0: return 
         self.vrati(nalog)
