@@ -1,6 +1,5 @@
 import sqlite3
 import os
-import helperFunctions
 
 class BazaPodataka:
     connection = None

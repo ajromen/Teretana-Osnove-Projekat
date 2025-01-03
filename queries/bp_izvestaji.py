@@ -1,4 +1,4 @@
-from bp_import import BazaPodataka,datetime
+from bp_import import BazaPodataka
 import helperFunctions
 
 # a) Lista rezervacija po datumu rezervacije

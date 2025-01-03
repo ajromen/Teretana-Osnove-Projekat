@@ -208,6 +208,3 @@ def create_date_picker(canvas, x, y, variable):
     date_picker.place(x=x, y=y)
     return date_picker
 
-# ne radi posle nagradjivanja jer odmah postaje premium
-# popraviti tako sto ostavis da nije nagradjen js al mu je promenjn datum i ako se naidje na nekome kome je datum danas 
-# da mu se dodeli koji treba da dobije

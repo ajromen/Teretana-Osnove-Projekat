@@ -59,7 +59,9 @@ class winTemplate:
     def prebaci_u_prozor(self):
         x=self.window.winfo_pointerx()
         y=self.window.winfo_pointery() 
-        novi_window=helperFunctions.napravi_toplevel(width=self.width,height=self.height-50,title=self.title,x=x,y=y)
+        novi_window=ctk.CTkToplevel(self.window)
+        novi_window.geometry(f"{self.width}x{self.height-50}+{x}+{y}")
+        novi_window.resizable(False, False)
         prozorski=self.__class__(window=novi_window,escfunk=self.escfunk,uloga=self.uloga,u_prozoru=True,username=self.username)
         prozorski.start()
 
