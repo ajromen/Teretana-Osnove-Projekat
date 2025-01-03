@@ -188,7 +188,7 @@ class ProgramiWindow(winTemplate):
     def obrisi_program(self):
         slctd_item = self.table.selection()
         if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijedan program za brisanje.")
+            helperFunctions.obavestenje(poruka="Niste odabrali nijedan program za brisanje.",crveno=True)
             return
         
         slctd_data = self.table.item(slctd_item)
@@ -212,7 +212,7 @@ class ProgramiWindow(winTemplate):
     def winProgrami_Izmeni(self):
         slctd_item = self.table.selection()
         if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijedan program za izmenu.")
+            helperFunctions.obavestenje(poruka="Niste odabrali nijedan program za izmenu.",crveno=True)
             return
         obrisan = self.table.item(slctd_item, "tags")
 
@@ -306,19 +306,19 @@ class ProgramiWindow(winTemplate):
         paket=self.switchPaket.get()
         opis=self.txtbxOpis.get("0.0", END)
         if(id=="" or (not id.isdigit())):
-            helperFunctions.obavestenje("Šifra ne sme biti prazna ili sadržati slova.")
+            helperFunctions.obavestenje("Šifra ne sme biti prazna ili sadržati slova.",crveno=True)
             return
         if(naziv==""):
-            helperFunctions.obavestenje("Naziv ne sme biti prazan.")
+            helperFunctions.obavestenje("Naziv ne sme biti prazan.",crveno=True)
             return
         if(vrsta_treninga==""):
-            helperFunctions.obavestenje("Vrsta treninga ne sme biti prazana.")
+            helperFunctions.obavestenje("Vrsta treninga ne sme biti prazana.",crveno=True)
             return
         if(not trajanje.isdigit()):
-            helperFunctions.obavestenje("Trajanje mora biti broj.")
+            helperFunctions.obavestenje("Trajanje mora biti broj.",crveno=True)
             return
         if(instruktor==""):
-            helperFunctions.obavestenje("Instruktor polje ne sme biti prazno.")
+            helperFunctions.obavestenje("Instruktor polje ne sme biti prazno.",crveno=True)
             return
         vrsta_treninga=vrsta_treninga.split(" ")[0]
         instruktor=instruktor.split(" ")[0]

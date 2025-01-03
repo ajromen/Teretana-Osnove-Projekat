@@ -55,4 +55,4 @@ class LoginWindow:
         if(len(ima)!=0):
             self.vrati(ima)
         else:
-            helperFunctions.obavestenje("Pogrešno korisničko ime ili lozinka")
+            helperFunctions.obavestenje("Pogrešno korisničko ime ili lozinka",crveno=True)

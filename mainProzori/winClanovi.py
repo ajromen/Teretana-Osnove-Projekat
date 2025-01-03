@@ -49,7 +49,7 @@ class ClanoviWindow(winTemplate):
     def promeni_broj_rezervacija(self):
         brdana=self.entryBrojNagrada.get().strip()
         if(brdana=="" or int(brdana)==0 or not brdana.isdigit()): 
-            helperFunctions.obavestenje("Zahtev mora biti broj veći od 0.")
+            helperFunctions.obavestenje("Zahtev mora biti broj veći od 0.",crveno=True)
             return
         self.broj_rezervacija_za_nagradjivanje=int(brdana)
         helperFunctions.azuriraj_setup(self.broj_rez_kluc, str(brdana))
@@ -104,7 +104,7 @@ class ClanoviWindow(winTemplate):
                         bp_korisnici.nagradi_lojalnost(data['values'][0])
                 self.pretrazi()
                 helperFunctions.obavestenje(poruka="Korisnici koji ispunjavaju uslov su nagradjeni.")
-            else: helperFunctions.obavestenje(poruka="Niste odabrali nijednog korisnika.")     
+            else: helperFunctions.obavestenje(poruka="Niste odabrali nijednog korisnika.",crveno=True)     
             return         
         
         self.trenutni_window=helperFunctions.napravi_toplevel(height=193,title="Izmeni trening")
@@ -144,7 +144,7 @@ class ClanoviWindow(winTemplate):
     def clan_delete(self):
         slctd_item = self.table.selection()
         if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijednog korisnika.")
+            helperFunctions.obavestenje(poruka="Niste odabrali nijednog korisnika.",crveno=True)
             return
         
         pitaj = helperFunctions.pitaj(title="Potvrda brisanja", poruka="Da li ste sigurni da želite da obiršete odabranog korisnika?")

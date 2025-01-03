@@ -78,7 +78,7 @@ class VrsteTreningaWindow(winTemplate):
         naziv=self.txtbxOpis.get("0.0", END)
 
         if(not sifra.isdigit()):
-            helperFunctions.obavestenje("Šifra vrste treninga mora biti broj")
+            helperFunctions.obavestenje("Šifra vrste treninga mora biti broj",crveno=True)
             return 
         
         if(bp_vrste_treninga.dodaj_vrstu_treninga(sifra,naziv)):return
@@ -91,7 +91,7 @@ class VrsteTreningaWindow(winTemplate):
     def obrisi(self):
         slctd_item = self.table.selection()
         if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijednu vrstu treninga.")
+            helperFunctions.obavestenje(poruka="Niste odabrali nijednu vrstu treninga.",crveno=True)
             return
         
         slctd_data = self.table.item(slctd_item)
@@ -116,7 +116,7 @@ class VrsteTreningaWindow(winTemplate):
         self.top_level=True
         slctd_item = self.table.selection()
         if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijednu vrstu treninga za izmenu.")
+            helperFunctions.obavestenje(poruka="Niste odabrali nijednu vrstu treninga za izmenu.",crveno=True)
             return
         
         obrisan = self.table.item(slctd_item, "tags")
@@ -148,7 +148,7 @@ class VrsteTreningaWindow(winTemplate):
         naziv = self.txtbxOpis.get("0.0", END).strip()
 
         if not naziv:
-            helperFunctions.obavestenje("Naziv ne sme biti prazan.")
+            helperFunctions.obavestenje("Naziv ne sme biti prazan.,crveno=True")
             return
 
         if bp_vrste_treninga.azuriraj_vrstu_treninga(id_vrste_treninga, naziv):

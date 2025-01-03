@@ -109,13 +109,13 @@ class AdminWindow(winTemplate):
         admin=self.switchPaket.get()
         
         if(username=="" or ime=="" or prezime==""):
-            helperFunctions.obavestenje("Sva polja moraju biti popunjena")
+            helperFunctions.obavestenje("Sva polja moraju biti popunjena",crveno=True)
             return 
         if(len(lozinka)<6):
-            helperFunctions.obavestenje("Lozinka mora da sadrži više od 6 karaktera")
+            helperFunctions.obavestenje("Lozinka mora da sadrži više od 6 karaktera",crveno=True)
             return 
         if(not re.search(r'\d', lozinka)):
-            helperFunctions.obavestenje("Lozinka mora sadržati bar jednu cifru")
+            helperFunctions.obavestenje("Lozinka mora sadržati bar jednu cifru",crveno=True)
             return 
         
         admin+=1

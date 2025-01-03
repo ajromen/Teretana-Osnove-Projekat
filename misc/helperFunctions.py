@@ -85,7 +85,7 @@ def ucitaj_iz_setup(text):
             if line.strip() and line.strip().split(": ")[0]==text:
                return line.strip().split(": ")[1]
    else:
-      obavestenje(f"Nije pronađen setup.txt na lokaciji: {os.getcwd().replace("\\","/")}/{SETUP_PATH}", sirina=1000)
+      obavestenje(f"Nije pronađen setup.txt na lokaciji: {os.getcwd().replace("\\","/")}/{SETUP_PATH}", sirina=1000,crveno=True)
       
 def azuriraj_setup(kljuc, nova_vrednost):
    if os.path.exists(SETUP_PATH):
@@ -108,7 +108,7 @@ def azuriraj_setup(kljuc, nova_vrednost):
       with open(SETUP_PATH, 'w', encoding='utf-8') as file:
          file.writelines(updated_lines)
    else:
-      obavestenje(f"Nije pronađen setup.txt na lokaciji: {os.getcwd().replace('\\', '/')}/{SETUP_PATH}", sirina=1000)
+      obavestenje(f"Nije pronađen setup.txt na lokaciji: {os.getcwd().replace('\\', '/')}/{SETUP_PATH}", sirina=1000,crveno=True)
       
 def ocisti_string(*args):
    return tuple(str(arg).strip() for arg in args)

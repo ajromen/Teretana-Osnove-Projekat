@@ -82,7 +82,7 @@ class TreningWindow(winTemplate):
     def obrisi_trening(self):
         slctd_item = self.table.selection()
         if not slctd_item:
-            helperFunctions.obavestenje(poruka="Niste odabrali nijedan trening za brisanje.")
+            helperFunctions.obavestenje(poruka="Niste odabrali nijedan trening za brisanje.",crveno=True)
             return
         
         slctd_data = self.table.item(slctd_item)
@@ -295,19 +295,19 @@ class TreningWindow(winTemplate):
         id_programa=self.cmbbxProgram.get()
         
         if(id=="" or (not id.isdigit())):
-            helperFunctions.obavestenje("Šifra ne sme biti prazna ili sadržati slova.")
+            helperFunctions.obavestenje("Šifra ne sme biti prazna ili sadržati slova.",crveno=True)
             return
         if(id[0]=="0"):
-            helperFunctions.obavestenje("Šifra ne sme počinjati sa 0.")
+            helperFunctions.obavestenje("Šifra ne sme počinjati sa 0.",crveno=True)
             return
         if(len(id)!=4):
-            helperFunctions.obavestenje("Šifra mora imati tačno 4 cifre.")
+            helperFunctions.obavestenje("Šifra mora imati tačno 4 cifre.",crveno=True)
             return
         if(id_sale==""):
-            helperFunctions.obavestenje("Polje sala ne sme biti prazano.")
+            helperFunctions.obavestenje("Polje sala ne sme biti prazano.",crveno=True)
             return
         if(id_programa==""):
-            helperFunctions.obavestenje("Polje program ne sme biti prazano.")
+            helperFunctions.obavestenje("Polje program ne sme biti prazano.",crveno=True)
             return
         id_sale=id_sale.split(" ")[0]
         id_programa=id_programa.split(" ")[0]

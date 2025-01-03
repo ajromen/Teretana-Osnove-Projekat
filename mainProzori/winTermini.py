@@ -108,7 +108,7 @@ class TerminiWindow(winTemplate):
         pretraga = self.entrySearch.get().strip().lower()
         kriterijum = self.kriterijumiMap.get(self.cmbbxSearch.get())
         if not kriterijum:
-            helperFunctions.obavestenje("Prvo izaberite kriterijum pretrage.")
+            helperFunctions.obavestenje("Prvo izaberite kriterijum pretrage.",crveno=True)
             return
 
         for red in self.table.get_children():

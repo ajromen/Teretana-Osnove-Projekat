@@ -65,7 +65,7 @@ def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=
         cursor.execute(query)
         listaSifre=cursor.fetchall()
     except Exception:
-        helperFunctions.obavestenje(str(Exception))
+        helperFunctions.obavestenje(str(Exception),crveno=True)
         
     lista=[] if specificni else ["SVE"]
     for sifra in listaSifre:

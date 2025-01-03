@@ -252,7 +252,7 @@ def obrisi_korisnika(username,instruktor=False):#mislim da ovo ne radi (menja ce
 def obrisan_korisnik(username,obavesti=True):
     if username is None or username.strip() == "": return False
     elif username.strip()=='obrisan_korisnik': 
-        obavesti and helperFunctions.obavestenje("Obrisani korisnik sluzi za evidenciju i nije ga dozvoljeno menjati.")
+        obavesti and helperFunctions.obavestenje("Obrisani korisnik sluzi za evidenciju i nije ga dozvoljeno menjati.",crveno=True)
         return False
     return True
 

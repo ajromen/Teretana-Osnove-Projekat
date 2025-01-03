@@ -58,11 +58,11 @@ def azuriraj_program(id,naziv,vrsta_treninga,trajanje,instruktor,paket,opis):
     cursor=BazaPodataka.get_cursor()
     cursor.execute("SELECT id_vrste_treninga FROM Vrste_treninga WHERE id_vrste_treninga=?",(vrsta_treninga,))
     if(cursor.fetchone() is None): 
-        helperFunctions.obavestenje("Ne postoji odabrana vrsta treninga.")
+        helperFunctions.obavestenje("Ne postoji odabrana vrsta treninga.",crveno=True)
         return True
     cursor.execute("SELECT username FROM Korisnici WHERE username=?",(instruktor,))
     if(cursor.fetchone() is None): 
-        helperFunctions.obavestenje("Ne postoji odabrani instruktor.")
+        helperFunctions.obavestenje("Ne postoji odabrani instruktor.",crveno=True)
         return True
     
     cursor.execute('''UPDATE Program 
