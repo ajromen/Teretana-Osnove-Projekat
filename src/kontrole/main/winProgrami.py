@@ -1,6 +1,5 @@
-import bp_korisnici
 from imports import *
-from ctk_rangeslider import *
+from src.utils.ctk_rangeslider import *
 import bp_programi
 
 class ProgramiWindow(winTemplate):
