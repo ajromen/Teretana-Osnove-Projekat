@@ -1,5 +1,6 @@
 import sqlite3
 import os
+BAZA_PATH='src/Teretana.db'
 
 class BazaPodataka:
     connection = None
@@ -13,7 +14,7 @@ class BazaPodataka:
     @classmethod
     def povezi_se(cls):
         if cls.connection is None:
-            cls.connection = sqlite3.connect("Teretana.db")
+            cls.connection = sqlite3.connect(BAZA_PATH)
             cls.cursor = cls.connection.cursor()
     
     @classmethod
@@ -51,8 +52,8 @@ class BazaPodataka:
     @classmethod
     def restart(cls):
         cls.zatvori()
-        if os.path.exists("Teretana.db"):
-            os.remove("Teretana.db")
+        if os.path.exists(BAZA_PATH):
+            os.remove(BAZA_PATH)
         
         cls.povezi_se()
         cls.izvrsi_skripte_iz_fajla("src/sql/Teretana.sql")

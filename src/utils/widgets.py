@@ -14,7 +14,7 @@ def create_button(canvas,image_path, x, y, width=None, height=None, command=None
     button.place(x=x, y=y, width=width, height=height)
     return button
 
-def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='',width=303,height=20,belo=False,state="normal",corner_radius=5,back_color=boje.entry_main,auto_fin_fout=(False,"Polje"),justify="left",key_release=None):
+def create_entry(canvas, x, y, on_focus_in=None, on_focus_out=None, placeholder='', width=303, height=20, belo=False, state="normal", corner_radius=5, back_color=boje.entry_main, auto_fin_fout=(False, "Polje"), justify="left", key_release=None):
     entry = ctk.CTkEntry(
         canvas,border_width=0,
         fg_color= back_color,
@@ -65,7 +65,7 @@ def napravi_sql_cmbbx(canvas,text,labelX,labelY,comboX,comboY,query,broj_kolona=
         cursor.execute(query)
         listaSifre=cursor.fetchall()
     except Exception:
-        helperFunctions.obavestenje(str(Exception),crveno=True)
+        helperFunctions.obavestenje(str(Exception), crveno=True)
         
     lista=[] if specificni else ["SVE"]
     for sifra in listaSifre:

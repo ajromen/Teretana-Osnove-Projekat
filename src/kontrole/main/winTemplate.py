@@ -1,4 +1,4 @@
-# mainProzori/winTemplate.py
+# kontrole/winTemplate.py
 import os
 from imports import *
 import widgets as wid

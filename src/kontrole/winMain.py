@@ -1,13 +1,9 @@
 from imports import *
 import widgets as wid
 import winIzvestaji
-import winProgrami
-import winTermini
-import winTrening
-import winVrsteTreninga
-import winClanovi
-import winAdmin
-import winRezervacije
+from src.kontrole.main import winAdmin, winVrsteTreninga, winClanovi, winRezervacije, winProgrami, winTermini, \
+    winTrening
+
 
 class MainWindow:
     def __init__(self,window):
@@ -18,7 +14,7 @@ class MainWindow:
         self.username=username
         self.uloga=self.nadji_ulogu(uloga)
         self.return_value = 0
-        helperFunctions.setup_window(self.window,"TopForm","1080x603",boje.crna_main_window)
+        helperFunctions.setup_window(self.window, "TopForm", "1080x603", boje.crna_main_window)
         self.create_canvas()
         self.create_widgets()
         self.window.mainloop()
@@ -40,9 +36,9 @@ class MainWindow:
         self.imgLogo = wid.create_canvas_image(self.canvas,"src/img/logo/TopFormLogoBeliSrednji.png",445, 190)#465142
         self.imgUser = wid.create_canvas_image(self.canvas,"src/img/main/imgUser.png",0, 0)
 
-        self.text_id_user = self.canvas.create_text(64,25, anchor="nw", text=self.username, fill=boje.bela, font=("Inter Medium", 12 * -1))
-        self.text_id_date_time = self.canvas.create_text(475,313, anchor="nw", text="19:49 / Saturday /  01.11.2024", fill=boje.text_svetlo_siva, font=("Inter", 24 * -1))
-        self.rect=self.canvas.create_rectangle(218.0, 0, 230.0, 63, fill=boje.bela,outline="", tags="rect")
+        self.text_id_user = self.canvas.create_text(64, 25, anchor="nw", text=self.username, fill=boje.bela, font=("Inter Medium", 12 * -1))
+        self.text_id_date_time = self.canvas.create_text(475, 313, anchor="nw", text="19:49 / Saturday /  01.11.2024", fill=boje.text_svetlo_siva, font=("Inter", 24 * -1))
+        self.rect=self.canvas.create_rectangle(218.0, 0, 230.0, 63, fill=boje.bela, outline="", tags="rect")
         
 
     def create_widgets(self):
@@ -136,23 +132,23 @@ class MainWindow:
             self.trenutni_window = None
 
     def napravi_win_programi(self):
-        self.trenutni_window = winProgrami.ProgramiWindow(self.window, self.unisti_trenutni_win,self.uloga,self.username)
+        self.trenutni_window = winProgrami.ProgramiWindow(self.window, self.unisti_trenutni_win, self.uloga, self.username)
         self.trenutni_window.start()
         
     def napravi_win_trening(self):
-        self.trenutni_window = winTrening.TreningWindow(self.window, self.unisti_trenutni_win,self.uloga)
+        self.trenutni_window = winTrening.TreningWindow(self.window, self.unisti_trenutni_win, self.uloga)
         self.trenutni_window.start()
         
     def napravi_win_clanovi(self):
-        self.trenutni_window = winClanovi.ClanoviWindow(self.window, self.unisti_trenutni_win,self.uloga)
+        self.trenutni_window = winClanovi.ClanoviWindow(self.window, self.unisti_trenutni_win, self.uloga)
         self.trenutni_window.start()
         
     def napravi_win_admin(self):
-        self.trenutni_window = winAdmin.AdminWindow(self.window, self.unisti_trenutni_win,self.uloga)
+        self.trenutni_window = winAdmin.AdminWindow(self.window, self.unisti_trenutni_win, self.uloga)
         self.trenutni_window.start()
 
     def napravi_win_vrste_treninga(self):
-        self.trenutni_window= winVrsteTreninga.VrsteTreningaWindow(self.window,self.unisti_trenutni_win,self.uloga)
+        self.trenutni_window= winVrsteTreninga.VrsteTreningaWindow(self.window, self.unisti_trenutni_win, self.uloga)
         self.trenutni_window.start()
     
     def napravi_win_termini(self):
@@ -164,7 +160,7 @@ class MainWindow:
         self.trenutni_window.start()
 
     def napravi_win_rezervacije(self):
-        self.trenutni_window = winRezervacije.RezervacijeWindow(self.window, self.unisti_trenutni_win, self.uloga,self.username)
+        self.trenutni_window = winRezervacije.RezervacijeWindow(self.window, self.unisti_trenutni_win, self.uloga, self.username)
         self.trenutni_window.start()
 
     def prebaci_win(self, win):

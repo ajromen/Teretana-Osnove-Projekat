@@ -1,5 +1,5 @@
 import sys
-sys.path.append('./misc')
+sys.path.append('src/utils')
 from imports import *
 import winLogin
 import winSignup

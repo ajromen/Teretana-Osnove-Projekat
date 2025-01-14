@@ -36,7 +36,7 @@ def pitaj(poruka,title="Greška",text1="Da",text2="Ne",crveno=True):
 
    result = {"value": False}
 
-   button_1 = ctk.CTkButton(error_window, text=text1,fg_color=boje.dugme_disabled, command=lambda: (result.update(value=True), error_window.destroy()),width=140)
+   button_1 = ctk.CTkButton(error_window, text=text1, fg_color=boje.dugme_disabled, command=lambda: (result.update(value=True), error_window.destroy()), width=140)
    button_2 = ctk.CTkButton(error_window, text=text2, command=lambda: (result.update(value=False), error_window.destroy()),width=140)
    button_1.place(x=28,y=108)
    button_2.place(x=181,y=108)
@@ -44,7 +44,7 @@ def pitaj(poruka,title="Greška",text1="Da",text2="Ne",crveno=True):
    error_window.wait_window()
    return result["value"]
    
-def setup_window(window,title,width_height,bg_color=boje.crna):
+def setup_window(window, title, width_height, bg_color=boje.crna):
    ctk.set_appearance_mode("Dark")
    window.title(title)
    window.geometry(width_height)

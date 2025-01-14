@@ -73,7 +73,7 @@ class RezervacijeWindow(winTemplate):
     def izaberi_termine(self):
         self.dodatni_window=helperFunctions.napravi_toplevel(title="Izaberite termin",height=608,width=850)
         self.dodatni_window.protocol("WM_DELETE_WINDOW", lambda:self.izaberi_termine_kraj(self.termin))
-        termini_window=winTermini.TerminiWindow(self.dodatni_window,lambda termin:self.izaberi_termine_kraj(termin),self.uloga,u_prozoru=True,za_rezervaciju=True,username=self.username,username_korisnika=self.odabrani_korisnik,selektovani_termin=self.termin)
+        termini_window= winTermini.TerminiWindow(self.dodatni_window, lambda termin:self.izaberi_termine_kraj(termin), self.uloga, u_prozoru=True, za_rezervaciju=True, username=self.username, username_korisnika=self.odabrani_korisnik, selektovani_termin=self.termin)
         termini_window.start()
         
     def izaberi_termine_kraj(self, termin="Izaberite termin"):
@@ -92,7 +92,7 @@ class RezervacijeWindow(winTemplate):
         helperFunctions.omoguci_dugme(self.btnOznakaMesta,self.izaberi_oznaku_mesta)
         
     def izaberi_oznaku_mesta(self):
-        self.sale_window=winSale.SaleWindow(self.sala,lambda oznaka_mesta="Izaberite oznaku mesta":self.izaberi_oznaku_mesta_kraj(oznaka_mesta),id_termina=self.termin,oznaka_mesta=self.oznaka_mesta,id_rezervacije=self.odabrana_rezervacija)
+        self.sale_window= winSale.SaleWindow(self.sala, lambda oznaka_mesta="Izaberite oznaku mesta":self.izaberi_oznaku_mesta_kraj(oznaka_mesta), id_termina=self.termin, oznaka_mesta=self.oznaka_mesta, id_rezervacije=self.odabrana_rezervacija)
         self.sale_window.start()
         
     def izaberi_oznaku_mesta_kraj(self,oznaka_mesta="Izaberite oznaku mesta"):

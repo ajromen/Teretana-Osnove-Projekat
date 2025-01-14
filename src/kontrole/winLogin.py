@@ -8,7 +8,7 @@ class LoginWindow:
         
     def start(self):
         self.return_value = 0
-        helperFunctions.setup_window(self.window,"Uloguj se","760x450",boje.crna_main_window)
+        helperFunctions.setup_window(self.window, "Uloguj se", "760x450", boje.crna_main_window)
         self.create_canvas()
         self.create_widgets()
         self.window.mainloop()
@@ -16,11 +16,11 @@ class LoginWindow:
             
     def create_widgets(self):
         #korisnicko ime
-        self.entryUsername = wid.create_entry(canvas=self.canvas,x=403, y=225,corner_radius=0, back_color=boje.entry_login, placeholder="Korisničko ime", auto_fin_fout=(True,"Polje")) 
+        self.entryUsername = wid.create_entry(canvas=self.canvas, x=403, y=225, corner_radius=0, back_color=boje.entry_login, placeholder="Korisničko ime", auto_fin_fout=(True, "Polje"))
         self.entryUsername.bind("<KeyRelease>", self.promeni_pozdrav)
         
         #lozinka
-        self.entryPassword = wid.create_entry(self.canvas,x=403, y=281,back_color=boje.entry_login,corner_radius=0, placeholder="Lozinka", auto_fin_fout=(True,"Lozinka")) 
+        self.entryPassword = wid.create_entry(self.canvas, x=403, y=281, back_color=boje.entry_login, corner_radius=0, placeholder="Lozinka", auto_fin_fout=(True, "Lozinka"))
         self.entryPassword.bind("<Return>", command=lambda event: self.prijavi_se())
         
         #login dugme
@@ -48,11 +48,11 @@ class LoginWindow:
         
     def prijavi_se(self):
         korIme=str(self.entryUsername.get())
-        loz=helperFunctions.hashPassword(str(self.entryPassword.get()))
+        loz= helperFunctions.hashPassword(str(self.entryPassword.get()))
         cursor=BazaPodataka.get_cursor()
         cursor.execute("SELECT username, uloga FROM Korisnici WHERE username='"+str(korIme)+"' AND password='"+str(loz)+"'")
         ima=cursor.fetchall()
         if(len(ima)!=0):
             self.vrati(ima)
         else:
-            helperFunctions.obavestenje("Pogrešno korisničko ime ili lozinka",crveno=True)
+            helperFunctions.obavestenje("Pogrešno korisničko ime ili lozinka", crveno=True)
